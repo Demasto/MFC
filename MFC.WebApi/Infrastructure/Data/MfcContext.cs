@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Domain.Models;
-using Infrastructure.Context.EntityConfiguration;
+using Domain.Entities;
+using Infrastructure.Data.Configurations;
 
-namespace Infrastructure.Context;
+namespace Infrastructure.Data;
 
 public class MfcContext : DbContext
 {

@@ -1,8 +1,8 @@
-using Domain.Models;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Context.EntityConfiguration;
+namespace Infrastructure.Data.Configurations;
 
 public class FileSchemaConfiguration : IEntityTypeConfiguration<FileSchema>
 {

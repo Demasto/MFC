@@ -1,13 +1,15 @@
 using Infrastructure;
+using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure();
+builder.Services.AddWebServices();
 
 builder.Services.AddControllers();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -22,7 +24,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 
 app.MapControllers();
 

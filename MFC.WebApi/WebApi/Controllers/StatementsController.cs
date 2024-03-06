@@ -1,7 +1,4 @@
-using Domain.Models;
-using Infrastructure.Services;
-using Infrastructure.Services.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
+using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
 
@@ -12,18 +9,18 @@ using System.Threading.Tasks;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UploadController(IFileService service) : ControllerBase
+public class StatementsController(IFileService service) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAllFiles()
     {
-        await service.GetFilesList();
+        var filesList = await service.GetFilesList();
         
-        return Ok($"successfully.");
+        return Ok(filesList);
     }
     
     [HttpPost]
-    public async Task<IActionResult> UploadFile(IFormFile file)
+    public async Task<IActionResult> CreateFile(IFormFile file)
     {
         if (file.Length == 0)
         {
@@ -32,20 +29,15 @@ public class UploadController(IFileService service) : ControllerBase
         
         try
         {
-            await service.SaveFile(file.FileName, file.OpenReadStream());
+            await service.AddNewFile(file.FileName, file.OpenReadStream());
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             return BadRequest(e.Message);
         }
-
-       
+        
         return Ok($"File {file.FileName} has been uploaded successfully.");
-        
-        
-     
-        
     }
     
     [HttpPut]
@@ -56,15 +48,13 @@ public class UploadController(IFileService service) : ControllerBase
             return BadRequest("No file uploaded.");
         }
         
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "uploads", file.FileName);
-
         try
         {
-            await using var stream = new FileStream(path, FileMode.Create);
-            await file.CopyToAsync(stream);
+            await service.UpdateFile(file.FileName, file.OpenReadStream());
         }
         catch (Exception e)
         {
+            Console.WriteLine(e);
             return BadRequest(e.Message);
         }
 
