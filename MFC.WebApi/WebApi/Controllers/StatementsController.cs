@@ -4,7 +4,6 @@ namespace WebApi.Controllers;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 using System.Threading.Tasks;
 
 [Route("api/[controller]")]
@@ -12,11 +11,18 @@ using System.Threading.Tasks;
 public class StatementsController(IFileService service) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAllFiles()
+    public async Task<IActionResult> GetFilesList()
     {
-        var filesList = await service.GetFilesList();
+        try
+        {
+           var filesList = await service.GetFilesList();
+           return Ok(filesList);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
         
-        return Ok(filesList);
     }
     
     [HttpPost]
@@ -30,6 +36,8 @@ public class StatementsController(IFileService service) : ControllerBase
         try
         {
             await service.AddNewFile(file.FileName, file.OpenReadStream());
+            
+            return Ok($"File {file.FileName} has been uploaded successfully.");
         }
         catch (Exception e)
         {
@@ -37,7 +45,6 @@ public class StatementsController(IFileService service) : ControllerBase
             return BadRequest(e.Message);
         }
         
-        return Ok($"File {file.FileName} has been uploaded successfully.");
     }
     
     [HttpPut]
@@ -51,6 +58,8 @@ public class StatementsController(IFileService service) : ControllerBase
         try
         {
             await service.UpdateFile(file.FileName, file.OpenReadStream());
+            
+            return Ok($"File {file.FileName} has been updated successfully.");
         }
         catch (Exception e)
         {
@@ -58,6 +67,6 @@ public class StatementsController(IFileService service) : ControllerBase
             return BadRequest(e.Message);
         }
 
-        return Ok($"File {file.FileName} has been updated successfully.");
+        
     }
 }

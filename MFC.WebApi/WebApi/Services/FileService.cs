@@ -8,26 +8,34 @@ namespace WebApi.Services;
 
 public class FileService(IStatementRepository repository) : IFileService
 {
-    
-    public async Task<Dictionary<string, Stream>> GetFilesList()
+    private static readonly string SaveDir = Path.Combine(Directory.GetCurrentDirectory(), "statements");
+ 
+    public async Task<List<string>> GetFilesList()
     { 
-        var statements = await repository.GetAllStatementsAsync();
-        var filesList = new Dictionary<string, Stream>();
         
-        foreach (var statement in statements.Where(statement => File.Exists(statement.FilePath)))
+        if (!Directory.Exists(SaveDir))
         {
-            await using Stream fileStream = File.OpenRead(statement.FilePath);
-            filesList.Add(statement.FileName, fileStream);
+            throw new Exception("Files doesnt exist");
         }
-        
-        //TODO необходимо создать внешний вид каждого документа с помощью ItextPDF
 
-        return filesList;
+        
+        var statements = await repository.GetAllStatementsAsync();
+        
+        return statements
+            .Where(statement => File.Exists(statement.FilePath))
+            .Select(statement => statement.FileName)
+            .ToList();
     }
     
     public async Task AddNewFile(string fileName, Stream stream)
     {
-        var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "downloads", fileName);
+        if (!Directory.Exists(SaveDir))
+        {
+            Directory.CreateDirectory(SaveDir);
+            // TODO удалить все пред файлы в базе?/
+        }
+        
+        var pathToFile = Path.Combine(SaveDir, fileName);
         
         if (File.Exists(pathToFile))
         {
@@ -42,7 +50,7 @@ public class FileService(IStatementRepository repository) : IFileService
     
     public async Task UpdateFile(string fileName, Stream stream)
     {
-        var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "downloads", fileName);
+        var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "statements", fileName);
         
         if (!File.Exists(pathToFile))
         {
