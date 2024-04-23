@@ -10,13 +10,15 @@ public static class DependencyInjection
     {
 
         services.AddTransient<IStatementService, StatementService>();
-
+        services.AddTransient<ISchemaService, SchemaService>();
         
+        StatementService.CheckSaveDir();
         return services;
     }
     
     public static IApplicationBuilder AddSwagger(this IApplicationBuilder app)
     {
+        
         app.UseSwagger();
         app.UseSwaggerUI();
         

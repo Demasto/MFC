@@ -1,4 +1,3 @@
-using Minio;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
@@ -21,7 +20,22 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e);
+        }
+        
+    }
+    
+    [HttpGet("{fileName}")]
+    public IActionResult GetFile(string fileName)
+    {
+        try
+        {
+            var stream = service.ReadFileStream(fileName);
+            return File(stream, "application/octet-stream", fileName);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
         }
         
     }
@@ -36,7 +50,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         
         try
         {
-            await service.AddNewFile(file.FileName, file.OpenReadStream());
+            await service.CreateFile(file.FileName, file.OpenReadStream());
             
             return Ok($"File {file.FileName} has been uploaded successfully.");
         }
@@ -68,12 +82,12 @@ public class StatementsController(IStatementService service) : ControllerBase
     }
     
     [HttpDelete]
-    public async Task<IActionResult> DeleteFile(string fileName)
+    public IActionResult DeleteFile(string fileName)
     {
         
         try
         {
-            await service.DeleteFile(fileName);
+            service.DeleteFile(fileName);
             
             return Ok($"File {fileName} has been deleted successfully.");
         }

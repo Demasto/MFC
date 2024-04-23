@@ -15,7 +15,7 @@ public static class DependencyInjection
             options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECT")));
         
         services.AddTransient<IStatementRepository, StatementRepository>();
-        
+        services.AddTransient<ISchemaRepository, SchemaRepository>();
         
         return services;
     }

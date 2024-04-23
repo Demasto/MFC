@@ -7,17 +7,24 @@ namespace Infrastructure.Repositories;
 
 public class StatementRepository(MfcContext context) : IStatementRepository
 {
-    public Task<List<Statement>> GetAllStatementsAsync()
+    public Task<List<Statement>> ReadAllFilesAsync()
     {
         return context.Statements.ToListAsync();
     }
 
-    public Task<Statement> GetStatementByFileNameAsync(string fileName)
+    public Statement? ReadFile(string fileName)
     {
-        return context.Statements.SingleAsync(statement => statement.Name == fileName);;
+        return context.Statements.FirstOrDefault(statement => statement.Name == fileName);
     }
 
-    public void SaveFile(string fileName, string pathToFile)
+    public bool FileIsExist(string fileName)
+    {
+        var file = context.Statements.FirstOrDefault(statement => statement.Name == fileName);
+
+        return file != null;
+    }
+
+    public void CreateFile(string fileName, string pathToFile)
     {
         context.Statements.Add(new Statement()
         {
@@ -46,6 +53,19 @@ public class StatementRepository(MfcContext context) : IStatementRepository
         if (statement == null)
         {
             throw new NullReferenceException($"Statement with id = {id} doesnt exist");
+        }
+        context.Statements.Remove(statement);
+
+        context.SaveChanges();
+    }
+    
+    public void DeleteFile(string name)
+    {
+        var statement = context.Statements.First(statement => statement.Name == name);
+        
+        if (statement == null)
+        {
+            throw new NullReferenceException($"Statement with name = {name} doesnt exist");
         }
         context.Statements.Remove(statement);
 

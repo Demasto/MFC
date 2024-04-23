@@ -38,13 +38,12 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // TODO загрузить все файлы из папки statements в бд, если их там нет.
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
-// }
 
-app.AddSwagger();
+if (app.Environment.IsDevelopment())
+{
+    app.AddSwagger();
+}
+
 
 app.UseHttpsRedirection();
 

@@ -1,6 +1,7 @@
 
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Minio;
 using WebApi.Services.Interfaces;
 
@@ -15,7 +16,7 @@ public class StatementService(IStatementRepository repository) : IStatementServi
         return Path.Combine(SaveDir, fileName);
     }
 
-    private static void CheckSaveDir()
+    public static void CheckSaveDir()
     {
         if (!Directory.Exists(SaveDir))
         {
@@ -34,7 +35,7 @@ public class StatementService(IStatementRepository repository) : IStatementServi
         }
   
         
-        var statements = await repository.GetAllStatementsAsync();
+        var statements = await repository.ReadAllFilesAsync();
         
         
         return statements
@@ -43,20 +44,47 @@ public class StatementService(IStatementRepository repository) : IStatementServi
             .ToList();
     }
     
-    public async Task AddNewFile(string fileName, Stream stream)
+    public async Task CreateFile(string fileName, Stream stream)
     {
-        CheckSaveDir();
         
         var pathToFile = PathToFile(fileName);
+
+        try
+        {
+            await using Stream outStream = File.OpenWrite(pathToFile);
+            await stream.CopyToAsync(outStream);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
         
-        if (File.Exists(pathToFile))
-            throw new Exception($"File: {pathToFile} - already exist!");
+        // TODO синхронизация должна проводиться при старте программы
+        // var existInDb = repository.FileIsExist(fileName);
+        //
+        // //Если файл существует, надо проверить, есть ли он в базе и записать, если нет
+        // if (File.Exists(pathToFile))
+        // {
+        //     if (existInDb)
+        //     {
+        //         // Файл уже существует
+        //         throw new Exception($"File: {pathToFile} - already exist!");
+        //     } 
+        //     
+        //     // Файл существует только локально. Можно перезаписать
+        //     
+        // }
+        // else
+        // {
+        //     if (existInDb)
+        //     {
+        //         repository.UpdateFile(fileName, pathToFile);
+        //     }
+        // }
+        //     
         
-        
-        await using Stream outStream = File.OpenWrite(pathToFile);
-        await stream.CopyToAsync(outStream);
-        
-        repository.SaveFile(fileName, pathToFile);
+        repository.CreateFile(fileName, pathToFile);
     }
     
     public async Task UpdateFile(string fileName, Stream stream)
@@ -73,7 +101,7 @@ public class StatementService(IStatementRepository repository) : IStatementServi
         await stream.CopyToAsync(outStream);
     }
     
-    public async Task DeleteFile(string fileName)
+    public void DeleteFile(string fileName)
     {
         
         var pathToFile = PathToFile(fileName);
@@ -83,12 +111,28 @@ public class StatementService(IStatementRepository repository) : IStatementServi
         
         File.Delete(pathToFile);
         
-        repository.DeleteFile(1);
+        repository.DeleteFile(fileName);
+        
     }
     
     
-    public async Task<Statement> LoadFile(string fileName)
+    public FileStream ReadFileStream(string fileName)
     {
-       return await repository.GetStatementByFileNameAsync(fileName);
+        var statement = repository.ReadFile(fileName);
+        if (statement == null) throw new NullReferenceException();
+
+        try
+        {
+            var stream = File.OpenRead(PathToFile(statement.Name));
+
+            return stream;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 }
