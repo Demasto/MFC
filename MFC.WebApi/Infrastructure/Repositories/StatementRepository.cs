@@ -14,16 +14,40 @@ public class StatementRepository(MfcContext context) : IStatementRepository
 
     public Task<Statement> GetStatementByFileNameAsync(string fileName)
     {
-        return context.Statements.SingleAsync(statement => statement.FileName == fileName);;
+        return context.Statements.SingleAsync(statement => statement.Name == fileName);;
     }
 
     public void SaveFile(string fileName, string pathToFile)
     {
         context.Statements.Add(new Statement()
         {
-            FileName = fileName,
-            FilePath = pathToFile
+            Name = fileName,
+            Path = pathToFile
         });
+
+        context.SaveChanges();
+    }
+    
+    public void UpdateFile(string fileName, string pathToFile)
+    {
+        context.Statements.Update(new Statement()
+        {
+            Name = fileName,
+            Path = pathToFile
+        });
+
+        context.SaveChanges();
+    }
+    
+    public void DeleteFile(int id)
+    {
+        var statement = context.Statements.Find(id);
+        
+        if (statement == null)
+        {
+            throw new NullReferenceException($"Statement with id = {id} doesnt exist");
+        }
+        context.Statements.Remove(statement);
 
         context.SaveChanges();
     }

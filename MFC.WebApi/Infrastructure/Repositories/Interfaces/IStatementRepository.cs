@@ -4,10 +4,13 @@ namespace Infrastructure.Repositories.Interfaces;
 
 public interface IStatementRepository
 {
-    Task<List<Statement>> GetAllStatementsAsync();
+    public Task<List<Statement>> GetAllStatementsAsync();
     
-    Task<Statement> GetStatementByFileNameAsync(string fileName);
+    public Task<Statement> GetStatementByFileNameAsync(string fileName);
 
-    void SaveFile(string fileName, string pathToFile);
+    public void SaveFile(string fileName, string pathToFile);
+    public void UpdateFile(string fileName, string pathToFile);
+
+    public void DeleteFile(int id);
 
 }

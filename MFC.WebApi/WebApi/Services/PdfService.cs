@@ -19,7 +19,7 @@ public class PdfService
 {
     public void RenderStatement(Statement statement)
     {
-        PdfReader reader = new(statement.FilePath);
+        PdfReader reader = new(statement.Path);
         
         // TODO узнать как создать временный файл, который автоматически удалится
 

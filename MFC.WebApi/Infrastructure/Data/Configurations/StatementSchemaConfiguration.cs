@@ -4,33 +4,30 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Configurations;
 
-public class FileSchemaConfiguration : IEntityTypeConfiguration<FileSchema>
+public class StatementSchemaConfiguration : IEntityTypeConfiguration<StatementSchema>
 {
-    public void Configure(EntityTypeBuilder<FileSchema> entity)
+    public void Configure(EntityTypeBuilder<StatementSchema> entity)
     {
-        entity.HasKey(e => e.FileSchemaId).HasName("file_schemas_pkey");
+        entity.HasKey(e => e.Id).HasName("statement_schemas_pkey");
 
-        entity.ToTable("file_schemas");
+        entity.ToTable("statement_schemas");
 
-        entity.Property(e => e.FileSchemaId)
+        entity.Property(e => e.Id)
             .UseIdentityAlwaysColumn()
-            .HasColumnName("file_schema_id");
-        
+            .HasColumnName("id");
         entity.Property(e => e.DataId)
             .HasColumnType("character varying")
             .HasColumnName("data_id");
         entity.Property(e => e.FileId).HasColumnName("file_id");
-        
         entity.Property(e => e.FontSize)
             .HasDefaultValue(14)
             .HasColumnName("font_size");
-        
         entity.Property(e => e.X).HasColumnName("x");
         entity.Property(e => e.Y).HasColumnName("y");
 
-        entity.HasOne(d => d.File).WithMany(p => p.FileSchemas)
+        entity.HasOne(d => d.File).WithMany(p => p.StatementSchemas)
             .HasForeignKey(d => d.FileId)
             .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("file_schemas_file_id_fkey");
+            .HasConstraintName("statement_schemas_file_id_fkey");
     }
 }

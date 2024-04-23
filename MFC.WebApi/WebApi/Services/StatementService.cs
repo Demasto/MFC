@@ -1,46 +1,57 @@
 
 using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
-
+using Minio;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Services;
 
-public class FileService(IStatementRepository repository) : IFileService
+public class StatementService(IStatementRepository repository) : IStatementService
 {
     private static readonly string SaveDir = Path.Combine(Directory.GetCurrentDirectory(), "statements");
- 
-    public async Task<List<string>> GetFilesList()
-    { 
-        
-        if (!Directory.Exists(SaveDir))
-        {
-            throw new Exception("Files doesnt exist");
-        }
 
-        
-        var statements = await repository.GetAllStatementsAsync();
-        
-        return statements
-            .Where(statement => File.Exists(statement.FilePath))
-            .Select(statement => statement.FileName)
-            .ToList();
+    private static string PathToFile(string fileName)
+    {
+        return Path.Combine(SaveDir, fileName);
     }
-    
-    public async Task AddNewFile(string fileName, Stream stream)
+
+    private static void CheckSaveDir()
     {
         if (!Directory.Exists(SaveDir))
         {
             Directory.CreateDirectory(SaveDir);
             // TODO удалить все пред файлы в базе?/
         }
+    }
+    
+    
+    public async Task<List<string>> GetFilesList()
+    { 
         
-        var pathToFile = Path.Combine(SaveDir, fileName);
+        if (!Directory.Exists(SaveDir))
+        {
+            throw new Exception("На данном сервере нет файлов");
+        }
+  
+        
+        var statements = await repository.GetAllStatementsAsync();
+        
+        
+        return statements
+            .Where(statement => File.Exists(statement.Path))
+            .Select(statement => statement.Name)
+            .ToList();
+    }
+    
+    public async Task AddNewFile(string fileName, Stream stream)
+    {
+        CheckSaveDir();
+        
+        var pathToFile = PathToFile(fileName);
         
         if (File.Exists(pathToFile))
-        {
             throw new Exception($"File: {pathToFile} - already exist!");
-        }
+        
         
         await using Stream outStream = File.OpenWrite(pathToFile);
         await stream.CopyToAsync(outStream);
@@ -50,16 +61,29 @@ public class FileService(IStatementRepository repository) : IFileService
     
     public async Task UpdateFile(string fileName, Stream stream)
     {
-        var pathToFile = Path.Combine(Directory.GetCurrentDirectory(), "statements", fileName);
+        var pathToFile = PathToFile(fileName);
         
         if (!File.Exists(pathToFile))
-        {
             throw new Exception($"File: {pathToFile} - doesnt exist!");
-        }
+        
+        // TODO Как синхронизировать базу и локальное хранилище......
         File.Delete(pathToFile);
         
         await using Stream outStream = File.OpenWrite(pathToFile);
         await stream.CopyToAsync(outStream);
+    }
+    
+    public async Task DeleteFile(string fileName)
+    {
+        
+        var pathToFile = PathToFile(fileName);
+        
+        if (!File.Exists(pathToFile))
+            throw new Exception($"File: {pathToFile} - doesnt exist!");
+        
+        File.Delete(pathToFile);
+        
+        repository.DeleteFile(1);
     }
     
     

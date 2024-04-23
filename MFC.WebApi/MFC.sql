@@ -1,10 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 16.2 (Debian 16.2-1.pgdg120+2)
--- Dumped by pg_dump version 16.2
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -25,20 +18,17 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.statements (
-    file_name character varying NOT NULL,
-    file_path character varying,
-    file_id integer NOT NULL
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    path character varying
 );
 
 
 ALTER TABLE public.statements OWNER TO postgres;
 
---
--- Name: statements_file_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
 
-ALTER TABLE public.statements ALTER COLUMN file_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.statements_file_id_seq
+ALTER TABLE public.statements ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.statements_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -47,28 +37,24 @@ ALTER TABLE public.statements ALTER COLUMN file_id ADD GENERATED ALWAYS AS IDENT
 );
 
 
---
--- Name: file_schemas; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.file_schemas (
+CREATE TABLE public.statement_schemas (
+    id integer NOT NULL,
     file_id integer NOT NULL,
     x numeric NOT NULL,
     y numeric NOT NULL,
     font_size integer DEFAULT 14,
-    data_id character varying,
-    file_schema_id integer NOT NULL
+    data_id character varying
 );
 
 
-ALTER TABLE public.file_schemas OWNER TO postgres;
+ALTER TABLE public.statement_schemas OWNER TO postgres;
 
 --
 -- Name: file_schemas_file_schema_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE public.file_schemas ALTER COLUMN file_schema_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.file_schemas_file_schema_id_seq
+ALTER TABLE public.statement_schemas ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.statement_schemas_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -82,26 +68,12 @@ ALTER TABLE public.file_schemas ALTER COLUMN file_schema_id ADD GENERATED ALWAYS
 --
 
 ALTER TABLE ONLY public.statements
-    ADD CONSTRAINT statements_pkey PRIMARY KEY (file_id);
+    ADD CONSTRAINT statements_pkey PRIMARY KEY (id);
 
 
---
--- Name: file_schemas file_schemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.file_schemas
-    ADD CONSTRAINT file_schemas_pkey PRIMARY KEY (file_schema_id);
+ALTER TABLE ONLY public.statement_schemas
+    ADD CONSTRAINT statement_schemas_pkey PRIMARY KEY (id);
 
 
---
--- Name: file_schemas file_schemas_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.file_schemas
-    ADD CONSTRAINT file_schemas_file_id_fkey FOREIGN KEY (file_id) REFERENCES public.statements(file_id) NOT VALID;
-
-
---
--- PostgreSQL database dump complete
---
-
+ALTER TABLE ONLY public.statement_schemas
+    ADD CONSTRAINT statement_schemas_file_id_fkey FOREIGN KEY (file_id) REFERENCES public.statements(id) NOT VALID;

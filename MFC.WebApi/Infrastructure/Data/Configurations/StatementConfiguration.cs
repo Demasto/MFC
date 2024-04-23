@@ -8,20 +8,18 @@ public class StatementConfiguration : IEntityTypeConfiguration<Statement>
 {
     public void Configure(EntityTypeBuilder<Statement> entity)
     {
-        entity.HasKey(e => e.FileId).HasName("statements_pkey");
+        entity.HasKey(e => e.Id).HasName("statements_pkey");
 
         entity.ToTable("statements");
 
-        entity.Property(e => e.FileId)
+        entity.Property(e => e.Id)
             .UseIdentityAlwaysColumn()
-            .HasColumnName("file_id");
-        
-        entity.Property(e => e.FileName)
+            .HasColumnName("id");
+        entity.Property(e => e.Name)
             .HasColumnType("character varying")
-            .HasColumnName("file_name");
-        
-        entity.Property(e => e.FilePath)
+            .HasColumnName("name");
+        entity.Property(e => e.Path)
             .HasColumnType("character varying")
-            .HasColumnName("file_path");
+            .HasColumnName("path");
     }
 }

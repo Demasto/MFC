@@ -1,3 +1,4 @@
+using Minio;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StatementsController(IFileService service) : ControllerBase
+public class StatementsController(IStatementService service) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetFilesList()
@@ -41,8 +42,7 @@ public class StatementsController(IFileService service) : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return BadRequest(e.Message);
+            return BadRequest(e);
         }
         
     }
@@ -63,10 +63,23 @@ public class StatementsController(IFileService service) : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return BadRequest(e.Message);
+            return BadRequest(e);
         }
-
+    }
+    
+    [HttpDelete]
+    public async Task<IActionResult> DeleteFile(string fileName)
+    {
         
+        try
+        {
+            await service.DeleteFile(fileName);
+            
+            return Ok($"File {fileName} has been deleted successfully.");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 }

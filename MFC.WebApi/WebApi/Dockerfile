@@ -3,18 +3,17 @@ WORKDIR /app
 EXPOSE 80
 #EXPOSE 443
 
-
-
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
 
-RUN dotnet dev-certs https -ep https/aspnetapp.pfx -p 1234
-RUN dotnet dev-certs https --trust
+#WORKDIR /app
+#RUN dotnet dev-certs https -ep https/aspnetapp.pfx -p 1234
+#RUN dotnet dev-certs https --trust
 
 WORKDIR /src
-COPY ["WebApi/WebApi.csproj", "WebApi/"]
+
 COPY ["Domain/Domain.csproj", "Domain/"]
 COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
+COPY ["WebApi/WebApi.csproj", "WebApi/"]
 
 RUN dotnet restore "WebApi/WebApi.csproj"
 COPY . .
