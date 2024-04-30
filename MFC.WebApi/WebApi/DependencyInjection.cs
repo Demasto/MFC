@@ -22,7 +22,7 @@ public static class DependencyInjection
 
     public static IServiceCollection AddIdentity(this IServiceCollection services)
     {
-        services.AddIdentity<Student, IdentityRole>(options =>
+        services.AddIdentity<AppUser, IdentityRole>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequiredUniqueChars = 0;

@@ -28,8 +28,8 @@ public static class SeedData
             Number = "543254",
             UnitCode = "432-632",
             PlaceOfBrith = "Г. Москва",
-            DateOfBrith = "04.09.2002",
-            DateOfIssue = "12.03.2024",
+            DateOfBrith = new DateOnly(2002, 02, 14),
+            DateOfIssue = new DateOnly(2024, 12, 03),
             Citizenship = "Российская Федерация"
         };
             
@@ -63,15 +63,15 @@ public static class SeedData
         builder.Entity<IdentityRole>().HasData(new IdentityRole
         {
             Id = RolesId.Admin,
-            Name = "admin",
-            NormalizedName = "ADMIN"
+            Name = Role.Admin,
+            NormalizedName = Role.Admin.ToUpper()
         });
         
         builder.Entity<IdentityRole>().HasData(new IdentityRole
         {
             Id = RolesId.Student,
-            Name = "student",
-            NormalizedName = "STUDENT"
+            Name = Role.Student,
+            NormalizedName = Role.Student.ToUpper()
         });
         
         return builder;
@@ -79,13 +79,11 @@ public static class SeedData
 
     private static ModelBuilder CreateUser(this ModelBuilder builder, string userName, Name name, Passport passport, string sex, string userId, string roleId)
     {
-        var hasher = new PasswordHasher<Student>();
+        var hasher = new PasswordHasher<AppUser>();
         var email = $"{userName}@example.com";
         
-        string jsonName = JsonSerializer.Serialize(name);
-        string jsonPassport = JsonSerializer.Serialize(passport);
         
-        var student = new Student()
+        var student = new AppUser()
         {
             Id = userId,
             UserName = userName,
@@ -95,8 +93,8 @@ public static class SeedData
             EmailConfirmed = false,
             PasswordHash = hasher.HashPassword(null, $"{userName}123"),
             SecurityStamp = string.Empty,
-            Name = jsonName,
-            Passport = jsonPassport,
+            Name = JsonSerializer.Serialize(name),
+            Passport = JsonSerializer.Serialize(passport),
             Group = "УВП-411",
             DirectionOfStudy = "09.03.01",
             ServiceNumber = "12345678",
@@ -105,7 +103,7 @@ public static class SeedData
             SNILS = "375232753"
         };
         
-        builder.Entity<Student>().HasData(student);
+        builder.Entity<AppUser>().HasData(student);
         
         builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
         {
@@ -120,9 +118,9 @@ public static class SeedData
 
 public static class UsersId
 {
-    public const string Admin = "a18be9c0-aa65-4af8-bd17-00bd9344e576";
-    public const string Dmitry = "a18be9c0-aa65-4af8-bd17-00bd9344e577";
-    public const string Shmebyulok = "a18be9c0-aa65-4af8-bd17-00bd9344e578";
+    public const string Admin = "a18be9c0-aa65-4af8-bd17-00bd9344e586";
+    public const string Dmitry = "a18be9c0-aa65-4af8-bd17-00bd9344e587";
+    public const string Shmebyulok = "a18be9c0-aa65-4af8-bd17-00bd9344e588";
 
 }
 

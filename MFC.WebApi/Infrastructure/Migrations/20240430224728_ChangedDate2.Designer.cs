@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MfcContext))]
-    [Migration("20240429214817_AddDefaultUser")]
-    partial class AddDefaultUser
+    [Migration("20240430224728_ChangedDate2")]
+    partial class ChangedDate2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("statement_schemas", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Student", b =>
+            modelBuilder.Entity("Infrastructure.Data.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -100,6 +100,10 @@ namespace Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<string>("DirectionOfStudy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -107,7 +111,15 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Group")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("INN")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -117,6 +129,10 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -124,6 +140,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<string>("Passport")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -134,7 +154,15 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("SNILS")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ServiceNumber")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -158,20 +186,75 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
+                            Id = "a18be9c0-aa65-4af8-bd17-00bd9344e586",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b9121a39-9bd9-4986-bfcb-6ca3c473d67f",
+                            ConcurrencyStamp = "3d337680-0626-4fe6-9e33-3b8164ddb41d",
+                            DirectionOfStudy = "09.03.01",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
-                            Group = "null",
+                            Gender = "Мужской",
+                            Group = "УВП-411",
+                            INN = "7777065424",
                             LockoutEnabled = false,
-                            NormalizedEmail = "admin@example.com",
-                            NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAYWn3cy8aeqcbwNYPNhMrIqk2/nMxdnA+vp0YTt8uu5aU5rUxBMdl2sWDMT0vTV6A==",
+                            Name = "{\"First\":\"Admin\",\"Second\":\"Adminov\",\"Middle\":\"Adminovich\"}",
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN",
+                            Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC9WWcS8hy05+SZqbEUjGplx/6saonKKn+OuRzzferx+tqG2agwPx5U5zdkS5RQNFQ==",
                             PhoneNumberConfirmed = false,
+                            SNILS = "375232753",
                             SecurityStamp = "",
+                            ServiceNumber = "12345678",
                             TwoFactorEnabled = false,
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            Id = "a18be9c0-aa65-4af8-bd17-00bd9344e587",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d929a1f7-2a5f-4125-b414-1de091e39705",
+                            DirectionOfStudy = "09.03.01",
+                            Email = "Dmitry@example.com",
+                            EmailConfirmed = false,
+                            Gender = "Мужской",
+                            Group = "УВП-411",
+                            INN = "7777065424",
+                            LockoutEnabled = false,
+                            Name = "{\"First\":\"\\u0414\\u043C\\u0438\\u0442\\u0440\\u0438\\u0439\",\"Second\":\"\\u0411\\u043E\\u043B\\u0442\\u0430\\u0447\\u0435\\u0432\",\"Middle\":\"\\u041C\\u0438\\u0445\\u0430\\u0439\\u043B\\u043E\\u0432\\u0438\\u0447\"}",
+                            NormalizedEmail = "DMITRY@EXAMPLE.COM",
+                            NormalizedUserName = "DMITRY",
+                            Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEPUvDmGl6jEXN8GSjNF6b2cufJCrWSZwlWCwPE1KanKi5vIO+mvlxV1sV601DACjw==",
+                            PhoneNumberConfirmed = false,
+                            SNILS = "375232753",
+                            SecurityStamp = "",
+                            ServiceNumber = "12345678",
+                            TwoFactorEnabled = false,
+                            UserName = "Dmitry"
+                        },
+                        new
+                        {
+                            Id = "a18be9c0-aa65-4af8-bd17-00bd9344e588",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "f9618521-d874-438f-bdcf-4840a9a61f4c",
+                            DirectionOfStudy = "09.03.01",
+                            Email = "Nastya@example.com",
+                            EmailConfirmed = false,
+                            Gender = "Женский",
+                            Group = "УВП-411",
+                            INN = "7777065424",
+                            LockoutEnabled = false,
+                            Name = "{\"First\":\"\\u0410\\u043D\\u0430\\u0441\\u0442\\u0430\\u0441\\u0438\\u044F\",\"Second\":\"\\u041A\\u043E\\u043D\\u0441\\u0442\\u0430\\u043D\\u0442\\u0438\\u043D\\u043E\\u0432\\u0430\",\"Middle\":\"\\u0412\\u0438\\u0442\\u0430\\u043B\\u044C\\u0435\\u0432\\u043D\\u0430\"}",
+                            NormalizedEmail = "NASTYA@EXAMPLE.COM",
+                            NormalizedUserName = "NASTYA",
+                            Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN6ZWj3UJq5imIj8Q7U1Ks/rIJ/AUWa9rYMo8rqbGYk7LQ8tBB6DYY3NPeYV+Ol4HA==",
+                            PhoneNumberConfirmed = false,
+                            SNILS = "375232753",
+                            SecurityStamp = "",
+                            ServiceNumber = "12345678",
+                            TwoFactorEnabled = false,
+                            UserName = "Nastya"
                         });
                 });
 
@@ -203,9 +286,15 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ad376a8f-9eab-4bb9-9fca-30b01540f445",
+                            Id = "ad376a8f-9eab-4bb9-9fca-30b01540f446",
                             Name = "admin",
-                            NormalizedName = "admin"
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "ad376a8f-9eab-4bb9-9fca-30b01540f447",
+                            Name = "student",
+                            NormalizedName = "STUDENT"
                         });
                 });
 
@@ -298,8 +387,18 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e575",
-                            RoleId = "ad376a8f-9eab-4bb9-9fca-30b01540f445"
+                            UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e586",
+                            RoleId = "ad376a8f-9eab-4bb9-9fca-30b01540f446"
+                        },
+                        new
+                        {
+                            UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e587",
+                            RoleId = "ad376a8f-9eab-4bb9-9fca-30b01540f447"
+                        },
+                        new
+                        {
+                            UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e588",
+                            RoleId = "ad376a8f-9eab-4bb9-9fca-30b01540f447"
                         });
                 });
 
@@ -344,7 +443,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.Student", null)
+                    b.HasOne("Infrastructure.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -353,7 +452,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.Student", null)
+                    b.HasOne("Infrastructure.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -368,7 +467,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Student", null)
+                    b.HasOne("Infrastructure.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -377,7 +476,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Domain.Entities.Student", null)
+                    b.HasOne("Infrastructure.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

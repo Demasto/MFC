@@ -1,6 +1,7 @@
 using System.Dynamic;
 using System.Text.Json;
 using Domain.Entities;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,8 @@ namespace WebApi.Controllers
     [Authorize]
     [Route("api/[controller]/[action]")]
     public class AccountController(
-        UserManager<Student> userManager, 
-        SignInManager<Student> signInManager) : Controller
+        UserManager<AppUser> userManager, 
+        SignInManager<AppUser> signInManager) : Controller
     {
 
         [HttpPost]
@@ -35,9 +36,9 @@ namespace WebApi.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
             
-            dynamic response = user.ToResponse();
+            var response = user.ToStudent().ToDictionary();
             
-            response.Roles = await userManager.GetRolesAsync(user);
+            response["Roles"] = await userManager.GetRolesAsync(user);
 
             return Ok(response);
         }

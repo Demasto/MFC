@@ -20,7 +20,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
         
     }
@@ -35,7 +35,12 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e);
+            if (e.GetType() == typeof(FileNotFoundException))
+            {
+                
+                return NotFound(e.Message);
+            }
+            return BadRequest(e.Message);
         }
         
     }
@@ -56,7 +61,13 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e);
+            Console.WriteLine("ffffffffff");
+            if (e.GetType() == typeof(FileNotFoundException))
+            {
+                
+                return NotFound(e.Message);
+            }
+            return BadRequest(e.Message);
         }
         
     }
@@ -77,7 +88,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
     
@@ -93,7 +104,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
     }
 }

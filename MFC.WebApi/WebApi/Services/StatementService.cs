@@ -1,8 +1,4 @@
-
-using Domain.Entities;
 using Infrastructure.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Minio;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Services;
@@ -52,7 +48,12 @@ public class StatementService(IStatementRepository repository) : IStatementServi
     {
         
         var pathToFile = PathToFile(fileName);
-
+        
+        if (File.Exists(pathToFile))
+        {
+            throw new Exception("File already exist!");
+        }
+        
         try
         {
             await using Stream outStream = File.OpenWrite(pathToFile);
@@ -61,7 +62,7 @@ public class StatementService(IStatementRepository repository) : IStatementServi
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            throw new Exception("Read file error!");
         }
         
         // TODO синхронизация должна проводиться при старте программы
@@ -111,7 +112,7 @@ public class StatementService(IStatementRepository repository) : IStatementServi
         var pathToFile = PathToFile(fileName);
         
         if (!File.Exists(pathToFile))
-            throw new Exception($"File: {pathToFile} - doesnt exist!");
+            throw new FileNotFoundException($"File: {fileName} - doesnt exist!");
         
         File.Delete(pathToFile);
         
@@ -123,7 +124,7 @@ public class StatementService(IStatementRepository repository) : IStatementServi
     public FileStream ReadFileStream(string fileName)
     {
         var statement = repository.ReadFile(fileName);
-        if (statement == null) throw new NullReferenceException();
+        if (statement == null) throw new FileNotFoundException("Такого файла не существует!");
 
         try
         {

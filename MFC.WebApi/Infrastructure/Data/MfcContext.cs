@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Infrastructure.Data.Configurations;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
-public class MfcContext : IdentityDbContext<Student>
+public class MfcContext : IdentityDbContext<AppUser>
 {
     public MfcContext()
     {
@@ -31,9 +30,14 @@ public class MfcContext : IdentityDbContext<Student>
         builder.Seed();
     }
 
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     base.OnConfiguring(optionsBuilder);
-    //     optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECT"));
-    // }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+
+        var connectionsStr = Environment.GetEnvironmentVariable("DATABASE_CONNECT") ??
+                             "Server=localhost;Port=5432;Database=MFC_DB;User Id=postgres;Password=postgres";
+
+        
+        optionsBuilder.UseNpgsql(connectionsStr);
+    }
 }
