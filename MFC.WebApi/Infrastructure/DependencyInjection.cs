@@ -1,8 +1,12 @@
-using Microsoft.Extensions.DependencyInjection;
+using Domain.Entities;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
+
 using Microsoft.EntityFrameworkCore;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure;
 
@@ -17,6 +21,9 @@ public static class DependencyInjection
         services.AddTransient<IStatementRepository, StatementRepository>();
         services.AddTransient<ISchemaRepository, SchemaRepository>();
         
+        
         return services;
     }
+    
+    
 }

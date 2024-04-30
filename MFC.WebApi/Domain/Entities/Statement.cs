@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Domain.Entities;
 
 public class Statement
 {

@@ -18,11 +18,15 @@ public class StatementService(IStatementRepository repository) : IStatementServi
 
     public static void CheckSaveDir()
     {
-        if (!Directory.Exists(SaveDir))
+        if (Directory.Exists(SaveDir))
         {
-            Directory.CreateDirectory(SaveDir);
-            // TODO удалить все пред файлы в базе?/
-        }
+            //TODO Если в директории есть файлы, но их нет в БД, то добавить ссылки
+            return;
+        };
+        
+        Directory.CreateDirectory(SaveDir);
+        // TODO удалить все пред файлы в базе?/
+        
     }
     
     
