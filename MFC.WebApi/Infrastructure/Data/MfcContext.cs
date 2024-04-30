@@ -1,28 +1,39 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Infrastructure.Data.Configurations;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
 
-public class MfcContext : DbContext
+public class MfcContext : IdentityDbContext<Student>
 {
-
-    public MfcContext(DbContextOptions<MfcContext> options) : base(options)
+    public MfcContext()
     {
     }
 
-    
-    public virtual DbSet<FileSchema> FileSchemas { get; set; }
+    public MfcContext(DbContextOptions<MfcContext> options)
+        : base(options)
+    {
+    }
+
     public virtual DbSet<Statement> Statements { get; set; }
-    
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //     => optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=MFC;User Id=postgres;Password=postgres");
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public virtual DbSet<StatementSchema> StatementSchemas { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.ApplyConfiguration(new FileSchemaConfiguration());
-        modelBuilder.ApplyConfiguration(new StatementConfiguration());
+        base.OnModelCreating(builder);
+        
+        builder.ApplyConfiguration(new StatementSchemaConfiguration());
+        builder.ApplyConfiguration(new StatementConfiguration());
+        
+        builder.Seed();
     }
-  
+
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     base.OnConfiguring(optionsBuilder);
+    //     optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECT"));
+    // }
 }

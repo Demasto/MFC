@@ -1,12 +1,14 @@
-﻿namespace Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Domain.Entities;
 
 public class Statement
 {
-    public string FileName { get; set; } = null!;
+    public int Id { get; set; }
 
-    public string FilePath { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
-    public int FileId { get; set; }
+    public string? Path { get; set; } = null!;
 
-    public virtual ICollection<FileSchema> FileSchemas { get; set; } = new List<FileSchema>();
+    public virtual ICollection<StatementSchema> StatementSchemas { get; set; } = new List<StatementSchema>();
 }

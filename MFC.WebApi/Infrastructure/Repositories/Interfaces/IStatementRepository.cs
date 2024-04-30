@@ -4,10 +4,15 @@ namespace Infrastructure.Repositories.Interfaces;
 
 public interface IStatementRepository
 {
-    Task<List<Statement>> GetAllStatementsAsync();
+    public Task<List<Statement>> ReadAllFilesAsync();
+    public bool FileIsExist(string fileName);
     
-    Task<Statement> GetStatementByFileNameAsync(string fileName);
+    public void CreateFile(string fileName, string pathToFile);
+    public Statement? ReadFile(string fileName);
+    public void UpdateFile(string fileName, string pathToFile);
 
-    void SaveFile(string fileName, string pathToFile);
+    public void DeleteFile(int id);
+    
+    public void DeleteFile(string name);
 
 }

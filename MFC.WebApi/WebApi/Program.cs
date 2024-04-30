@@ -1,11 +1,14 @@
 using Infrastructure;
 using WebApi;
-using WebApi.Middleware;
+
+const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddMyCors(myAllowSpecificOrigins);
 builder.Services.AddInfrastructure();
 builder.Services.AddWebServices();
+builder.Services.AddIdentity();
 
 builder.Services.AddControllers();
 
@@ -16,19 +19,17 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
+// TODO загрузить все файлы из папки statements в бд, если их там нет.
 
 // if (app.Environment.IsDevelopment())
 // {
-//     app.UseSwagger();
-//     app.UseSwaggerUI();
+//    
 // }
-app.UseSwagger();
-app.UseSwaggerUI();
 
-app.UseMiddleware<RedirectToSwaggerMiddleware>();
-
+app.AddSwagger();
 app.UseHttpsRedirection();
+
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseAuthorization();
 

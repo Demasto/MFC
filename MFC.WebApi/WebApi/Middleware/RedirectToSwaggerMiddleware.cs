@@ -1,14 +1,8 @@
 namespace WebApi.Middleware;
 
-public class RedirectToSwaggerMiddleware
+public class RedirectToSwaggerMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public RedirectToSwaggerMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
+    
     public async Task Invoke(HttpContext context)
     {
         if(context.Request.Path == "/")
@@ -17,7 +11,7 @@ public class RedirectToSwaggerMiddleware
         }
         else
         {
-            await _next(context);
+            await next(context);
         }
     }
 }

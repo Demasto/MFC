@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StatementsController(IFileService service) : ControllerBase
+public class StatementsController(IStatementService service) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetFilesList()
@@ -20,7 +20,22 @@ public class StatementsController(IFileService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e);
+        }
+        
+    }
+    
+    [HttpGet("{fileName}")]
+    public IActionResult GetFile(string fileName)
+    {
+        try
+        {
+            var stream = service.ReadFileStream(fileName);
+            return File(stream, "application/octet-stream", fileName);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
         }
         
     }
@@ -35,14 +50,13 @@ public class StatementsController(IFileService service) : ControllerBase
         
         try
         {
-            await service.AddNewFile(file.FileName, file.OpenReadStream());
+            await service.CreateFile(file.FileName, file.OpenReadStream());
             
             return Ok($"File {file.FileName} has been uploaded successfully.");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return BadRequest(e.Message);
+            return BadRequest(e);
         }
         
     }
@@ -63,10 +77,23 @@ public class StatementsController(IFileService service) : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            return BadRequest(e.Message);
+            return BadRequest(e);
         }
-
+    }
+    
+    [HttpDelete]
+    public IActionResult DeleteFile(string fileName)
+    {
         
+        try
+        {
+            service.DeleteFile(fileName);
+            
+            return Ok($"File {fileName} has been deleted successfully.");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 }

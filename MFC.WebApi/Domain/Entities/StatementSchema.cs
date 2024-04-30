@@ -1,7 +1,11 @@
-﻿namespace Domain.Entities;
+﻿
 
-public  class FileSchema
+namespace Domain.Entities;
+
+public class StatementSchema
 {
+    public int Id { get; set; }
+
     public int FileId { get; set; }
 
     public decimal X { get; set; }
@@ -11,8 +15,6 @@ public  class FileSchema
     public int? FontSize { get; set; }
 
     public string? DataId { get; set; }
-
-    public int FileSchemaId { get; set; }
 
     public virtual Statement File { get; set; } = null!;
 }
