@@ -27,8 +27,9 @@ public class StudentDTO
     public string INN { get; set; } = "";
     [Required]
     public string SNILS { get; set; } = "";
-    public NameDTO Name { get; set; }
-    public PassportDTO Passport { get; set; }
+
+    public NameDTO Name { get; set; } = new NameDTO();
+    public PassportDTO Passport { get; set; } = new PassportDTO();
 }
 
 public class NameDTO()
