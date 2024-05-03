@@ -1,4 +1,8 @@
+using System.Text;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using WebApi;
 
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";

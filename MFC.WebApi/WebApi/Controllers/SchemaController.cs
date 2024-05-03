@@ -8,11 +8,11 @@ namespace WebApi.Controllers;
 public class SchemaController(IStatementService service) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetFilesList()
+    public IActionResult GetFilesList()
     {
         try
         {
-            var filesList = await service.GetFilesList();
+            var filesList = service.GetFilesList();
             return Ok(filesList);
         }
         catch (Exception e)

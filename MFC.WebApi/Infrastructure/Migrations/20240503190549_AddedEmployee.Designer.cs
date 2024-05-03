@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MfcContext))]
-    partial class MfcContextModelSnapshot : ModelSnapshot
+    [Migration("20240503190549_AddedEmployee")]
+    partial class AddedEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -372,13 +375,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = "b18be9c0-aa65-4af8-bd17-10bd9344e588",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ddc8a3ac-b15f-49aa-b8c7-14fa951dbf60",
+                            ConcurrencyStamp = "f0628732-7a74-4a33-8015-00eeb65365b8",
                             Email = "employee@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
                             NormalizedUserName = "EMPLOYEE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBbQPib7oMRuuYBoOtOYhPeE2IfFIpqWzaZRxDEsr3sw6FIQMKedai8ze62OBTXXSg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE2z7As9egF9ryL1y5pLEMNLdq6WQIHgRWjJ+eLIPwUYZdJSL1W0G9jtkHrg8nt7tA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -440,13 +443,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = "b18be9c0-aa65-4af8-bd17-10bd9344e586",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d6f6ee38-9a1d-43b6-a340-04eb5cfcec25",
+                            ConcurrencyStamp = "ccc3b192-d9b9-4ee6-a413-37f7853f4907",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAED5Bkd5FTSzRAimkM+yLStyIcVmmFEF50FM1+0FCa5pnsbIFUO3RRb3n/VOt7HP7Zw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFXJrA1ILYGPQ75Z4a6HOiQFamDP3FJxqRg3xhx6l2G0OWIEQLYicuOFvZly4054aA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -464,13 +467,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = "b18be9c0-aa65-4af8-bd17-10bd9344e587",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7ebf1fa-3375-4488-a49d-407872310c69",
+                            ConcurrencyStamp = "fc7b15e3-e759-4566-89d6-1178bdbd56a4",
                             Email = "Dmitry@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "DMITRY@EXAMPLE.COM",
                             NormalizedUserName = "DMITRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAENkkg+DIPgDxdMO9/cjYLqPwgW6mUc0T8KIuw0Rl6JXmeQ7wmvpmeFiIYBU+xkZGZA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPtHXEiTsfWcYxfBdAQvqXGqNaA+Qnk3rJredrJO0uqc/vkhaWInJXWjl1SnSBdjCA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -488,13 +491,13 @@ namespace Infrastructure.Migrations
                         {
                             Id = "b18be9c0-aa65-4af8-1d17-10bd9344e588",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4d37f8e-ef0f-45c6-b6ac-b7a9711cff0b",
+                            ConcurrencyStamp = "a0a74bd7-3106-4938-b96a-e1e3ee9be9eb",
                             Email = "Nastya@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NASTYA@EXAMPLE.COM",
                             NormalizedUserName = "NASTYA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAUHaaK1+TXGKiJpGBAmm6jLw5Xjlp1DPWAQRUar6w2ch9A3Vl2NqQ62zDZjNWT2+g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFujaCipO1mRgoU2+5bhY/v+aoW/Nm7BpxTzUWYRG7SDwuqwMWVlCymCHNm9x7PU6w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

@@ -1,6 +1,6 @@
-using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json;
 using Domain.Entities;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,21 +20,8 @@ public static class SeedData
             Middle = "Adminovich",
             Second = "Adminov"
         };
-        Console.WriteLine();
-        
-        var passport = new Passport()
-        {
-            Series = "4517",
-            Number = "543254",
-            UnitCode = "432-632",
-            PlaceOfBrith = "Г. Москва",
-            DateOfBrith = new DateOnly(2002, 02, 14),
-            DateOfIssue = new DateOnly(2024, 12, 03),
-            Citizenship = "Российская Федерация"
-        };
-            
 
-        builder.CreateUser("admin",  name,  passport, "Мужской" , UsersId.Admin, RolesId.Admin);
+        builder.HasStudent("admin",  name, "Мужской" , UsersId.Admin, RolesId.Admin);
         
         var dmitry = new Name()
         {
@@ -44,7 +31,7 @@ public static class SeedData
         };
 
         
-        builder.CreateUser("Dmitry",  dmitry,  passport, "Мужской",UsersId.Dmitry, RolesId.Student);
+        builder.HasStudent("Dmitry",  dmitry, "Мужской",UsersId.Dmitry, RolesId.Student);
         
         var nastya = new Name()
         {
@@ -53,7 +40,10 @@ public static class SeedData
             Second = "Константинова"
         };
         
-        builder.CreateUser("Nastya",  nastya,  passport, "Женский", UsersId.Shmebyulok, RolesId.Student);
+        builder.HasStudent("Nastya",  nastya, "Женский", UsersId.Shmebyulok, RolesId.Student);
+        
+        
+        builder.HasEmployee();
         
         return builder;
     }
@@ -74,16 +64,32 @@ public static class SeedData
             NormalizedName = Role.Student.ToUpper()
         });
         
+        builder.Entity<IdentityRole>().HasData(new IdentityRole
+        {
+            Id = RolesId.Employee,
+            Name = Role.Employee,
+            NormalizedName = Role.Employee.ToUpper()
+        });
+        
         return builder;
     }
 
-    private static ModelBuilder CreateUser(this ModelBuilder builder, string userName, Name name, Passport passport, string sex, string userId, string roleId)
+    private static ModelBuilder HasStudent(this ModelBuilder builder, string userName, Name name, string sex, string userId, string roleId)
     {
-        var hasher = new PasswordHasher<AppUser>();
+        var hasher = new PasswordHasher<StudentUser>();
         var email = $"{userName}@example.com";
+        var passport = new Passport()
+        {
+            Series = "4517",
+            Number = "543254",
+            UnitCode = "432-632",
+            PlaceOfBrith = "Г. Москва",
+            DateOfBrith = new DateOnly(2002, 02, 14),
+            DateOfIssue = new DateOnly(2024, 12, 03),
+            Citizenship = "Российская Федерация"
+        };
         
-        
-        var student = new AppUser()
+        var student = new StudentUser()
         {
             Id = userId,
             UserName = userName,
@@ -103,7 +109,7 @@ public static class SeedData
             SNILS = "375232753"
         };
         
-        builder.Entity<AppUser>().HasData(student);
+        builder.Entity<StudentUser>().HasData(student);
         
         builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
         {
@@ -113,19 +119,75 @@ public static class SeedData
         
         return builder;
     }
+    
+    private static ModelBuilder HasEmployee(this ModelBuilder builder)
+    {
+        const string userName = "employee";
+        const string email = $"{userName}@example.com";
+        
+        var hasher = new PasswordHasher<EmployeeUser>();
+
+        var passport = new Passport()
+        {
+            Series = "4517",
+            Number = "543254",
+            UnitCode = "432-632",
+            PlaceOfBrith = "Г. Москва",
+            DateOfBrith = new DateOnly(2002, 02, 14),
+            DateOfIssue = new DateOnly(2024, 12, 03),
+            Citizenship = "Российская Федерация"
+        };
+        
+        var worker = new Name()
+        {
+            First = "Работник",
+            Middle = "Институтович",
+            Second = "МИИТОВ"
+        };
+        
+        var employee = new EmployeeUser()
+        {
+            Id = UsersId.Employee,
+            UserName = userName,
+            NormalizedUserName = userName.ToUpper(),
+            Email = email,
+            NormalizedEmail = email.ToUpper(),
+            EmailConfirmed = false,
+            PasswordHash = hasher.HashPassword(null, $"{userName}123"),
+            SecurityStamp = string.Empty,
+            Name = JsonSerializer.Serialize(worker),
+            Passport = JsonSerializer.Serialize(passport),
+            Post = "Доцент",
+            Gender = "Мужской",
+            INN = "7777065424",
+            SNILS = "375232753"
+        };
+        
+        builder.Entity<EmployeeUser>().HasData(employee);
+        
+        builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+        {
+            RoleId = RolesId.Employee,
+            UserId = UsersId.Employee
+        });
+        
+        return builder;
+    }
 
 }
 
 public static class UsersId
 {
-    public const string Admin = "a18be9c0-aa65-4af8-bd17-00bd9344e586";
-    public const string Dmitry = "a18be9c0-aa65-4af8-bd17-00bd9344e587";
-    public const string Shmebyulok = "a18be9c0-aa65-4af8-bd17-00bd9344e588";
+    public const string Admin = "b18be9c0-aa65-4af8-bd17-10bd9344e586";
+    public const string Dmitry = "b18be9c0-aa65-4af8-bd17-10bd9344e587";
+    public const string Shmebyulok = "b18be9c0-aa65-4af8-1d17-10bd9344e588";
+    public const string Employee = "b18be9c0-aa65-4af8-bd17-10bd9344e588";
 
 }
 
 public static class RolesId
 {
-    public const string Admin = "ad376a8f-9eab-4bb9-9fca-30b01540f446";
-    public const string Student = "ad376a8f-9eab-4bb9-9fca-30b01540f447";
+    public const string Admin = "bd376a8f-9eab-4bb9-9fca-40b01540f446";
+    public const string Student = "bd376a8f-9eab-4bb9-9fca-40b01540f447";
+    public const string Employee = "bd376a8f-9eab-4bb9-9fca-40b01540f448";
 }

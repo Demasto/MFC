@@ -47,7 +47,7 @@ public class PassportDTO
     public string Series { get; set; } = "";
     public string Number { get; set; } = "";
     public string UnitCode { get; set; } = "";
-    public string PlaceOfBrith { get; set; }
+    public string PlaceOfBrith { get; set; } = "";
     public DateOnly DateOfBrith { get; set; }
     public DateOnly DateOfIssue { get; set; }
     public string Citizenship { get; set; } = "";

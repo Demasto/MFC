@@ -271,9 +271,10 @@ COPY public."AspNetUserLogins" ("LoginProvider", "ProviderKey", "ProviderDisplay
 --
 
 COPY public."AspNetUserRoles" ("UserId", "RoleId") FROM stdin;
-a18be9c0-aa65-4af8-bd17-00bd9344e576	ad376a8f-9eab-4bb9-9fca-30b01540f446
-a18be9c0-aa65-4af8-bd17-00bd9344e577	ad376a8f-9eab-4bb9-9fca-30b01540f447
-a18be9c0-aa65-4af8-bd17-00bd9344e578	ad376a8f-9eab-4bb9-9fca-30b01540f447
+a18be9c0-aa65-4af8-bd17-00bd9344e586	ad376a8f-9eab-4bb9-9fca-30b01540f446
+a18be9c0-aa65-4af8-bd17-00bd9344e587	ad376a8f-9eab-4bb9-9fca-30b01540f447
+a18be9c0-aa65-4af8-bd17-00bd9344e588	ad376a8f-9eab-4bb9-9fca-30b01540f447
+e357f292-56ae-4879-a095-23da4c9a8b16	ad376a8f-9eab-4bb9-9fca-30b01540f447
 \.
 
 
@@ -290,9 +291,10 @@ COPY public."AspNetUserTokens" ("UserId", "LoginProvider", "Name", "Value") FROM
 --
 
 COPY public."AspNetUsers" ("Id", "Group", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount", "DirectionOfStudy", "Gender", "INN", "Name", "Passport", "SNILS", "ServiceNumber") FROM stdin;
-a18be9c0-aa65-4af8-bd17-00bd9344e576	УВП-411	admin	ADMIN	admin@example.com	ADMIN@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEGR+Uf1AgbeP5WLSzlLwdYSuWDqnC5w7Q2L+H6Y78ly6nBh1KsRH8MBTks+nbaithQ==		b19f0ebd-20f4-4983-8574-201c01f61ec1	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"Admin","Second":"Adminov","Middle":"Adminovich"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"04.09.2002","DateOfIssue":"12.03.2024","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
-a18be9c0-aa65-4af8-bd17-00bd9344e577	УВП-411	Dmitry	DMITRY	Dmitry@example.com	DMITRY@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEAWgVAey5dWcgugAkkC7FGyZdfOVxu5v5p/4jMS+GN5f0cJqxt1MwgSX+IRifgYKRA==		ea45b1e6-2ac4-4de8-883b-068fbf11de37	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"\\u0414\\u043C\\u0438\\u0442\\u0440\\u0438\\u0439","Second":"\\u0411\\u043E\\u043B\\u0442\\u0430\\u0447\\u0435\\u0432","Middle":"\\u041C\\u0438\\u0445\\u0430\\u0439\\u043B\\u043E\\u0432\\u0438\\u0447"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"04.09.2002","DateOfIssue":"12.03.2024","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
-a18be9c0-aa65-4af8-bd17-00bd9344e578	УВП-411	Nastya	NASTYA	Nastya@example.com	NASTYA@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEBQwofub9B6oa+cW0XDfDBZ3h+sxX6/k6EvjBXnNNvQhpMOcOGAksEHz91r1CIPvtQ==		c691ee53-bafe-42d3-8b31-19dbc075cbec	\N	f	f	\N	f	0	09.03.01	Женский	7777065424	{"First":"\\u0410\\u043D\\u0430\\u0441\\u0442\\u0430\\u0441\\u0438\\u044F","Second":"\\u041A\\u043E\\u043D\\u0441\\u0442\\u0430\\u043D\\u0442\\u0438\\u043D\\u043E\\u0432\\u0430","Middle":"\\u0412\\u0438\\u0442\\u0430\\u043B\\u044C\\u0435\\u0432\\u043D\\u0430"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"04.09.2002","DateOfIssue":"12.03.2024","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
+a18be9c0-aa65-4af8-bd17-00bd9344e586	УВП-411	admin	ADMIN	admin@example.com	ADMIN@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEC9WWcS8hy05+SZqbEUjGplx/6saonKKn+OuRzzferx+tqG2agwPx5U5zdkS5RQNFQ==		3d337680-0626-4fe6-9e33-3b8164ddb41d	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"Admin","Second":"Adminov","Middle":"Adminovich"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
+a18be9c0-aa65-4af8-bd17-00bd9344e587	УВП-411	Dmitry	DMITRY	Dmitry@example.com	DMITRY@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEEPUvDmGl6jEXN8GSjNF6b2cufJCrWSZwlWCwPE1KanKi5vIO+mvlxV1sV601DACjw==		d929a1f7-2a5f-4125-b414-1de091e39705	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"\\u0414\\u043C\\u0438\\u0442\\u0440\\u0438\\u0439","Second":"\\u0411\\u043E\\u043B\\u0442\\u0430\\u0447\\u0435\\u0432","Middle":"\\u041C\\u0438\\u0445\\u0430\\u0439\\u043B\\u043E\\u0432\\u0438\\u0447"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
+a18be9c0-aa65-4af8-bd17-00bd9344e588	УВП-411	Nastya	NASTYA	Nastya@example.com	NASTYA@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEN6ZWj3UJq5imIj8Q7U1Ks/rIJ/AUWa9rYMo8rqbGYk7LQ8tBB6DYY3NPeYV+Ol4HA==		f9618521-d874-438f-bdcf-4840a9a61f4c	\N	f	f	\N	f	0	09.03.01	Женский	7777065424	{"First":"\\u0410\\u043D\\u0430\\u0441\\u0442\\u0430\\u0441\\u0438\\u044F","Second":"\\u041A\\u043E\\u043D\\u0441\\u0442\\u0430\\u043D\\u0442\\u0438\\u043D\\u043E\\u0432\\u0430","Middle":"\\u0412\\u0438\\u0442\\u0430\\u043B\\u044C\\u0435\\u0432\\u043D\\u0430"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
+e357f292-56ae-4879-a095-23da4c9a8b16	string	string	STRING	user@example.com	USER@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEFRmmFDXFO0zP0yoTMFGRqetN4//EthMaXzBBjot3vSSC1UHLTIWMTa+stKwh/Tisg==	OTVTJNMZC7J23USNPP5CTNJZS4WZQOLQ	5d836cc6-e749-4de6-9966-0dd96aecea50	string	f	f	\N	t	0	string	string	string	{"First":"string","Second":"string","Middle":"string"}	{"Series":"string","Number":"string","UnitCode":"string","PlaceOfBrith":"string","DateOfBrith":"2024-05-01","DateOfIssue":"2024-05-01","Citizenship":"string"}	string	string
 \.
 
 
@@ -308,6 +310,9 @@ COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin
 20240430095855_AddedStudents	8.0.2
 20240430125840_AddedMoreInfoAboutStudents	8.0.2
 20240430131620_FixedNames	8.0.2
+20240430222233_ChangedDateProps	8.0.2
+20240430224528_ChangedDate	8.0.2
+20240430224728_ChangedDate2	8.0.2
 \.
 
 
@@ -324,6 +329,10 @@ COPY public.statement_schemas (id, file_id, x, y, font_size, data_id) FROM stdin
 --
 
 COPY public.statements (id, name, path) FROM stdin;
+2	Организация.mp3	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\Организация.mp3
+3	Организация.mp3	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\Организация.mp3
+4	Организация.mp3	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\Организация.mp3
+5	1 (1).jpg	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\1 (1).jpg
 \.
 
 
@@ -352,7 +361,7 @@ SELECT pg_catalog.setval('public.statement_schemas_id_seq', 1, false);
 -- Name: statements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.statements_id_seq', 1, false);
+SELECT pg_catalog.setval('public.statements_id_seq', 5, true);
 
 
 --

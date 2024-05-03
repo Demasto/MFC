@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 public class StatementsController(IStatementService service) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetFilesList()
+    public IActionResult GetFilesList()
     {
         try
         {
-           var filesList = await service.GetFilesList();
+           var filesList = service.GetFilesList();
            return Ok(filesList);
         }
         catch (Exception e)
@@ -61,10 +61,8 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            Console.WriteLine("ffffffffff");
             if (e.GetType() == typeof(FileNotFoundException))
             {
-                
                 return NotFound(e.Message);
             }
             return BadRequest(e.Message);
@@ -104,6 +102,10 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
+            if (e.GetType() == typeof(FileNotFoundException))
+            {
+                return NotFound(e.Message);
+            }
             return BadRequest(e.Message);
         }
     }

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MfcContext))]
-    partial class MfcContextModelSnapshot : ModelSnapshot
+    [Migration("20240503185422_AddedRole2")]
+    partial class AddedRole2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,19 +116,19 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bd376a8f-9eab-4bb9-9fca-40b01540f446",
+                            Id = "ad376a8f-9eab-4bb9-9fca-30b01540f446",
                             Name = "admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "bd376a8f-9eab-4bb9-9fca-40b01540f447",
+                            Id = "ad376a8f-9eab-4bb9-9fca-30b01540f447",
                             Name = "student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "bd376a8f-9eab-4bb9-9fca-40b01540f448",
+                            Id = "cd340d27-0de3-4552-a67e-afca68419902",
                             Name = "employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -293,23 +296,18 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "b18be9c0-aa65-4af8-bd17-10bd9344e586",
-                            RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f446"
+                            UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e586",
+                            RoleId = "ad376a8f-9eab-4bb9-9fca-30b01540f446"
                         },
                         new
                         {
-                            UserId = "b18be9c0-aa65-4af8-bd17-10bd9344e587",
-                            RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f447"
+                            UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e587",
+                            RoleId = "ad376a8f-9eab-4bb9-9fca-30b01540f447"
                         },
                         new
                         {
-                            UserId = "b18be9c0-aa65-4af8-1d17-10bd9344e588",
-                            RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f447"
-                        },
-                        new
-                        {
-                            UserId = "b18be9c0-aa65-4af8-bd17-10bd9344e588",
-                            RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f448"
+                            UserId = "a18be9c0-aa65-4af8-bd17-00bd9344e588",
+                            RoleId = "ad376a8f-9eab-4bb9-9fca-30b01540f447"
                         });
                 });
 
@@ -332,66 +330,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Infrastructure.Identity.EmployeeUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("text");
-
-                    b.Property<string>("INN")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Passport")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Post")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SNILS")
-                        .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
-                        .HasColumnType("text");
-
-                    b.HasDiscriminator().HasValue("EmployeeUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "b18be9c0-aa65-4af8-bd17-10bd9344e588",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "ddc8a3ac-b15f-49aa-b8c7-14fa951dbf60",
-                            Email = "employee@example.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
-                            NormalizedUserName = "EMPLOYEE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBbQPib7oMRuuYBoOtOYhPeE2IfFIpqWzaZRxDEsr3sw6FIQMKedai8ze62OBTXXSg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "employee",
-                            Gender = "Мужской",
-                            INN = "7777065424",
-                            Name = "{\"First\":\"\\u0420\\u0430\\u0431\\u043E\\u0442\\u043D\\u0438\\u043A\",\"Second\":\"\\u041C\\u0418\\u0418\\u0422\\u041E\\u0412\",\"Middle\":\"\\u0418\\u043D\\u0441\\u0442\\u0438\\u0442\\u0443\\u0442\\u043E\\u0432\\u0438\\u0447\"}",
-                            Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            Post = "Доцент",
-                            SNILS = "375232753"
-                        });
-                });
-
             modelBuilder.Entity("Infrastructure.Identity.StudentUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -402,7 +340,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.Property<string>("Group")
@@ -411,22 +348,18 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("INN")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.Property<string>("Passport")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.Property<string>("SNILS")
                         .IsRequired()
-                        .ValueGeneratedOnUpdateSometimes()
                         .HasColumnType("text");
 
                     b.Property<string>("ServiceNumber")
@@ -438,15 +371,15 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b18be9c0-aa65-4af8-bd17-10bd9344e586",
+                            Id = "a18be9c0-aa65-4af8-bd17-00bd9344e586",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d6f6ee38-9a1d-43b6-a340-04eb5cfcec25",
+                            ConcurrencyStamp = "83693bc8-a553-4917-9ac5-582423ac3010",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAED5Bkd5FTSzRAimkM+yLStyIcVmmFEF50FM1+0FCa5pnsbIFUO3RRb3n/VOt7HP7Zw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIX2gKordKRHOu2XlMfghAf5+hB1o1kdOx//o7Gjyj/VHsxuUarArxsMqgY31k8okA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -462,15 +395,15 @@ namespace Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "b18be9c0-aa65-4af8-bd17-10bd9344e587",
+                            Id = "a18be9c0-aa65-4af8-bd17-00bd9344e587",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e7ebf1fa-3375-4488-a49d-407872310c69",
+                            ConcurrencyStamp = "6bb20565-07ae-4f88-9067-6700d635a0f9",
                             Email = "Dmitry@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "DMITRY@EXAMPLE.COM",
                             NormalizedUserName = "DMITRY",
-                            PasswordHash = "AQAAAAIAAYagAAAAENkkg+DIPgDxdMO9/cjYLqPwgW6mUc0T8KIuw0Rl6JXmeQ7wmvpmeFiIYBU+xkZGZA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIrmnWn0OPgLtMZNKAgYmo+H5W6oStkAGNJsree+Zo54iCSSJkT6N8PIy4h4NVJcHw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -486,15 +419,15 @@ namespace Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = "b18be9c0-aa65-4af8-1d17-10bd9344e588",
+                            Id = "a18be9c0-aa65-4af8-bd17-00bd9344e588",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4d37f8e-ef0f-45c6-b6ac-b7a9711cff0b",
+                            ConcurrencyStamp = "3c1a5bad-6a29-4ffe-be54-e877f780104c",
                             Email = "Nastya@example.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NASTYA@EXAMPLE.COM",
                             NormalizedUserName = "NASTYA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAUHaaK1+TXGKiJpGBAmm6jLw5Xjlp1DPWAQRUar6w2ch9A3Vl2NqQ62zDZjNWT2+g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOLwJmfprShe21GZZn2s5t25WzF7VRxNBAzEFHhlh+VLE5j6tveXyGp0mrWJRWyKwA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,

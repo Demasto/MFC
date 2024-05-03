@@ -1,105 +1,76 @@
-using Infrastructure.Repositories.Interfaces;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Services;
 
-public class StatementService(IStatementRepository repository) : IStatementService
+public static class SaveDirectory
 {
-    private static readonly string SaveDir = Path.Combine(Directory.GetCurrentDirectory(), "statements");
-
-    private static string PathToFile(string fileName)
+    private static readonly string Path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "statements");
+    
+    public static void CheckDir()
     {
-        return Path.Combine(SaveDir, fileName);
-    }
-
-    public static void CheckSaveDir()
-    {
-        if (Directory.Exists(SaveDir))
-        {
-            //TODO Если в директории есть файлы, но их нет в БД, то добавить ссылки
-            return;
-        };
-        
-        Directory.CreateDirectory(SaveDir);
-        // TODO удалить все пред файлы в базе?/
-        
+        if (Directory.Exists(Path)) return;
+        Directory.CreateDirectory(Path);
     }
     
+    public static string PathToFile(string fileName)
+    {
+        return System.IO.Path.Combine(Path, fileName);
+    }
     
-    public async Task<List<string>> GetFilesList()
-    { 
-        
-        if (!Directory.Exists(SaveDir))
-        {
-            throw new Exception("На данном сервере нет файлов");
-        }
-  
-        
-        var statements = await repository.ReadAllFilesAsync();
-        
-        
-        return statements
-            .Where(statement => File.Exists(statement.Path))
-            .Select(statement => statement.Name)
+    public static List<string> Files()
+    {
+        return Directory
+            .GetFiles(Path)
+            .Select(ExtractFileName)
             .ToList();
+    }
+    
+
+    public static void CanReadOrThrow(string fileName)
+    {
+        var path = PathToFile(fileName);
+        
+        if (!File.Exists(path))
+            throw new FileNotFoundException("Такого файла не существует!");
+    }
+    public static void CanWriteOrThrow(string fileName)
+    {
+        var path = PathToFile(fileName);
+        
+        if (File.Exists(path)) 
+            throw new Exception($"Файл {fileName} уже существует!");
+    }
+    
+    private static string ExtractFileName(string path)
+    {
+        return path.Split('\\').Last();
+    }
+}
+public class StatementService : IStatementService
+{
+    public StatementService()
+    {
+        SaveDirectory.CheckDir();
+    }
+    
+    public List<string> GetFilesList()
+    {
+        return SaveDirectory.Files();
     }
     
     public async Task CreateFile(string fileName, Stream stream)
     {
-        
-        var pathToFile = PathToFile(fileName);
-        
-        if (File.Exists(pathToFile))
-        {
-            throw new Exception("File already exist!");
-        }
-        
-        try
-        {
-            await using Stream outStream = File.OpenWrite(pathToFile);
-            await stream.CopyToAsync(outStream);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("Read file error!");
-        }
-        
-        // TODO синхронизация должна проводиться при старте программы
-        // var existInDb = repository.FileIsExist(fileName);
-        //
-        // //Если файл существует, надо проверить, есть ли он в базе и записать, если нет
-        // if (File.Exists(pathToFile))
-        // {
-        //     if (existInDb)
-        //     {
-        //         // Файл уже существует
-        //         throw new Exception($"File: {pathToFile} - already exist!");
-        //     } 
-        //     
-        //     // Файл существует только локально. Можно перезаписать
-        //     
-        // }
-        // else
-        // {
-        //     if (existInDb)
-        //     {
-        //         repository.UpdateFile(fileName, pathToFile);
-        //     }
-        // }
-        //     
-        
-        repository.CreateFile(fileName, pathToFile);
+        SaveDirectory.CanWriteOrThrow(fileName);
+        await using var outStream = File.OpenWrite(SaveDirectory.PathToFile(fileName));
+        await stream.CopyToAsync(outStream);
     }
     
     public async Task UpdateFile(string fileName, Stream stream)
     {
-        var pathToFile = PathToFile(fileName);
+        var pathToFile = SaveDirectory.PathToFile(fileName);
         
-        if (!File.Exists(pathToFile))
-            throw new Exception($"File: {pathToFile} - doesnt exist!");
+        SaveDirectory.CanReadOrThrow(fileName);
         
-        // TODO Как синхронизировать базу и локальное хранилище......
         File.Delete(pathToFile);
         
         await using Stream outStream = File.OpenWrite(pathToFile);
@@ -109,35 +80,17 @@ public class StatementService(IStatementRepository repository) : IStatementServi
     public void DeleteFile(string fileName)
     {
         
-        var pathToFile = PathToFile(fileName);
+        SaveDirectory.CanReadOrThrow(fileName);
         
-        if (!File.Exists(pathToFile))
-            throw new FileNotFoundException($"File: {fileName} - doesnt exist!");
-        
-        File.Delete(pathToFile);
-        
-        repository.DeleteFile(fileName);
+        File.Delete(SaveDirectory.PathToFile(fileName));
         
     }
     
     
     public FileStream ReadFileStream(string fileName)
     {
-        var statement = repository.ReadFile(fileName);
-        if (statement == null) throw new FileNotFoundException("Такого файла не существует!");
-
-        try
-        {
-            var stream = File.OpenRead(PathToFile(statement.Name));
-
-            return stream;
-
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
+        SaveDirectory.CanReadOrThrow(fileName);
+        
+        return File.OpenRead(SaveDirectory.PathToFile(fileName));
     }
 }

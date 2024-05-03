@@ -1,5 +1,5 @@
-using Domain.Entities;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using WebApi.Middleware;
 using WebApi.Services;
@@ -13,9 +13,6 @@ public static class DependencyInjection
     {
         services.AddTransient<IStatementService, StatementService>();
         services.AddTransient<ISchemaService, SchemaService>();
-
-
-        StatementService.CheckSaveDir();
         
         return services;
     }
@@ -30,6 +27,19 @@ public static class DependencyInjection
             options.Password.RequiredLength = 6;
 
         }).AddEntityFrameworkStores<MfcContext>().AddDefaultTokenProviders();
+        
+        services.AddIdentityCore<StudentUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<MfcContext>();
+        services.AddIdentityCore<EmployeeUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<MfcContext>();
+        
+        
+        services.ConfigureApplicationCookie(config =>
+        {
+            config.Cookie.Name = Environment.GetEnvironmentVariable("COOKIE_NANE") ?? "MFC.WebApi";
+            config.Cookie.SameSite = SameSiteMode.None;
+            config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            config.LoginPath = "/api/account/login";
+            config.LogoutPath = "/api/account/logout";
+        });
 
         return services;
     }

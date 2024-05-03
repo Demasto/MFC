@@ -1,20 +1,17 @@
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-using Domain.Entities;
-using Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using Infrastructure.Identity;
 using WebApi.DTO;
 
 
 namespace WebApi.Controllers;
 
 [Authorize(Roles = Role.Admin)]
-[Route("api/[controller]/[action]")]
-public class AdminController(
-    UserManager<AppUser> userManager, 
-    SignInManager<AppUser> signInManager) : Controller
+[Route("api/[controller]")]
+public class StudentsController(
+    UserManager<StudentUser> userManager) : Controller
 {
     [HttpGet]
     public async Task<IActionResult> GetStudents()
@@ -24,6 +21,16 @@ public class AdminController(
         var studentsListResponse = appUsers.Select(user => user.ToStudent()).ToList();
 
         return Ok(studentsListResponse);
+    }
+    [HttpGet("{serviceNumber}")]
+    public async Task<IActionResult> FromServiceNumber(string serviceNumber)
+    {
+        var appUsers = await userManager.GetUsersInRoleAsync(Role.Student);
+        var student = appUsers.FirstOrDefault(student => student.ServiceNumber == serviceNumber);
+        if (student == null)
+            return BadRequest($"Студента с номером {serviceNumber} не существует!");
+
+        return Ok(student.ToStudent());
     }
     
     [HttpPost]

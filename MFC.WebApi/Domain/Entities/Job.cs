@@ -7,10 +7,21 @@ public class Job
     public string ServiceName { get; set; } = null!;
     public ProcessState State { get; set; } = ProcessState.Created;
 }
-
+/// <summary>
+/// Заявления для студентов ? радотников
+/// Скачивать пустые заявления (авто заполненные)
+/// Заявления для работников и отдельно для студентов
+/// ДОбавить поле (Форма обучения) очно, заочно
+///
+/// Список справок (с генерацией) - автоматически заполняется и оптравляется
+/// Добавить роль (рабочих в унике)
+/// новые поля - Должнолсть - институт
+/// </summary>
 public enum ProcessState
 {
     Created,
+    InProcess,
+    Ready,
     Cancelled,
-    Completed
+    Received
 }

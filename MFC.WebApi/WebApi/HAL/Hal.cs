@@ -1,17 +1,13 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Dynamic;
 using System.Text.Json;
 using Domain.Entities;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Identity;
+using Infrastructure.Identity;
 using WebApi.DTO;
 
 namespace WebApi;
 
 public static class Hal
 {
-    public static Student ToStudent(this AppUser appUser)
+    public static Student ToStudent(this StudentUser appUser)
     {
          return new Student(
             appUser.UserName,
@@ -27,9 +23,9 @@ public static class Hal
             JsonSerializer.Deserialize<Passport>(appUser.Passport));
     }
     
-    public static AppUser ToIdentityUser(this StudentDTO student)
+    public static StudentUser ToIdentityUser(this StudentDTO student)
     {
-        return new AppUser() {
+        return new StudentUser() {
             UserName = student.UserName,
             Group = student.Group,
             DirectionOfStudy = student.DirectionOfStudy,
@@ -44,12 +40,18 @@ public static class Hal
         };
     }
     
-    public static Dictionary<string, string> GetDisplayNameList<T>()
+    public static EmployeeUser ToIdentityUser(this EmployeeDTO employee)
     {
-        var info = TypeDescriptor.GetProperties(typeof(T))
-            .Cast<PropertyDescriptor>()
-            .Where(p => p.Attributes.Cast<Attribute>().Any(a => a.GetType() == typeof(RequiredAttribute)))
-            .ToDictionary(p => p.Name, p => p.DisplayName);
-        return info;
+        return new EmployeeUser() {
+            UserName = employee.UserName,
+            Post = employee.Post,
+            Email = employee.Email,
+            PhoneNumber = employee.PhoneNumber,
+            Gender = employee.Gender,
+            INN = employee.INN,
+            SNILS = employee.SNILS,
+            Name = JsonSerializer.Serialize(employee.Name),
+            Passport = JsonSerializer.Serialize(employee.Passport)
+        };
     }
 }
