@@ -6,7 +6,7 @@ using Infrastructure.Identity;
 using WebApi.DTO;
 
 
-namespace WebApi.Controllers;
+namespace WebApi.Controllers.Identity;
 
 [Authorize(Roles = Role.Admin)]
 [Route("api/[controller]")]

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Domain.Entities;
+using Domain.Entities.Users;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

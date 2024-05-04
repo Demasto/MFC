@@ -24,6 +24,19 @@ public static class SaveDirectory
             .Select(ExtractFileName)
             .ToList();
     }
+
+    public static string CopyFile(string fileName)
+    {
+        var path = PathToFile(fileName);
+        if (!File.Exists(path)) throw new FileNotFoundException();
+
+        var copy = System.IO.Path.GetTempFileName();
+        
+        
+        File.Copy(path, copy, true);
+        Console.WriteLine(copy);
+        return copy;
+    }
     
 
     public static void CanReadOrThrow(string fileName)

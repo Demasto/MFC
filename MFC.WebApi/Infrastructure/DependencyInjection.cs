@@ -15,8 +15,8 @@ public static class DependencyInjection
   
         services.AddDbContext<MfcContext>();
         
-        services.AddTransient<IStatementRepository, StatementRepository>();
-        services.AddTransient<ISchemaRepository, SchemaRepository>();
+        services.AddScoped<IStatementRepository, StatementRepository>();
+        services.AddScoped<ISchemaRepository, SchemaRepository>();
         
         
         return services;

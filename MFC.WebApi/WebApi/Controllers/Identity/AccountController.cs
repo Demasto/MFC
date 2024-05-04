@@ -1,10 +1,9 @@
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Identity;
-
-namespace WebApi.Controllers;
+namespace WebApi.Controllers.Identity;
 
 [Authorize]
 [Route("api/[controller]/[action]")]
@@ -49,10 +48,11 @@ public class AccountController(
             throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
         }
             
-        // var response = user.ToStudent().ToDictionary();
-        // response["Roles"] = await userManager.GetRolesAsync(user);
+        var response = user.ToUser().ToDictionary();
+        var roles = await userManager.GetRolesAsync(user);
+        response["Role"] = roles.First();
 
-        return Ok(user);
+        return Ok(response);
     }
         
 

@@ -1,8 +1,4 @@
-using System.Text;
 using Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using WebApi;
 
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -22,8 +18,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-// TODO загрузить все файлы из папки statements в бд, если их там нет.
 
 // if (app.Environment.IsDevelopment())
 // {

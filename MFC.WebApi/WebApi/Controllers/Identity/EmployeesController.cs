@@ -6,7 +6,7 @@ using Infrastructure.Identity;
 using WebApi.DTO;
 
 
-namespace WebApi.Controllers;
+namespace WebApi.Controllers.Identity;
 
 [Authorize(Roles = Role.Admin)]
 [Route("api/[controller]")]
@@ -18,9 +18,9 @@ public class EmployeesController(
     {
         var appUsers = await userManager.GetUsersInRoleAsync(Role.Employee);
         
-        // var studentsListResponse = appUsers.Select(user => user.ToStudent()).ToList();
+        var employees = appUsers.Select(user => user.ToEmployee()).ToList();
 
-        return Ok(appUsers);
+        return Ok(employees);
     }
     
     // [HttpGet("{serviceNumber}")]

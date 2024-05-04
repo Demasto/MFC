@@ -35,12 +35,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            if (e.GetType() == typeof(FileNotFoundException))
-            {
-                
-                return NotFound(e.Message);
-            }
-            return BadRequest(e.Message);
+            return ExtractActionResult(e);
         }
         
     }
@@ -61,11 +56,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            if (e.GetType() == typeof(FileNotFoundException))
-            {
-                return NotFound(e.Message);
-            }
-            return BadRequest(e.Message);
+            return ExtractActionResult(e);
         }
         
     }
@@ -86,7 +77,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return ExtractActionResult(e);
         }
     }
     
@@ -102,11 +93,17 @@ public class StatementsController(IStatementService service) : ControllerBase
         }
         catch (Exception e)
         {
-            if (e.GetType() == typeof(FileNotFoundException))
-            {
-                return NotFound(e.Message);
-            }
-            return BadRequest(e.Message);
+            return ExtractActionResult(e);
         }
     }
+    
+    private IActionResult ExtractActionResult(Exception e)
+    {
+        if (e.GetType() == typeof(FileNotFoundException))
+        {
+            return NotFound(e.Message);
+        }
+        return BadRequest(e.Message);
+    }
+
 }

@@ -1,6 +1,7 @@
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+
 using WebApi.Middleware;
 using WebApi.Services;
 using WebApi.Services.Interfaces;
@@ -40,6 +41,7 @@ public static class DependencyInjection
             config.LoginPath = "/api/account/login";
             config.LogoutPath = "/api/account/logout";
         });
+        
 
         return services;
     }

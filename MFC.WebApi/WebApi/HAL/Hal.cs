@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Domain.Entities;
+using Domain.Entities.Users;
 using Infrastructure.Identity;
 using WebApi.DTO;
 
@@ -7,21 +8,7 @@ namespace WebApi;
 
 public static class Hal
 {
-    public static Student ToStudent(this StudentUser appUser)
-    {
-         return new Student(
-            appUser.UserName,
-            appUser.Group, 
-            appUser.DirectionOfStudy, 
-            appUser.ServiceNumber, 
-            appUser.Email, 
-            appUser.PhoneNumber,
-            appUser.Gender, 
-            appUser.INN, 
-            appUser.SNILS,
-            JsonSerializer.Deserialize<Name>(appUser.Name),
-            JsonSerializer.Deserialize<Passport>(appUser.Passport));
-    }
+
     
     public static StudentUser ToIdentityUser(this StudentDTO student)
     {
