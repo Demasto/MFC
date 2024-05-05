@@ -1,5 +1,6 @@
 using Infrastructure.Data;
 using Infrastructure.Identity;
+using Infrastructure.Identity.Users;
 using Microsoft.AspNetCore.Identity;
 
 using WebApi.Middleware;
@@ -13,24 +14,33 @@ public static class DependencyInjection
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         services.AddTransient<IStatementService, StatementService>();
-        services.AddTransient<ISchemaService, SchemaService>();
         
         return services;
     }
 
     public static IServiceCollection AddIdentity(this IServiceCollection services)
     {
-        services.AddIdentity<AppUser, IdentityRole>(options =>
-        {
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequiredUniqueChars = 0;
-            options.Password.RequireUppercase = false;
-            options.Password.RequiredLength = 6;
+        services.
+            AddIdentity<AppUser, IdentityRole>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
 
-        }).AddEntityFrameworkStores<MfcContext>().AddDefaultTokenProviders();
+            })
+            .AddEntityFrameworkStores<MfcContext>()
+            .AddDefaultTokenProviders();
         
-        services.AddIdentityCore<StudentUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<MfcContext>();
-        services.AddIdentityCore<EmployeeUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<MfcContext>();
+        services
+            .AddIdentityCore<StudentUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<MfcContext>();
+        
+        services
+            .AddIdentityCore<EmployeeUser>()
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<MfcContext>();
         
         
         services.ConfigureApplicationCookie(config =>

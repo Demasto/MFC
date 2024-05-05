@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
+using Infrastructure.Identity.Users;
 
 namespace WebApi.DTO;
 
@@ -25,6 +27,20 @@ public class AppUserDTO
     public NameDTO Name { get; set; } = new NameDTO();
     public PassportDTO Passport { get; set; } = new PassportDTO();
     
+    
+    public AppUser ToIdentityUser()
+    {
+        return new AppUser() {
+            UserName = UserName,
+            Email = Email,
+            PhoneNumber = PhoneNumber,
+            Gender = Gender,
+            INN = INN,
+            SNILS = SNILS,
+            Name = JsonSerializer.Serialize(Name),
+            Passport = JsonSerializer.Serialize(Passport)
+        };
+    }
 }
 
 public class NameDTO()

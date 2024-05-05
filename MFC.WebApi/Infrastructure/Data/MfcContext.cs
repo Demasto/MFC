@@ -1,36 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Domain.Entities;
-using Infrastructure.Data.Configurations;
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+using Infrastructure.Identity.Users;
 
 namespace Infrastructure.Data;
 
 public class MfcContext : IdentityDbContext<AppUser>
 {
-    public MfcContext()
-    {
-    }
+    public MfcContext() { }
 
-    public MfcContext(DbContextOptions<MfcContext> options)
-        : base(options)
-    {
-    }
-    public virtual DbSet<Statement> Statements { get; set; }
-
-    public virtual DbSet<StatementSchema> StatementSchemas { get; set; }
+    public MfcContext(DbContextOptions<MfcContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
-        builder.ApplyConfiguration(new StatementSchemaConfiguration());
-        builder.ApplyConfiguration(new StatementConfiguration());
-        
-        // builder.Entity<AppUser>(entity => { entity.ToTable("AspNetUsers"); });
-        // builder.Entity<StudentUser>(entity => { entity.ToTable("StudentUser"); });
-        // builder.Entity<EmployeeUser>(entity => { entity.ToTable("EmployeeUser"); });
-        
         builder.Seed();
     }
 

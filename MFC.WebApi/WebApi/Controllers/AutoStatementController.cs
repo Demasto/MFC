@@ -1,7 +1,9 @@
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using Infrastructure.Identity.Users;
+
 using WebApi.CustomActionResult;
 using WebApi.Services;
 
@@ -17,7 +19,7 @@ public class AutoStatementController(UserManager<StudentUser> userManager) : Con
     {
         var current = await userManager.GetUserAsync(User);
         if (current == null) return BadRequest("Пользователь не найден");
-        var student = current.ToStudent();
+        var student = current.ToEntity();
         
         try
         {

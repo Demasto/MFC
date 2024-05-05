@@ -26,4 +26,6 @@ RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=fals
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+#RUN dotnet ef database update -c MfcContext -p ./Infrastructure -s ./WebApi -- -provider PostgreSQL
 ENTRYPOINT ["dotnet", "WebApi.dll"]

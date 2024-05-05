@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using Infrastructure.Identity.Users;
 using Infrastructure.Identity;
+
 using WebApi.DTO;
 
 
@@ -18,7 +20,7 @@ public class EmployeesController(
     {
         var appUsers = await userManager.GetUsersInRoleAsync(Role.Employee);
         
-        var employees = appUsers.Select(user => user.ToEmployee()).ToList();
+        var employees = appUsers.Select(user => user.ToEntity()).ToList();
 
         return Ok(employees);
     }

@@ -1,9 +1,10 @@
 using System.Text.Json;
-using Domain.Entities;
-using Domain.Entities.Users;
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using Domain.Entities.Users;
+using Infrastructure.Identity;
+using Infrastructure.Identity.Users;
 
 namespace Infrastructure.Data;
 

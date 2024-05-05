@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using Infrastructure.Identity.Users;
 using Infrastructure.Identity;
+
 using WebApi.DTO;
 
 
@@ -16,12 +18,13 @@ public class StudentsController(
     [HttpGet]
     public async Task<IActionResult> GetStudents()
     {
-        var appUsers = await userManager.GetUsersInRoleAsync(Role.Student);
+        var students = await userManager.GetUsersInRoleAsync(Role.Student);
         
-        var studentsListResponse = appUsers.Select(user => user.ToStudent()).ToList();
+        var studentsListResponse = students.Select(user => user.ToEntity()).ToList();
 
         return Ok(studentsListResponse);
     }
+    
     [HttpGet("{serviceNumber}")]
     public async Task<IActionResult> FromServiceNumber(string serviceNumber)
     {
@@ -30,7 +33,7 @@ public class StudentsController(
         if (student == null)
             return BadRequest($"Студента с номером {serviceNumber} не существует!");
 
-        return Ok(student.ToStudent());
+        return Ok(student.ToEntity());
     }
     
     [HttpPost]

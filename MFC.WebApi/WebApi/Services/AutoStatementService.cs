@@ -15,13 +15,6 @@ public class AutoStatementService
         _application.Documents.Open(ref filePath);
     }
     
-    
-    public void Example()
-    {
-        
-        ReplaceValue("<tag>", "{Хуй}");
-        CloseDocument();
-    }
 
     public void ReplaceValue(string tag, string value)
     {
