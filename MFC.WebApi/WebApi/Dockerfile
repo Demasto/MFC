@@ -14,6 +14,7 @@ WORKDIR /src
 COPY ["Domain/Domain.csproj", "Domain/"]
 COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
 COPY ["WebApi/WebApi.csproj", "WebApi/"]
+COPY ["WebApi/office/OFFICE.DLL", "WebApi/office/OFFICE.DLL"]
 
 RUN dotnet restore "WebApi/WebApi.csproj"
 COPY . .
@@ -27,5 +28,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-#RUN dotnet ef database update -c MfcContext -p ./Infrastructure -s ./WebApi -- -provider PostgreSQL
 ENTRYPOINT ["dotnet", "WebApi.dll"]

@@ -136,7 +136,7 @@ ALTER TABLE public."AspNetUserTokens" OWNER TO postgres;
 
 CREATE TABLE public."AspNetUsers" (
     "Id" text NOT NULL,
-    "Group" text NOT NULL,
+    "Group" text,
     "UserName" character varying(256),
     "NormalizedUserName" character varying(256),
     "Email" character varying(256),
@@ -151,13 +151,15 @@ CREATE TABLE public."AspNetUsers" (
     "LockoutEnd" timestamp with time zone,
     "LockoutEnabled" boolean NOT NULL,
     "AccessFailedCount" integer NOT NULL,
-    "DirectionOfStudy" text DEFAULT ''::text NOT NULL,
+    "DirectionOfStudy" text DEFAULT ''::text,
     "Gender" text DEFAULT ''::text NOT NULL,
     "INN" text DEFAULT ''::text NOT NULL,
     "Name" text DEFAULT ''::text NOT NULL,
     "Passport" text DEFAULT ''::text NOT NULL,
     "SNILS" text DEFAULT ''::text NOT NULL,
-    "ServiceNumber" text DEFAULT ''::text NOT NULL
+    "ServiceNumber" text DEFAULT ''::text,
+    "Discriminator" character varying(13) DEFAULT ''::character varying NOT NULL,
+    "Post" text
 );
 
 
@@ -176,63 +178,6 @@ CREATE TABLE public."__EFMigrationsHistory" (
 ALTER TABLE public."__EFMigrationsHistory" OWNER TO postgres;
 
 --
--- Name: statement_schemas; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.statement_schemas (
-    id integer NOT NULL,
-    file_id integer NOT NULL,
-    x numeric NOT NULL,
-    y numeric NOT NULL,
-    font_size integer DEFAULT 14,
-    data_id character varying
-);
-
-
-ALTER TABLE public.statement_schemas OWNER TO postgres;
-
---
--- Name: statement_schemas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-ALTER TABLE public.statement_schemas ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.statement_schemas_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Name: statements; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.statements (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    path character varying
-);
-
-
-ALTER TABLE public.statements OWNER TO postgres;
-
---
--- Name: statements_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-ALTER TABLE public.statements ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.statements_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
 -- Data for Name: AspNetRoleClaims; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -245,8 +190,9 @@ COPY public."AspNetRoleClaims" ("Id", "RoleId", "ClaimType", "ClaimValue") FROM 
 --
 
 COPY public."AspNetRoles" ("Id", "Name", "NormalizedName", "ConcurrencyStamp") FROM stdin;
-ad376a8f-9eab-4bb9-9fca-30b01540f446	admin	ADMIN	\N
-ad376a8f-9eab-4bb9-9fca-30b01540f447	student	STUDENT	\N
+bd376a8f-9eab-4bb9-9fca-40b01540f446	admin	ADMIN	\N
+bd376a8f-9eab-4bb9-9fca-40b01540f447	student	STUDENT	\N
+bd376a8f-9eab-4bb9-9fca-40b01540f448	employee	EMPLOYEE	\N
 \.
 
 
@@ -271,10 +217,12 @@ COPY public."AspNetUserLogins" ("LoginProvider", "ProviderKey", "ProviderDisplay
 --
 
 COPY public."AspNetUserRoles" ("UserId", "RoleId") FROM stdin;
-a18be9c0-aa65-4af8-bd17-00bd9344e586	ad376a8f-9eab-4bb9-9fca-30b01540f446
-a18be9c0-aa65-4af8-bd17-00bd9344e587	ad376a8f-9eab-4bb9-9fca-30b01540f447
-a18be9c0-aa65-4af8-bd17-00bd9344e588	ad376a8f-9eab-4bb9-9fca-30b01540f447
-e357f292-56ae-4879-a095-23da4c9a8b16	ad376a8f-9eab-4bb9-9fca-30b01540f447
+b18be9c0-aa65-4af8-1d17-10bd9344e588	bd376a8f-9eab-4bb9-9fca-40b01540f447
+b18be9c0-aa65-4af8-bd17-10bd9344e586	bd376a8f-9eab-4bb9-9fca-40b01540f446
+b18be9c0-aa65-4af8-bd17-10bd9344e587	bd376a8f-9eab-4bb9-9fca-40b01540f447
+b18be9c0-aa65-4af8-bd17-10bd9344e588	bd376a8f-9eab-4bb9-9fca-40b01540f448
+d9d7964a-72ba-40e1-ab4f-089a7c67c700	bd376a8f-9eab-4bb9-9fca-40b01540f448
+c2f30f4c-f8d9-413b-ad9c-5d70caa8061b	bd376a8f-9eab-4bb9-9fca-40b01540f447
 \.
 
 
@@ -290,11 +238,14 @@ COPY public."AspNetUserTokens" ("UserId", "LoginProvider", "Name", "Value") FROM
 -- Data for Name: AspNetUsers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."AspNetUsers" ("Id", "Group", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount", "DirectionOfStudy", "Gender", "INN", "Name", "Passport", "SNILS", "ServiceNumber") FROM stdin;
-a18be9c0-aa65-4af8-bd17-00bd9344e586	УВП-411	admin	ADMIN	admin@example.com	ADMIN@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEC9WWcS8hy05+SZqbEUjGplx/6saonKKn+OuRzzferx+tqG2agwPx5U5zdkS5RQNFQ==		3d337680-0626-4fe6-9e33-3b8164ddb41d	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"Admin","Second":"Adminov","Middle":"Adminovich"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
-a18be9c0-aa65-4af8-bd17-00bd9344e587	УВП-411	Dmitry	DMITRY	Dmitry@example.com	DMITRY@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEEPUvDmGl6jEXN8GSjNF6b2cufJCrWSZwlWCwPE1KanKi5vIO+mvlxV1sV601DACjw==		d929a1f7-2a5f-4125-b414-1de091e39705	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"\\u0414\\u043C\\u0438\\u0442\\u0440\\u0438\\u0439","Second":"\\u0411\\u043E\\u043B\\u0442\\u0430\\u0447\\u0435\\u0432","Middle":"\\u041C\\u0438\\u0445\\u0430\\u0439\\u043B\\u043E\\u0432\\u0438\\u0447"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
-a18be9c0-aa65-4af8-bd17-00bd9344e588	УВП-411	Nastya	NASTYA	Nastya@example.com	NASTYA@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEN6ZWj3UJq5imIj8Q7U1Ks/rIJ/AUWa9rYMo8rqbGYk7LQ8tBB6DYY3NPeYV+Ol4HA==		f9618521-d874-438f-bdcf-4840a9a61f4c	\N	f	f	\N	f	0	09.03.01	Женский	7777065424	{"First":"\\u0410\\u043D\\u0430\\u0441\\u0442\\u0430\\u0441\\u0438\\u044F","Second":"\\u041A\\u043E\\u043D\\u0441\\u0442\\u0430\\u043D\\u0442\\u0438\\u043D\\u043E\\u0432\\u0430","Middle":"\\u0412\\u0438\\u0442\\u0430\\u043B\\u044C\\u0435\\u0432\\u043D\\u0430"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678
-e357f292-56ae-4879-a095-23da4c9a8b16	string	string	STRING	user@example.com	USER@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEFRmmFDXFO0zP0yoTMFGRqetN4//EthMaXzBBjot3vSSC1UHLTIWMTa+stKwh/Tisg==	OTVTJNMZC7J23USNPP5CTNJZS4WZQOLQ	5d836cc6-e749-4de6-9966-0dd96aecea50	string	f	f	\N	t	0	string	string	string	{"First":"string","Second":"string","Middle":"string"}	{"Series":"string","Number":"string","UnitCode":"string","PlaceOfBrith":"string","DateOfBrith":"2024-05-01","DateOfIssue":"2024-05-01","Citizenship":"string"}	string	string
+COPY public."AspNetUsers" ("Id", "Group", "UserName", "NormalizedUserName", "Email", "NormalizedEmail", "EmailConfirmed", "PasswordHash", "SecurityStamp", "ConcurrencyStamp", "PhoneNumber", "PhoneNumberConfirmed", "TwoFactorEnabled", "LockoutEnd", "LockoutEnabled", "AccessFailedCount", "DirectionOfStudy", "Gender", "INN", "Name", "Passport", "SNILS", "ServiceNumber", "Discriminator", "Post") FROM stdin;
+e357f292-56ae-4879-a095-23da4c9a8b16	string	string	STRING	user@example.com	USER@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEFRmmFDXFO0zP0yoTMFGRqetN4//EthMaXzBBjot3vSSC1UHLTIWMTa+stKwh/Tisg==	OTVTJNMZC7J23USNPP5CTNJZS4WZQOLQ	5d836cc6-e749-4de6-9966-0dd96aecea50	string	f	f	\N	t	0	string	string	string	{"First":"string","Second":"string","Middle":"string"}	{"Series":"string","Number":"string","UnitCode":"string","PlaceOfBrith":"string","DateOfBrith":"2024-05-01","DateOfIssue":"2024-05-01","Citizenship":"string"}	string	string		\N
+d9d7964a-72ba-40e1-ab4f-089a7c67c700	\N	employee2	EMPLOYEE2	user@example.com	USER@EXAMPLE.COM	f	AQAAAAIAAYagAAAAECv5BeZ1wvV+vKNbUumfTn74Dr1YUcWyOXihXrMVCk3K+fU96MGodeXR0rSFIlEI4Q==	37FYZHLLPNOJKJYW76KUNS2X3JYD55LM	a7c971ce-8bf9-470a-9ec0-404d5f2b0567	string	f	f	\N	t	0		string	string	{"First":"string","Second":"string","Middle":"string"}	{"Series":"string","Number":"string","UnitCode":"string","PlaceOfBrith":"string","DateOfBrith":"2024-05-03","DateOfIssue":"2024-05-03","Citizenship":"string"}	string		EmployeeUser	
+b18be9c0-aa65-4af8-1d17-10bd9344e588	УВП-411	Nastya	NASTYA	Nastya@example.com	NASTYA@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEIGzzhIM9Spe/CwkxXFSl/nltxLDxnAj4MDEBqo4TdcrxzSqZlgMaEc0hzWKSdarSQ==		6a245adf-251a-49a7-9ac7-f5f94e385175	\N	f	f	\N	f	0	09.03.01	Женский	7777065424	{"First":"\\u0410\\u043D\\u0430\\u0441\\u0442\\u0430\\u0441\\u0438\\u044F","Second":"\\u041A\\u043E\\u043D\\u0441\\u0442\\u0430\\u043D\\u0442\\u0438\\u043D\\u043E\\u0432\\u0430","Middle":"\\u0412\\u0438\\u0442\\u0430\\u043B\\u044C\\u0435\\u0432\\u043D\\u0430"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678	StudentUser	\N
+b18be9c0-aa65-4af8-bd17-10bd9344e586	УВП-411	admin	ADMIN	admin@example.com	ADMIN@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEG+ZUUXJtSPdwSTA0KC03D2QuIijX3Zm/Z3YVEWdz0sspuIfpd2GGN0Ew8sLQjzMZg==		a69f8d16-778c-477a-9545-a620864bf20c	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"Admin","Second":"Adminov","Middle":"Adminovich"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678	StudentUser	\N
+b18be9c0-aa65-4af8-bd17-10bd9344e587	УВП-411	Dmitry	DMITRY	Dmitry@example.com	DMITRY@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEHszwZlvmj9nrToe6ZK+QOF8iv/hpy+4nnTNstIClD8YTjQ3wJ4Jyuo/socQxDA17g==		9382db38-f9af-4eae-887e-e510c5b5c8d7	\N	f	f	\N	f	0	09.03.01	Мужской	7777065424	{"First":"\\u0414\\u043C\\u0438\\u0442\\u0440\\u0438\\u0439","Second":"\\u0411\\u043E\\u043B\\u0442\\u0430\\u0447\\u0435\\u0432","Middle":"\\u041C\\u0438\\u0445\\u0430\\u0439\\u043B\\u043E\\u0432\\u0438\\u0447"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753	12345678	StudentUser	\N
+b18be9c0-aa65-4af8-bd17-10bd9344e588	\N	employee	EMPLOYEE	employee@example.com	EMPLOYEE@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEEMRyKiTe3Rrw8HjsGSUwFPzVRbmyn1WRKkxnYqJPrtyxiKjqBuDmTELppZo3SRBXg==		e84f4957-dd35-4300-bffb-265216bf37b2	\N	f	f	\N	f	0		Мужской	7777065424	{"First":"\\u0420\\u0430\\u0431\\u043E\\u0442\\u043D\\u0438\\u043A","Second":"\\u041C\\u0418\\u0418\\u0422\\u041E\\u0412","Middle":"\\u0418\\u043D\\u0441\\u0442\\u0438\\u0442\\u0443\\u0442\\u043E\\u0432\\u0438\\u0447"}	{"Series":"4517","Number":"543254","UnitCode":"432-632","PlaceOfBrith":"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430","DateOfBrith":"2002-02-14","DateOfIssue":"2024-12-03","Citizenship":"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F"}	375232753		EmployeeUser	Доцент
+c2f30f4c-f8d9-413b-ad9c-5d70caa8061b	string	string5	STRING5	user@example.com	USER@EXAMPLE.COM	f	AQAAAAIAAYagAAAAEP82kQxBrW3rK//G+XKTy3a7QUoSP49yNgjUuCgCBfCvub1Fc9Yy7s9zjoCRJBcqHg==	NQR4E2KLWNPT6AIJCICCTW2MKIT7DNY5	99b7fce6-65b2-45ad-9252-0f8e455e0850	string	f	f	\N	t	0	string	string	string	{"First":"string","Second":"string","Middle":"string"}	{"Series":"string","Number":"string","UnitCode":"string","PlaceOfBrith":"string","DateOfBrith":"2024-05-05","DateOfIssue":"2024-05-05","Citizenship":"string"}	string	string	StudentUser	\N
 \.
 
 
@@ -313,26 +264,10 @@ COPY public."__EFMigrationsHistory" ("MigrationId", "ProductVersion") FROM stdin
 20240430222233_ChangedDateProps	8.0.2
 20240430224528_ChangedDate	8.0.2
 20240430224728_ChangedDate2	8.0.2
-\.
-
-
---
--- Data for Name: statement_schemas; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.statement_schemas (id, file_id, x, y, font_size, data_id) FROM stdin;
-\.
-
-
---
--- Data for Name: statements; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.statements (id, name, path) FROM stdin;
-2	Организация.mp3	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\Организация.mp3
-3	Организация.mp3	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\Организация.mp3
-4	Организация.mp3	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\Организация.mp3
-5	1 (1).jpg	D:\\RUT\\Last\\Диплом\\MFC\\MFC.WebApi\\WebApi\\statements\\1 (1).jpg
+20240503182923_AddedRole	8.0.2
+20240503185422_AddedRole2	8.0.2
+20240503190549_AddedEmployee	8.0.2
+20240504202839_RemoveTabels	8.0.2
 \.
 
 
@@ -348,20 +283,6 @@ SELECT pg_catalog.setval('public."AspNetRoleClaims_Id_seq"', 1, false);
 --
 
 SELECT pg_catalog.setval('public."AspNetUserClaims_Id_seq"', 1, false);
-
-
---
--- Name: statement_schemas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.statement_schemas_id_seq', 1, false);
-
-
---
--- Name: statements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.statements_id_seq', 5, true);
 
 
 --
@@ -429,22 +350,6 @@ ALTER TABLE ONLY public."__EFMigrationsHistory"
 
 
 --
--- Name: statement_schemas statement_schemas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.statement_schemas
-    ADD CONSTRAINT statement_schemas_pkey PRIMARY KEY (id);
-
-
---
--- Name: statements statements_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.statements
-    ADD CONSTRAINT statements_pkey PRIMARY KEY (id);
-
-
---
 -- Name: EmailIndex; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -477,13 +382,6 @@ CREATE INDEX "IX_AspNetUserLogins_UserId" ON public."AspNetUserLogins" USING btr
 --
 
 CREATE INDEX "IX_AspNetUserRoles_RoleId" ON public."AspNetUserRoles" USING btree ("RoleId");
-
-
---
--- Name: IX_statement_schemas_file_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX "IX_statement_schemas_file_id" ON public.statement_schemas USING btree (file_id);
 
 
 --
@@ -546,14 +444,6 @@ ALTER TABLE ONLY public."AspNetUserRoles"
 
 ALTER TABLE ONLY public."AspNetUserTokens"
     ADD CONSTRAINT "FK_AspNetUserTokens_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES public."AspNetUsers"("Id") ON DELETE CASCADE;
-
-
---
--- Name: statement_schemas statement_schemas_file_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.statement_schemas
-    ADD CONSTRAINT statement_schemas_file_id_fkey FOREIGN KEY (file_id) REFERENCES public.statements(id);
 
 
 --

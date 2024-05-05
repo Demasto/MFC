@@ -35,17 +35,12 @@
     
 
     <ItemGroup>
-        <PackageReference Include="itext" Version="8.0.3" />
-        <PackageReference Include="itext.bouncy-castle-fips-adapter" Version="8.0.3" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="statements\" />
     </ItemGroup>
-
+    
     <ItemGroup>
         <Reference Include="office">
-            <HintPath>C:\Windows\assembly\GAC_MSIL\office\15.0.0.0__71e9bce111e9429c\OFFICE.DLL</HintPath>
+            <HintPath>office\OFFICE.DLL</HintPath>
         </Reference>
     </ItemGroup>
 
