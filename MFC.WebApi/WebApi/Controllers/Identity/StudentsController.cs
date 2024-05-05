@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Identity.Users;
 using Infrastructure.Identity;
 
 using WebApi.DTO;

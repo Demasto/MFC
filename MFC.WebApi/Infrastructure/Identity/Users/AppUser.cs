@@ -2,7 +2,7 @@ using System.Text.Json;
 using Domain.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.Identity.Users;
+namespace Infrastructure.Identity;
 
 public class AppUser : IdentityUser
 {

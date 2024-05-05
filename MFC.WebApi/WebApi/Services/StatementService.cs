@@ -56,7 +56,17 @@ public static class SaveDirectory
     
     private static string ExtractFileName(string path)
     {
-        return path.Split('\\').Last();
+        if (path.Contains('\\'))
+        {
+            return path.Split('\\').Last();
+        }
+        if (path.Contains('/'))
+        {
+            return path.Split('/').Last();
+        }
+
+        return path;
+
     }
 }
 public class StatementService : IStatementService

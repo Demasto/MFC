@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using Infrastructure.Identity.Users;
+using Infrastructure.Identity;
 
 namespace Infrastructure.Data;
 

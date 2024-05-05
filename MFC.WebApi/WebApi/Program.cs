@@ -1,14 +1,13 @@
 using Infrastructure;
 using WebApi;
-
-const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+using WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMyCors(myAllowSpecificOrigins);
-
 builder.Services.AddInfrastructure();
+
 builder.Services.AddWebServices();
+builder.Services.AddWebConfigurations();
 
 builder.Services.AddControllers();
 
@@ -25,9 +24,10 @@ var app = builder.Build();
 // }
 
 app.AddSwagger();
+
 app.UseHttpsRedirection();
 
-app.UseCors(myAllowSpecificOrigins);
+app.UseCors(WebApiDI.PolicyName);
 
 app.UseAuthorization();
 

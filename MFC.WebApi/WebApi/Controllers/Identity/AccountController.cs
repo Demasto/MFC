@@ -1,11 +1,8 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Identity.Users;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Infrastructure.Identity;
 
 namespace WebApi.Controllers.Identity;
 

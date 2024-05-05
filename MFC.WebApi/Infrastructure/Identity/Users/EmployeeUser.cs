@@ -1,6 +1,6 @@
 using Domain.Entities.Users;
 
-namespace Infrastructure.Identity.Users;
+namespace Infrastructure.Identity;
 
 public class EmployeeUser : AppUser
 {

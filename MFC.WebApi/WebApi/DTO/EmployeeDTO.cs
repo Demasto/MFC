@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Infrastructure.Identity.Users;
+
+using Infrastructure.Identity;
 
 namespace WebApi.DTO;
 
