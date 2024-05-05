@@ -1,6 +1,7 @@
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Identity.Users;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 
 using WebApi.Middleware;
@@ -14,11 +15,38 @@ public static class DependencyInjection
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         services.AddTransient<IStatementService, StatementService>();
+        services.AddCookie();
+        services.AddIdentity();
         
         return services;
     }
 
-    public static IServiceCollection AddIdentity(this IServiceCollection services)
+    private static IServiceCollection AddCookie(this IServiceCollection services)
+    {
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = (context) =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+        
+        
+        services.ConfigureApplicationCookie(config =>
+        {
+            config.Cookie.Name = Environment.GetEnvironmentVariable("COOKIE_NANE") ?? "MFC.WebApi";
+            config.Cookie.SameSite = SameSiteMode.None;
+            config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            config.LoginPath = "/api/account/login";
+            config.LogoutPath = "/api/account/logout";
+        });
+
+        return services;
+    } 
+
+    private static IServiceCollection AddIdentity(this IServiceCollection services)
     {
         services.
             AddIdentity<AppUser, IdentityRole>(options =>
@@ -42,16 +70,6 @@ public static class DependencyInjection
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<MfcContext>();
         
-        
-        services.ConfigureApplicationCookie(config =>
-        {
-            config.Cookie.Name = Environment.GetEnvironmentVariable("COOKIE_NANE") ?? "MFC.WebApi";
-            config.Cookie.SameSite = SameSiteMode.None;
-            config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            config.LoginPath = "/api/account/login";
-            config.LogoutPath = "/api/account/logout";
-        });
-        
 
         return services;
     }
@@ -65,7 +83,8 @@ public static class DependencyInjection
                 {
                     policy.WithOrigins("https://localhost:7149", "http://localhost:8080", "https://localhost:3000", "http://localhost:3000") 
                         .AllowAnyHeader()  
-                        .AllowAnyMethod();
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
         });
 

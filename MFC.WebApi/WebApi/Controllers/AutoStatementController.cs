@@ -15,7 +15,7 @@ namespace WebApi.Controllers;
 public class AutoStatementController(UserManager<StudentUser> userManager) : ControllerBase
 {
     [HttpGet("{fileName}")]
-    public async Task<IActionResult> GenerateStatement(string fileName)
+    public async Task<IActionResult> GenerateStatement(string fileName = "test.docx")
     {
         var current = await userManager.GetUserAsync(User);
         if (current == null) return BadRequest("Пользователь не найден");

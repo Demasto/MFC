@@ -1,8 +1,11 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Infrastructure.Identity.Users;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace WebApi.Controllers.Identity;
 
@@ -29,13 +32,13 @@ public class AccountController(
         if (current == null || result.Succeeded == false)
         {
             response["Result"] = false;
+            return Ok(response);
         }
-        else
-        {        
-            var role = await userManager.GetRolesAsync(current);
-            response["Result"] = result.Succeeded;
-            response["Role"] = role.First();
-        }
+        
+        var role = await userManager.GetRolesAsync(current);
+        response["Result"] = result.Succeeded;
+        response["Role"] = role.First();
+        
         
         return Ok(response);
     }
@@ -65,4 +68,5 @@ public class AccountController(
         Console.WriteLine("User logged out.");
         return Ok();
     }
+    
 }

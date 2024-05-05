@@ -6,9 +6,9 @@ const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMyCors(myAllowSpecificOrigins);
+
 builder.Services.AddInfrastructure();
 builder.Services.AddWebServices();
-builder.Services.AddIdentity();
 
 builder.Services.AddControllers();
 
