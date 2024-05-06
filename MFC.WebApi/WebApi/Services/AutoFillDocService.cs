@@ -2,11 +2,11 @@ namespace WebApi.Services;
 
 using Microsoft.Office.Interop.Word;
 
-public class AutoStatementService
+public class AutoFillDocService
 {
     private readonly Application _application;
     
-    public AutoStatementService(string path)
+    public AutoFillDocService(string path)
     {
         _application = new Application();
 

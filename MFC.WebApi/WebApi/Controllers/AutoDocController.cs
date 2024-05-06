@@ -1,20 +1,24 @@
-using Domain.Entities;
-using Infrastructure.Identity;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using Domain.Entities;
+using Infrastructure.Identity;
 using WebApi.CustomActionResult;
 using WebApi.Services;
 
 namespace WebApi.Controllers;
 
-public class AutoFileController(
+[Route("api/[controller]")]
+[ApiController]
+public class AutoDocController(
     UserManager<StudentUser> studentManager,
     UserManager<EmployeeUser> employeeManager) : ControllerBase
 {
-    [Authorize(Roles = Role.Student)]
-    [HttpGet("student/{statementName}")]
-    public async Task<IActionResult> AutoStatement(string statementName = "test.docx", ServiceType type = ServiceType.StudentStatement)
+    [Authorize]
+    [HttpGet("{file}")]
+    public async Task<IActionResult> Auto(string file = "test.docx", ServiceType type = ServiceType.StudentStatement)
     {
         var current = await studentManager.GetUserAsync(User);
         if (current == null) return BadRequest("Пользователь не найден");
@@ -23,11 +27,11 @@ public class AutoFileController(
         
         try
         {
-            var path = FileService.PathToFile(statementName, ServiceDir.Dict[type]);
+            var path = SaveDirectory.PathToFile(type, file);;
             
             var tempFile = FileService.CopyFile(path);
             
-            var service = new AutoStatementService(tempFile);
+            var service = new AutoFillDocService(tempFile);
         
             service.ReplaceValue("<имя>", student.Name.First);
             service.ReplaceValue("<фамилия>", student.Name.Second);
@@ -38,7 +42,7 @@ public class AutoFileController(
             
             var fileStream = System.IO.File.OpenRead(tempFile);
             
-            return TempFileStreamResult.File(fileStream, "application/octet-stream", statementName, tempFile);
+            return TempFileStreamResult.File(fileStream, "application/octet-stream", file, tempFile);
         }
         catch (Exception e)
         {

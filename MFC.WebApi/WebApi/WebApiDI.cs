@@ -9,8 +9,7 @@ public static class WebApiDI
 {
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
-        services.AddTransient<IStatementService, StatementService>();
-        SaveDirectory.Restore();
+        services.AddTransient<IFileService, FileService>();
         
         services.AddIdentity();
         

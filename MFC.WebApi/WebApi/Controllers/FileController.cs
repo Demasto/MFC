@@ -1,26 +1,20 @@
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using WebApi.CustomActionResult;
-using WebApi.Services;
+using Microsoft.AspNetCore.Mvc;
+
+using Domain.Entities;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-
 [Route("api/[controller]")]
 [ApiController]
-public class StatementsController(IStatementService service) : ControllerBase
+public class FileController(IFileService service) : ControllerBase
 {
     [HttpGet]
-    public IActionResult GetFilesList()
+    public IActionResult GetFilesList(ServiceType type)
     {
         try
         {
-           var filesList = service.GetFilesList();
+           var filesList = service.GetFilesList(type);
            return Ok(filesList);
         }
         catch (Exception e)
@@ -31,11 +25,11 @@ public class StatementsController(IStatementService service) : ControllerBase
     }
     
     [HttpGet("{fileName}")]
-    public IActionResult GetFile(string fileName)
+    public IActionResult GetFile(string fileName, ServiceType type)
     {
         try
         {
-            var stream = service.ReadFileStream(fileName);
+            var stream = service.ReadFileStream(fileName, type);
             return File(stream, "application/octet-stream", fileName);
         }
         catch (Exception e)
@@ -48,7 +42,7 @@ public class StatementsController(IStatementService service) : ControllerBase
 
     
     [HttpPost]
-    public async Task<IActionResult> CreateFile(IFormFile file)
+    public async Task<IActionResult> CreateFile(IFormFile file, ServiceType type)
     {
         if (file.Length == 0)
         {
@@ -57,7 +51,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         
         try
         {
-            await service.CreateFile(file.FileName, file.OpenReadStream());
+            await service.CreateFile(file.FileName, file.OpenReadStream(), type);
             
             return Ok($"File {file.FileName} has been uploaded successfully.");
         }
@@ -69,7 +63,7 @@ public class StatementsController(IStatementService service) : ControllerBase
     }
     
     [HttpPut]
-    public async Task<IActionResult> UpdateFile(IFormFile file)
+    public async Task<IActionResult> UpdateFile(IFormFile file, ServiceType type)
     {
         if (file.Length == 0)
         {
@@ -78,7 +72,7 @@ public class StatementsController(IStatementService service) : ControllerBase
         
         try
         {
-            await service.UpdateFile(file.FileName, file.OpenReadStream());
+            await service.UpdateFile(file.FileName, file.OpenReadStream(), type);
             
             return Ok($"File {file.FileName} has been updated successfully.");
         }
@@ -89,12 +83,12 @@ public class StatementsController(IStatementService service) : ControllerBase
     }
     
     [HttpDelete]
-    public IActionResult DeleteFile(string fileName)
+    public IActionResult DeleteFile(string fileName, ServiceType type)
     {
         
         try
         {
-            service.DeleteFile(fileName);
+            service.DeleteFile(fileName, type);
             
             return Ok($"File {fileName} has been deleted successfully.");
         }

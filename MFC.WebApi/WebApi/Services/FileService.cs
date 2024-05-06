@@ -1,20 +1,70 @@
 using Domain.Entities;
+using WebApi.Services.Interfaces;
 
 namespace WebApi.Services;
 
-public static class FileService
+public class FileService : IFileService
 {
-    public static string PathToFile(string fileName, string dirName)
+    public FileService()
     {
-        var dir = Path.Combine(Directory.GetCurrentDirectory(), dirName);
-        return  Path.Combine(dir, fileName);
+        SaveDirectory.Restore();
     }
-    public static void FindOrThrow(string path)
+    
+    
+    public IEnumerable<string> GetFilesList(ServiceType type)
+    {
+        return SaveDirectory.Files(type);
+    }
+    
+    public async Task CreateFile(string fileName, Stream stream, ServiceType type)
+    {
+
+        var path = SaveDirectory.PathToFile(type, fileName);
+        
+        await CreateOrThrow(path, stream);
+    }
+    
+    public async Task UpdateFile(string fileName, Stream stream, ServiceType type)
+    {
+        var pathToFile = SaveDirectory.PathToFile(type, fileName);
+        
+        FindOrThrow(pathToFile);
+        
+        File.Delete(pathToFile);
+        
+        await using Stream outStream = File.OpenWrite(pathToFile);
+        await stream.CopyToAsync(outStream);
+    }
+    
+    public void DeleteFile(string fileName, ServiceType type)
+    {
+        var path = SaveDirectory.PathToFile(type, fileName);
+        
+        FindOrThrow(path);
+        
+        File.Delete(path);
+        
+    }
+    
+    
+    public FileStream ReadFileStream(string fileName, ServiceType type)
+    {
+        var path = SaveDirectory.PathToFile(type, fileName);
+        
+        FindOrThrow(path);
+        
+        return File.OpenRead(path);
+    }
+    
+    
+    
+ 
+    private static void FindOrThrow(string path)
     {
         if (!File.Exists(path))
             throw new FileNotFoundException("Такого файла не существует!");
     }
-    public static async Task CreateOrThrow(string path, Stream stream)
+    private static async Task CreateOrThrow(string path, Stream stream)
     {
         if (File.Exists(path)) 
             throw new Exception($"Файл {path} уже существует!");
@@ -34,57 +84,4 @@ public static class FileService
         Console.WriteLine(copy);
         return copy;
     }
-
-}
-public class SaveDirectory(ServiceType serviceType)
-{
-    private static readonly string SaveDir = Path.Combine(Directory.GetCurrentDirectory(), "files");
-    private readonly string _path = Path.Combine(SaveDir, ServiceDir.Dict[serviceType]);
-    
-    public static void Restore()
-    {
-        foreach (var (key, value) in ServiceDir.Dict)
-        {
-            RestoreDir(value);
-        }
-    }
-
-    private static void RestoreDir(string dirName)
-    {
-        var path = Path.Combine(SaveDir, dirName);
-
-        if (Directory.Exists(path)) return;
-
-        Directory.CreateDirectory(path);
-    }
-
-    public string PathToFile(string fileName)
-    {
-        return Path.Combine(_path, fileName);
-    }
-    
-    public List<string> Files()
-    {
-        return Directory
-            .GetFiles(_path)
-            .Select(ExtractFileName)
-            .ToList();
-    }
-    
-    
-    private static string ExtractFileName(string path)
-    {
-        if (path.Contains('\\'))
-        {
-            return path.Split('\\').Last();
-        }
-        if (path.Contains('/'))
-        {
-            return path.Split('/').Last();
-        }
-
-        return path;
-
-    }
-
 }
