@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 using Infrastructure.Identity;
 
-namespace WebApi.DTO;
+namespace Infrastructure.DTO;
 
 
 public class StudentDTO : AppUserDTO
@@ -13,6 +13,9 @@ public class StudentDTO : AppUserDTO
     public string DirectionOfStudy { get; set; } = "";
     [Required]
     public string ServiceNumber { get; set; } = "";
+    
+    public StudentDTO() {}
+    public StudentDTO(AppUserDTO user) : base(user) { }
 
     public new StudentUser ToIdentityUser()
     {

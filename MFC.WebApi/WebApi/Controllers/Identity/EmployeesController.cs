@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Infrastructure.Identity;
 
-using WebApi.DTO;
+using Infrastructure.DTO;
 
 
 namespace WebApi.Controllers.Identity;
@@ -19,7 +19,7 @@ public class EmployeesController(
     {
         var appUsers = await userManager.GetUsersInRoleAsync(Role.Employee);
         
-        var employees = appUsers.Select(user => user.ToEntity()).ToList();
+        var employees = appUsers.Select(user => user.ToDTO()).ToList();
 
         return Ok(employees);
     }

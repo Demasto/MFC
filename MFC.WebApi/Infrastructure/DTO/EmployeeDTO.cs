@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 using Infrastructure.Identity;
 
-namespace WebApi.DTO;
+namespace Infrastructure.DTO;
 
 
 public class EmployeeDTO : AppUserDTO
@@ -10,6 +10,8 @@ public class EmployeeDTO : AppUserDTO
     [Required]
     public string Post { get; set; } = "";
     
+    public EmployeeDTO() {}
+    public EmployeeDTO(AppUserDTO user) : base(user) { }
 
     public new EmployeeUser ToIdentityUser()
     {

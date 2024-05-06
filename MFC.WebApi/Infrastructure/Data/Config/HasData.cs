@@ -1,18 +1,19 @@
 using System.Text.Json;
-using Domain.Entities.Users;
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using Infrastructure.Identity;
+using Infrastructure.DTO;
 
 namespace Infrastructure.Data;
 
 public static class HasData
 {
-    public static ModelBuilder HasUser(this ModelBuilder builder, string userName, Name name, string sex, string userId, string roleId)
+    public static ModelBuilder HasUser(this ModelBuilder builder, string userName, NameDTO name, string sex, string userId, string roleId)
     {
         var hasher = new PasswordHasher<StudentUser>();
         var email = $"{userName}@example.com";
-        var passport = new Passport()
+        var passport = new PassportDTO()
         {
             Series = "4517",
             Number = "543254",
@@ -61,7 +62,7 @@ public static class HasData
         
         var hasher = new PasswordHasher<EmployeeUser>();
 
-        var passport = new Passport()
+        var passport = new PassportDTO()
         {
             Series = "4517",
             Number = "543254",
@@ -72,7 +73,7 @@ public static class HasData
             Citizenship = "Российская Федерация"
         };
         
-        var worker = new Name()
+        var worker = new NameDTO()
         {
             First = "Работник",
             Middle = "Институтович",

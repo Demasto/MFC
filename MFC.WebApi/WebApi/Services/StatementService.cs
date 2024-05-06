@@ -2,97 +2,31 @@ using WebApi.Services.Interfaces;
 
 namespace WebApi.Services;
 
-public static class SaveDirectory
-{
-    private static readonly string Path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "statements");
-    
-    public static void CheckDir()
-    {
-        if (Directory.Exists(Path)) return;
-        Directory.CreateDirectory(Path);
-    }
-    
-    public static string PathToFile(string fileName)
-    {
-        return System.IO.Path.Combine(Path, fileName);
-    }
-    
-    public static List<string> Files()
-    {
-        return Directory
-            .GetFiles(Path)
-            .Select(ExtractFileName)
-            .ToList();
-    }
-
-    public static string CopyFile(string fileName)
-    {
-        var path = PathToFile(fileName);
-        if (!File.Exists(path)) throw new FileNotFoundException();
-
-        var copy = System.IO.Path.GetTempFileName();
-        
-        
-        File.Copy(path, copy, true);
-        Console.WriteLine(copy);
-        return copy;
-    }
-    
-
-    public static void CanReadOrThrow(string fileName)
-    {
-        var path = PathToFile(fileName);
-        
-        if (!File.Exists(path))
-            throw new FileNotFoundException("Такого файла не существует!");
-    }
-    public static void CanWriteOrThrow(string fileName)
-    {
-        var path = PathToFile(fileName);
-        
-        if (File.Exists(path)) 
-            throw new Exception($"Файл {fileName} уже существует!");
-    }
-    
-    private static string ExtractFileName(string path)
-    {
-        if (path.Contains('\\'))
-        {
-            return path.Split('\\').Last();
-        }
-        if (path.Contains('/'))
-        {
-            return path.Split('/').Last();
-        }
-
-        return path;
-
-    }
-}
 public class StatementService : IStatementService
 {
+    private readonly SaveDirectory _saveDir = new("statements");
     public StatementService()
     {
-        SaveDirectory.CheckDir();
+        _saveDir.CheckDir();
     }
     
     public List<string> GetFilesList()
     {
-        return SaveDirectory.Files();
+        return _saveDir.Files();
     }
     
     public async Task CreateFile(string fileName, Stream stream)
     {
-        SaveDirectory.CanWriteOrThrow(fileName);
-        await using var outStream = File.OpenWrite(SaveDirectory.PathToFile(fileName));
-        await stream.CopyToAsync(outStream);
+        var path = _saveDir.PathToFile(fileName);
+        
+        FileService.CreateOrThrow(path, stream);
     }
     
     public async Task UpdateFile(string fileName, Stream stream)
     {
-        var pathToFile = SaveDirectory.PathToFile(fileName);
+        var pathToFile = _saveDir.PathToFile(fileName);
         
-        SaveDirectory.CanReadOrThrow(fileName);
+        FileService.FindOrThrow(pathToFile);
         
         File.Delete(pathToFile);
         
@@ -102,18 +36,21 @@ public class StatementService : IStatementService
     
     public void DeleteFile(string fileName)
     {
+        var path = _saveDir.PathToFile(fileName);
         
-        SaveDirectory.CanReadOrThrow(fileName);
+        FileService.FindOrThrow(path);
         
-        File.Delete(SaveDirectory.PathToFile(fileName));
+        File.Delete(path);
         
     }
     
     
     public FileStream ReadFileStream(string fileName)
     {
-        SaveDirectory.CanReadOrThrow(fileName);
+        var path = _saveDir.PathToFile(fileName);
         
-        return File.OpenRead(SaveDirectory.PathToFile(fileName));
+        FileService.FindOrThrow(path);
+        
+        return File.OpenRead(path);
     }
 }

@@ -1,4 +1,4 @@
-using Domain.Entities.Users;
+using Infrastructure.DTO;
 
 namespace Infrastructure.Identity;
 
@@ -9,9 +9,9 @@ public class EmployeeUser : AppUser
     public EmployeeUser() {}
     public EmployeeUser(AppUser appUser) : base(appUser) { }
 
-    public new Employee ToEntity()
+    public new EmployeeDTO ToDTO()
     {
-        return new Employee(base.ToEntity())
+        return new EmployeeDTO(base.ToDTO())
         {
             Post = Post
         };

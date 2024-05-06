@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Infrastructure.Identity;
-
-using WebApi.DTO;
+using Infrastructure.DTO;
 
 
 namespace WebApi.Controllers.Identity;
@@ -19,7 +18,7 @@ public class StudentsController(
     {
         var students = await userManager.GetUsersInRoleAsync(Role.Student);
         
-        var studentsListResponse = students.Select(user => user.ToEntity()).ToList();
+        var studentsListResponse = students.Select(user => user.ToDTO()).ToList();
 
         return Ok(studentsListResponse);
     }
@@ -32,7 +31,7 @@ public class StudentsController(
         if (student == null)
             return BadRequest($"Студента с номером {serviceNumber} не существует!");
 
-        return Ok(student.ToEntity());
+        return Ok(student.ToDTO());
     }
     
     [HttpPost]

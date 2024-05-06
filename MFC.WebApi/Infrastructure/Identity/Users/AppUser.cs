@@ -1,6 +1,6 @@
 using System.Text.Json;
-using Domain.Entities.Users;
 using Microsoft.AspNetCore.Identity;
+using Infrastructure.DTO;
 
 namespace Infrastructure.Identity;
 
@@ -29,13 +29,13 @@ public class AppUser : IdentityUser
     }
 
     
-    public User ToEntity()
+    public AppUserDTO ToDTO()
     {
-        return new User
+        return new AppUserDTO
         {
             UserName = UserName!,
-            Name = JsonSerializer.Deserialize<Name>(Name)!,
-            Passport = JsonSerializer.Deserialize<Passport>(Passport)!,
+            Name = JsonSerializer.Deserialize<NameDTO>(Name)!,
+            Passport = JsonSerializer.Deserialize<PassportDTO>(Passport)!,
             Email = Email!, 
             PhoneNumber = PhoneNumber!,
             Gender = Gender, 
@@ -44,4 +44,12 @@ public class AppUser : IdentityUser
         };
     }
     
+}
+
+public static class Valid
+{
+    public static string StringProperty(string? prop)
+    {
+        return prop ?? string.Empty;
+    }
 }

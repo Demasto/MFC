@@ -1,7 +1,6 @@
 using Infrastructure.Data;
 
 using Microsoft.Extensions.DependencyInjection;
-using Student = Infrastructure.Identity;
 
 namespace Infrastructure;
 

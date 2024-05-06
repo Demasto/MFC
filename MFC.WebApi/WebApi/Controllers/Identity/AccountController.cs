@@ -49,7 +49,7 @@ public class AccountController(
             throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
         }
             
-        var response = user.ToEntity().ToDictionary();
+        var response = user.ToDTO().ToDictionary();
         var roles = await userManager.GetRolesAsync(user);
         response["Role"] = roles.First();
 

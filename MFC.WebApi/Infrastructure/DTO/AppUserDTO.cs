@@ -3,7 +3,7 @@ using System.Text.Json;
 
 using Infrastructure.Identity;
 
-namespace WebApi.DTO;
+namespace Infrastructure.DTO;
 
 public class AppUserDTO
 {
@@ -28,6 +28,18 @@ public class AppUserDTO
     public NameDTO Name { get; set; } = new NameDTO();
     public PassportDTO Passport { get; set; } = new PassportDTO();
     
+    public AppUserDTO() {}
+    protected AppUserDTO(AppUserDTO user)
+    {
+        UserName = user.UserName;
+        Email = user.Email;
+        PhoneNumber = user.PhoneNumber;
+        Gender = user.Gender;
+        INN = user.INN;
+        SNILS = user.SNILS;
+        Name = user.Name;
+        Passport = user.Passport;
+    }
     
     public AppUser ToIdentityUser()
     {
@@ -41,6 +53,21 @@ public class AppUserDTO
             Name = JsonSerializer.Serialize(Name),
             Passport = JsonSerializer.Serialize(Passport)
         };
+    }
+    
+    public Dictionary<string, object?> ToDictionary()
+    {
+        var info = new Dictionary<string, object?>();
+        var obj = GetType();
+        var props = obj.GetProperties();
+        foreach (var property in props)
+        {
+            Console.WriteLine("property.GetValue(this)");
+            Console.WriteLine(property.GetValue(this));
+            info[property.Name] = property.GetValue(this);
+        }
+
+        return info;
     }
 }
 

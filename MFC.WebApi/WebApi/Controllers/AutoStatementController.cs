@@ -19,13 +19,16 @@ public class AutoStatementController(UserManager<StudentUser> userManager) : Con
     {
         var current = await userManager.GetUserAsync(User);
         if (current == null) return BadRequest("Пользователь не найден");
-        var student = current.ToEntity();
+        
+        var student = current.ToDTO();
         
         try
         {
-            var path = SaveDirectory.CopyFile(fileName);
+            var path = FileService.PathToFile(fileName, "statements");
             
-            var service = new AutoStatementService(path);
+            var tempFile = FileService.CopyFile(path);
+            
+            var service = new AutoStatementService(tempFile);
         
             service.ReplaceValue("<имя>", student.Name.First);
             service.ReplaceValue("<фамилия>", student.Name.Second);
@@ -34,9 +37,9 @@ public class AutoStatementController(UserManager<StudentUser> userManager) : Con
             
             service.CloseDocument();
             
-            var fileStream = System.IO.File.OpenRead(path);
+            var fileStream = System.IO.File.OpenRead(tempFile);
             
-            return TempFileStreamResult.File(fileStream, "application/octet-stream", fileName, path);
+            return TempFileStreamResult.File(fileStream, "application/octet-stream", fileName, tempFile);
         }
         catch (Exception e)
         {

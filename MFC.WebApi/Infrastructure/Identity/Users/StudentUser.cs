@@ -1,4 +1,4 @@
-using Domain.Entities.Users;
+using Infrastructure.DTO;
 
 namespace Infrastructure.Identity;
 
@@ -11,9 +11,9 @@ public class StudentUser : AppUser
     public StudentUser() {}
     public StudentUser(AppUser appUser) : base(appUser) { }
     
-    public new Student ToEntity()
+    public new StudentDTO ToDTO()
     {
-        return new Student(base.ToEntity())
+        return new StudentDTO(base.ToDTO())
         {
             Group = Group,
             DirectionOfStudy = DirectionOfStudy,

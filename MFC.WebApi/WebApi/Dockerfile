@@ -27,6 +27,6 @@ RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=fals
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ["WebApi/statements/test.docx", "statements/test.docx"]
+#COPY ["WebApi/statements/test.docx", "statements/test.docx"]
 
 ENTRYPOINT ["dotnet", "WebApi.dll"]

@@ -1,8 +1,6 @@
-using System.Text.Json;
-using Domain.Entities.Users;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+using Infrastructure.DTO;
 
 namespace Infrastructure.Data;
 
@@ -10,7 +8,7 @@ public static class DefaultUsers
 {
     public static ModelBuilder InitAdminAccount(this ModelBuilder builder)
     {
-        var name = new Name()
+        var name = new NameDTO()
         {
             First = "Admin",
             Middle = "Adminovich",
@@ -24,7 +22,7 @@ public static class DefaultUsers
 
     public static ModelBuilder InitStudents(this ModelBuilder builder)
     {
-        var dmitry = new Name()
+        var dmitry = new NameDTO()
         {
             First = "Дмитрий",
             Middle = "Михайлович",
@@ -34,7 +32,7 @@ public static class DefaultUsers
         
         builder.HasUser("Dmitry",  dmitry, "Мужской",UsersId.Dmitry, RolesId.Student);
         
-        var nastya = new Name()
+        var nastya = new NameDTO()
         {
             First = "Анастасия",
             Middle = "Витальевна",
