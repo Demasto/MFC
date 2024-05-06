@@ -1,30 +1,29 @@
+using Domain.Entities;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
-using Infrastructure.Identity;
-
 using WebApi.CustomActionResult;
 using WebApi.Services;
 
 namespace WebApi.Controllers;
 
-[Authorize]
-[Route("api/[controller]")]
-[ApiController]
-public class AutoStatementController(UserManager<StudentUser> userManager) : ControllerBase
+public class AutoFileController(
+    UserManager<StudentUser> studentManager,
+    UserManager<EmployeeUser> employeeManager) : ControllerBase
 {
-    [HttpGet("{fileName}")]
-    public async Task<IActionResult> GenerateStatement(string fileName = "test.docx")
+    [Authorize(Roles = Role.Student)]
+    [HttpGet("student/{statementName}")]
+    public async Task<IActionResult> AutoStatement(string statementName = "test.docx", ServiceType type = ServiceType.StudentStatement)
     {
-        var current = await userManager.GetUserAsync(User);
+        var current = await studentManager.GetUserAsync(User);
         if (current == null) return BadRequest("Пользователь не найден");
         
         var student = current.ToDTO();
         
         try
         {
-            var path = FileService.PathToFile(fileName, "statements");
+            var path = FileService.PathToFile(statementName, ServiceDir.Dict[type]);
             
             var tempFile = FileService.CopyFile(path);
             
@@ -39,7 +38,7 @@ public class AutoStatementController(UserManager<StudentUser> userManager) : Con
             
             var fileStream = System.IO.File.OpenRead(tempFile);
             
-            return TempFileStreamResult.File(fileStream, "application/octet-stream", fileName, tempFile);
+            return TempFileStreamResult.File(fileStream, "application/octet-stream", statementName, tempFile);
         }
         catch (Exception e)
         {

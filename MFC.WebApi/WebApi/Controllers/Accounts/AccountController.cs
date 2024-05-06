@@ -10,6 +10,8 @@ namespace WebApi.Controllers.Identity;
 [Route("api/[controller]/[action]")]
 public class AccountController(
     UserManager<AppUser> userManager, 
+    UserManager<StudentUser> studentManager, 
+    UserManager<EmployeeUser> employeManager, 
     SignInManager<AppUser> signInManager,
     IConfiguration configuration) : Controller
 {
@@ -43,18 +45,42 @@ public class AccountController(
     [HttpGet]
     public async Task<IActionResult> CurrentUser()
     {
-        var user = await userManager.GetUserAsync(User);
-        if (user == null)
+        
+        if (User.IsInRole(Role.Student))
         {
-            throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-        }
-            
-        var response = user.ToDTO().ToDictionary();
-        var roles = await userManager.GetRolesAsync(user);
-        response["Role"] = roles.First();
+            var student = await studentManager.GetUserAsync(User);
+            return Ok(student.ToDTO().ToDictionary());
 
-        return Ok(response);
+        }
+        else if (User.IsInRole(Role.Employee))
+        {
+            var employee = await employeManager.GetUserAsync(User);
+            return Ok(employee.ToDTO().ToDictionary());
+        }
+        else
+        {
+            var admin = await userManager.GetUserAsync(User);
+            return Ok(admin.ToDTO().ToDictionary());
+        }
+        
+
+        
+        // var response = user.ToDTO().ToDictionary();
+        // var roles = await userManager.GetRolesAsync(user);
+        // response["Role"] = roles.First();
+        //
+        // return Ok(response);
     }
+
+    // public async Task<IActionResult> GetUser<T>(T manager) where T : UserManager<T>
+    // {
+    //     var user = await manager.GetUserAsync(User);
+    //     
+    //     if (user == null)
+    //     {
+    //         throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+    //     }
+    // }
         
 
         

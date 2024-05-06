@@ -1,3 +1,5 @@
+using Domain.Entities;
+
 namespace WebApi.Services;
 
 public static class FileService
@@ -12,7 +14,7 @@ public static class FileService
         if (!File.Exists(path))
             throw new FileNotFoundException("Такого файла не существует!");
     }
-    public static async void CreateOrThrow(string path, Stream stream)
+    public static async Task CreateOrThrow(string path, Stream stream)
     {
         if (File.Exists(path)) 
             throw new Exception($"Файл {path} уже существует!");
@@ -34,16 +36,28 @@ public static class FileService
     }
 
 }
-public class SaveDirectory(string dirName)
+public class SaveDirectory(ServiceType serviceType)
 {
-    private readonly string _path = Path.Combine(Directory.GetCurrentDirectory(), dirName);
+    private static readonly string SaveDir = Path.Combine(Directory.GetCurrentDirectory(), "files");
+    private readonly string _path = Path.Combine(SaveDir, ServiceDir.Dict[serviceType]);
     
-    public void CheckDir()
+    public static void Restore()
     {
-        if (Directory.Exists(_path)) return;
-        Directory.CreateDirectory(_path);
+        foreach (var (key, value) in ServiceDir.Dict)
+        {
+            RestoreDir(value);
+        }
     }
-    
+
+    private static void RestoreDir(string dirName)
+    {
+        var path = Path.Combine(SaveDir, dirName);
+
+        if (Directory.Exists(path)) return;
+
+        Directory.CreateDirectory(path);
+    }
+
     public string PathToFile(string fileName)
     {
         return Path.Combine(_path, fileName);

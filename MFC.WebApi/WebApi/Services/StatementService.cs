@@ -1,13 +1,14 @@
+using Domain.Entities;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Services;
 
 public class StatementService : IStatementService
 {
-    private readonly SaveDirectory _saveDir = new("statements");
+    private readonly SaveDirectory _saveDir = new(ServiceType.StudentStatement);
     public StatementService()
     {
-        _saveDir.CheckDir();
+        
     }
     
     public List<string> GetFilesList()
@@ -19,7 +20,7 @@ public class StatementService : IStatementService
     {
         var path = _saveDir.PathToFile(fileName);
         
-        FileService.CreateOrThrow(path, stream);
+        await FileService.CreateOrThrow(path, stream);
     }
     
     public async Task UpdateFile(string fileName, Stream stream)

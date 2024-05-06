@@ -32,11 +32,6 @@
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     </ItemGroup>
     
-
-    <ItemGroup>
-      <Folder Include="statements\" />
-    </ItemGroup>
-    
     <ItemGroup>
         <Reference Include="office">
             <HintPath>..\.office\OFFICE.DLL</HintPath>
