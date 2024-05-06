@@ -29,7 +29,7 @@ public class AppUser : IdentityUser
     }
 
     
-    public AppUserDTO ToDTO()
+    public virtual AppUserDTO ToDTO()
     {
         return new AppUserDTO
         {

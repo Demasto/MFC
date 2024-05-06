@@ -7,33 +7,30 @@ using Infrastructure.Identity;
 using Infrastructure.DTO;
 
 
-namespace WebApi.Controllers.Identity;
+namespace WebApi.Controllers.Accounts;
 
 [Authorize(Roles = Role.Admin)]
 [Route("api/[controller]")]
 public class EmployeesController(
-    UserManager<EmployeeUser> userManager) : Controller
+    UserManager<EmployeeUser> employeeManager) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> GetEmployees()
+    public IActionResult GetEmployees()
     {
-        var appUsers = await userManager.GetUsersInRoleAsync(Role.Employee);
         
-        var employees = appUsers.Select(user => user.ToDTO()).ToList();
+        var employees = employeeManager.Users.Select(user => user.ToDTO());
 
         return Ok(employees);
     }
+
     
-    // [HttpGet("{serviceNumber}")]
-    // public async Task<IActionResult> FromServiceNumber(string serviceNumber)
-    // {
-    //     var appUsers = await userManager.GetUsersInRoleAsync(Role.Student);
-    //     var student = appUsers.FirstOrDefault(student => student.ServiceNumber == serviceNumber);
-    //     if (student == null)
-    //         return BadRequest($"Студента с номером {serviceNumber} не существует!");
-    //
-    //     return Ok(student.ToStudent());
-    // }
+    [HttpGet("fromPost")]
+    public IActionResult FromPost(string post = "")
+    {
+        var response = employeeManager.Users.Where(user => user.Post == post).Select(user => user.ToDTO());
+
+        return Ok(response);
+    }
     
     [HttpPost]
     public async Task<IActionResult> AddEmployee([FromBody] EmployeeDTO employeeDTO)
@@ -42,10 +39,10 @@ public class EmployeesController(
 
         try
         {
-            var result = await userManager.CreateAsync(user, employeeDTO.Password);
+            var result = await employeeManager.CreateAsync(user, employeeDTO.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
             
-            var addRoleResult = await userManager.AddToRoleAsync(user, Role.Employee);
+            var addRoleResult = await employeeManager.AddToRoleAsync(user, Role.Employee);
             if (!addRoleResult.Succeeded) return BadRequest(addRoleResult.Errors);
             
         }

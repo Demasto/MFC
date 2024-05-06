@@ -11,7 +11,7 @@ public class StudentUser : AppUser
     public StudentUser() {}
     public StudentUser(AppUser appUser) : base(appUser) { }
     
-    public new StudentDTO ToDTO()
+    public override StudentDTO ToDTO()
     {
         return new StudentDTO(base.ToDTO())
         {

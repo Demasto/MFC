@@ -4,16 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 
 using Infrastructure.Identity;
 
-namespace WebApi.Controllers.Identity;
+namespace WebApi.Controllers.Accounts;
 
 [Authorize]
 [Route("api/[controller]/[action]")]
 public class AccountController(
     UserManager<AppUser> userManager, 
     UserManager<StudentUser> studentManager, 
-    UserManager<EmployeeUser> employeManager, 
-    SignInManager<AppUser> signInManager,
-    IConfiguration configuration) : Controller
+    UserManager<EmployeeUser> employeeManager, 
+    SignInManager<AppUser> signInManager) : Controller
 {
 
     [HttpPost]
@@ -45,42 +44,40 @@ public class AccountController(
     [HttpGet]
     public async Task<IActionResult> CurrentUser()
     {
+        Dictionary<string, object?> response;
         
         if (User.IsInRole(Role.Student))
         {
-            var student = await studentManager.GetUserAsync(User);
-            return Ok(student.ToDTO().ToDictionary());
-
+            response = await GetUser(studentManager);
+            response["Role"] = Role.Student;
         }
         else if (User.IsInRole(Role.Employee))
         {
-            var employee = await employeManager.GetUserAsync(User);
-            return Ok(employee.ToDTO().ToDictionary());
+            response = await GetUser(employeeManager);
+            response["Role"] = Role.Employee;
         }
         else
         {
-            var admin = await userManager.GetUserAsync(User);
-            return Ok(admin.ToDTO().ToDictionary());
+            response = await GetUser(userManager);
+            response["Role"] = Role.Admin;
         }
-        
 
-        
-        // var response = user.ToDTO().ToDictionary();
-        // var roles = await userManager.GetRolesAsync(user);
-        // response["Role"] = roles.First();
-        //
-        // return Ok(response);
+        return Ok(response);
     }
 
-    // public async Task<IActionResult> GetUser<T>(T manager) where T : UserManager<T>
-    // {
-    //     var user = await manager.GetUserAsync(User);
-    //     
-    //     if (user == null)
-    //     {
-    //         throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-    //     }
-    // }
+    private async Task<Dictionary<string, object?>> GetUser<T>(UserManager<T> manager) where T : AppUser
+    {
+        
+        var user = await manager.GetUserAsync(User);
+        
+        if (user == null)
+        {
+            throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+        }
+        
+        return user.ToDTO().ToDictionary();
+
+    }
         
 
         

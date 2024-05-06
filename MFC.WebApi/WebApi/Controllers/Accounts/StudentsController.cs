@@ -6,28 +6,28 @@ using Infrastructure.Identity;
 using Infrastructure.DTO;
 
 
-namespace WebApi.Controllers.Identity;
+namespace WebApi.Controllers.Accounts;
 
 [Authorize(Roles = Role.Admin)]
 [Route("api/[controller]")]
 public class StudentsController(
-    UserManager<StudentUser> userManager) : Controller
+    UserManager<StudentUser> studentManager) : Controller
 {
     [HttpGet]
-    public async Task<IActionResult> GetStudents()
+    public IActionResult GetStudents()
     {
-        var students = await userManager.GetUsersInRoleAsync(Role.Student);
         
-        var studentsListResponse = students.Select(user => user.ToDTO()).ToList();
+        var studentsListResponse = studentManager.Users.Select(user => user.ToDTO());
 
         return Ok(studentsListResponse);
     }
     
     [HttpGet("{serviceNumber}")]
-    public async Task<IActionResult> FromServiceNumber(string serviceNumber)
+    public IActionResult FromServiceNumber(string serviceNumber)
     {
-        var appUsers = await userManager.GetUsersInRoleAsync(Role.Student);
-        var student = appUsers.FirstOrDefault(student => student.ServiceNumber == serviceNumber);
+        
+        var student = studentManager.Users.FirstOrDefault(student => student.ServiceNumber == serviceNumber);
+        
         if (student == null)
             return BadRequest($"Студента с номером {serviceNumber} не существует!");
 
@@ -41,10 +41,10 @@ public class StudentsController(
 
         try
         {
-            var result = await userManager.CreateAsync(user, studentDTO.Password);
+            var result = await studentManager.CreateAsync(user, studentDTO.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
             
-            var addRoleResult = await userManager.AddToRoleAsync(user, Role.Student);
+            var addRoleResult = await studentManager.AddToRoleAsync(user, Role.Student);
             if (!addRoleResult.Succeeded) return BadRequest(addRoleResult.Errors);
             
         }

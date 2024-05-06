@@ -62,8 +62,8 @@ public class AppUserDTO
         var props = obj.GetProperties();
         foreach (var property in props)
         {
-            Console.WriteLine("property.GetValue(this)");
-            Console.WriteLine(property.GetValue(this));
+            // Console.WriteLine("property.GetValue(this)");
+            // Console.WriteLine(property.GetValue(this));
             info[property.Name] = property.GetValue(this);
         }
 

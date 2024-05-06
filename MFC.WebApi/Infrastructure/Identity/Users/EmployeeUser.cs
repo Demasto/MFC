@@ -9,7 +9,7 @@ public class EmployeeUser : AppUser
     public EmployeeUser() {}
     public EmployeeUser(AppUser appUser) : base(appUser) { }
 
-    public new EmployeeDTO ToDTO()
+    public override EmployeeDTO ToDTO()
     {
         return new EmployeeDTO(base.ToDTO())
         {
