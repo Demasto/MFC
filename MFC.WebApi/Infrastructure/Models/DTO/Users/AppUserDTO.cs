@@ -62,9 +62,8 @@ public class AppUserDTO
         var props = obj.GetProperties();
         foreach (var property in props)
         {
-            // Console.WriteLine("property.GetValue(this)");
-            // Console.WriteLine(property.GetValue(this));
-            info[property.Name] = property.GetValue(this);
+            if(property.Name == "Password") continue;
+            info[property.Name.ToLower()] = property.GetValue(this);
         }
 
         return info;

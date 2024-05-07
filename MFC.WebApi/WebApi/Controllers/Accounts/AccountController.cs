@@ -49,17 +49,17 @@ public class AccountController(
         if (User.IsInRole(Role.Student))
         {
             response = await GetUser(studentManager);
-            response["Role"] = Role.Student;
+            response["role"] = Role.Student;
         }
         else if (User.IsInRole(Role.Employee))
         {
             response = await GetUser(employeeManager);
-            response["Role"] = Role.Employee;
+            response["role"] = Role.Employee;
         }
         else
         {
             response = await GetUser(userManager);
-            response["Role"] = Role.Admin;
+            response["role"] = Role.Admin;
         }
 
         return Ok(response);

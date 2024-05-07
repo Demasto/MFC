@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 using Infrastructure.Identity;
@@ -10,6 +11,8 @@ public class MfcContext : IdentityDbContext<AppUser>
     public MfcContext() { }
 
     public MfcContext(DbContextOptions<MfcContext> options) : base(options) { }
+    
+    public virtual DbSet<Service> Services { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
