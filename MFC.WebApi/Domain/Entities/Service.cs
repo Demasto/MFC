@@ -7,6 +7,7 @@ public class Service
     public string Description { get; set; } = null!;
     public string FileName { get; set; } = null!;
     public ServiceType Type { get; set; } = ServiceType.Certificate;
+    
 }
 
 public enum ServiceType

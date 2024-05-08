@@ -1,18 +1,20 @@
 using System.ComponentModel.DataAnnotations;
 
-using Infrastructure.Identity;
+using Domain.Entities.Users;
 
-namespace Infrastructure.DTO;
+namespace Domain.DTO.Users;
 
 
 public class StudentDTO : AppUserDTO
 {
     [Required]
+    public string ServiceNumber { get; set; } = "";
+    [Required]
     public string Group { get; set; } = "";
     [Required]
     public string DirectionOfStudy { get; set; } = "";
     [Required]
-    public string ServiceNumber { get; set; } = "";
+    public string FormOfStudy { get; set; } = "";
     
     public StudentDTO() {}
     public StudentDTO(AppUserDTO user) : base(user) { }
@@ -21,9 +23,10 @@ public class StudentDTO : AppUserDTO
     {
         return new StudentUser(base.ToIdentityUser())
         {
+            ServiceNumber = ServiceNumber,
             Group = Group,
             DirectionOfStudy = DirectionOfStudy,
-            ServiceNumber = ServiceNumber,
+            FormOfStudy = FormOfStudy
         };
     }
 }

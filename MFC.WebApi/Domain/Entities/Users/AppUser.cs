@@ -1,8 +1,8 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
-using Infrastructure.DTO;
 
-namespace Infrastructure.Identity;
+using Domain.DTO.Users;
+namespace Domain.Entities.Users;
 
 public class AppUser : IdentityUser
 {
@@ -13,6 +13,8 @@ public class AppUser : IdentityUser
     
     public string INN { get; set; } = "";
     public string SNILS { get; set; } = "";
+    
+    public List<Task> Tasks { get; set; } = new();
     
     public AppUser() {}
 

@@ -1,6 +1,5 @@
-using Infrastructure.DTO;
-
-namespace Infrastructure.Identity;
+using Domain.DTO.Users;
+namespace Domain.Entities.Users;
 
 public class EmployeeUser : AppUser
 {

@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Identity;
-using Infrastructure.Models.DTO;
 using Infrastructure.Repo;
+
+using Domain.Entities;
+using Domain.DTO;
 
 namespace WebApi.Controllers;
 
@@ -15,7 +16,13 @@ public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
     [HttpGet]
     public IActionResult GetServices()
     {
-        return Ok(serviceRepo.Get());
+        return Ok(serviceRepo.GetAll());
+    }
+    
+    [HttpGet("{serviceName}")]
+    public IActionResult Get(string serviceName)
+    {
+        return Ok(serviceRepo.Get(serviceName));
     }
     
     [HttpPost]

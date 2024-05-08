@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-using Infrastructure.Identity;
+using Domain.Entities.Users;
+using Task = Domain.Entities.Task;
 
 namespace Infrastructure.Data;
 
@@ -13,6 +14,7 @@ public class MfcContext : IdentityDbContext<AppUser>
     public MfcContext(DbContextOptions<MfcContext> options) : base(options) { }
     
     public virtual DbSet<Service> Services { get; set; }
+    public virtual DbSet<Task> Tasks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

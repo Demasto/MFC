@@ -1,5 +1,6 @@
 using Domain.Entities;
 using WebApi.Services.Interfaces;
+using Task = System.Threading.Tasks.Task;
 
 namespace WebApi.Services;
 

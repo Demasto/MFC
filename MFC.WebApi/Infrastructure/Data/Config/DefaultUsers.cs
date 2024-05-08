@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-using Infrastructure.DTO;
+using Domain.DTO.Users;
 
 namespace Infrastructure.Data;
 
@@ -46,8 +46,8 @@ public static class DefaultUsers
 public static class UsersId
 {
     public const string Admin = "c18be9c0-aa65-4af8-bd17-10bd9344e586";
-    public const string Dmitry = "b18be9c0-aa65-4af8-bd17-10bd9344e587";
-    public const string Shmebyulok = "b18be9c0-aa65-4af8-1d17-10bd9344e588";
+    public const string Dmitry = "c18be9c0-aa65-4af8-bd17-10bd9344e587";
+    public const string Shmebyulok = "c18be9c0-aa65-4af8-1d17-10bd9344e588";
     public const string Employee = "b18be9c0-aa65-4af8-bd17-10bd9344e588";
 
 }

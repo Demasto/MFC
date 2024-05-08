@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 
+using Domain.Entities.Users;
 using Infrastructure.Data;
-using Infrastructure.Identity;
+
 
 namespace WebApi.Configurations;
 

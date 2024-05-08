@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Entities;
-using Infrastructure.Identity;
+using Domain.Entities.Users;
 using WebApi.CustomActionResult;
 using WebApi.Services;
 

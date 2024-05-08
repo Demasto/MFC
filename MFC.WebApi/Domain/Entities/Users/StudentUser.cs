@@ -1,12 +1,13 @@
-using Infrastructure.DTO;
-
-namespace Infrastructure.Identity;
+using Domain.DTO.Users;
+namespace Domain.Entities.Users;
 
 public class StudentUser : AppUser
 {
+    public string ServiceNumber { get; set; } = null!;
     public string Group { get; set; } = null!;
     public string DirectionOfStudy { get; set; } = null!;
-    public string ServiceNumber { get; set; } = null!;
+    public string FormOfStudy { get; set; } = null!;
+
     
     public StudentUser() {}
     public StudentUser(AppUser appUser) : base(appUser) { }
@@ -17,7 +18,8 @@ public class StudentUser : AppUser
         {
             Group = Group,
             DirectionOfStudy = DirectionOfStudy,
-            ServiceNumber = ServiceNumber
+            ServiceNumber = ServiceNumber,
+            FormOfStudy = FormOfStudy
         };
     }
 

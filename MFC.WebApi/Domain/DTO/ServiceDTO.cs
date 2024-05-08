@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Domain.Entities;
 
-namespace Infrastructure.Models.DTO;
+namespace Domain.DTO;
 
 public class ServiceDTO
 {

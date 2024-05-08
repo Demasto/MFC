@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using Domain.Entities;
-using Infrastructure.Identity;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;

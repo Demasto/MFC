@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Identity;
-using Infrastructure.DTO;
+using Domain.Entities;
+using Domain.Entities.Users;
+using Domain.DTO.Users;
+
 
 
 namespace WebApi.Controllers.Accounts;

@@ -2,8 +2,8 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-using Infrastructure.Identity;
-using Infrastructure.DTO;
+using Domain.DTO.Users;
+using Domain.Entities.Users;
 
 namespace Infrastructure.Data;
 
@@ -70,6 +70,7 @@ public static class HasData
             Passport = JsonSerializer.Serialize(PassportDTO.Default()),
             Group = "УВП-411",
             DirectionOfStudy = "09.03.01",
+            FormOfStudy = "очная",
             ServiceNumber = "12345678",
             Gender = sex,
             INN = "7777065424",

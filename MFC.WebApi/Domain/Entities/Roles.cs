@@ -1,4 +1,4 @@
-namespace Infrastructure.Identity;
+namespace Domain.Entities;
 
 public static class Role
 {

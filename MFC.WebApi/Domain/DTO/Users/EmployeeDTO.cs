@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-using Infrastructure.Identity;
+using Domain.Entities.Users;
 
-namespace Infrastructure.DTO;
+namespace Domain.DTO.Users;
 
 
 public class EmployeeDTO : AppUserDTO
