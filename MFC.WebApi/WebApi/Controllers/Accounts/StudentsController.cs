@@ -10,8 +10,7 @@ namespace WebApi.Controllers.Accounts;
 
 [Authorize(Roles = Role.Admin)]
 [Route("api/[controller]")]
-public class StudentsController(
-    UserManager<StudentUser> studentManager) : Controller
+public class StudentsController(UserManager<StudentUser> studentManager) : ControllerBase
 {
     [HttpGet]
     public IActionResult GetStudents()

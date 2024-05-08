@@ -8,7 +8,7 @@ namespace WebApi.Controllers.Accounts;
 
 [Authorize]
 [Route("api/[controller]/[action]")]
-public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : Controller
+public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
 {
     [HttpPost]
     [AllowAnonymous]

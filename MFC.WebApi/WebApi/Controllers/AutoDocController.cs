@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +11,16 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AutoDocController(
-    UserManager<StudentUser> studentManager,
-    UserManager<EmployeeUser> employeeManager) : ControllerBase
+public class AutoDocController(UserManager<AppUser> userManager) : ControllerBase
 {
     [Authorize]
     [HttpGet("{type}/{file}")]
     public async Task<IActionResult> Auto(string file = "test.docx", ServiceType type = ServiceType.StudentStatement)
     {
-        var current = await studentManager.GetUserAsync(User);
+        var current = await userManager.GetUserAsync(User);
         if (current == null) return BadRequest("Пользователь не найден");
+        
+        // TODO var student = current as StudentUser;
         
         var student = current.ToDTO();
         

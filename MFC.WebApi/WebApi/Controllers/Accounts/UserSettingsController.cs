@@ -1,9 +1,9 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+using Infrastructure.Identity;
 
 namespace WebApi.Controllers.Accounts;
 

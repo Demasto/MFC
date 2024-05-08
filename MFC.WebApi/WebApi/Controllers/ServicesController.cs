@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 using Infrastructure.Identity;
 using Infrastructure.Models.DTO;
 using Infrastructure.Repo;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 

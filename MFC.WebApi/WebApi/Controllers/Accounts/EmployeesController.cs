@@ -12,7 +12,7 @@ namespace WebApi.Controllers.Accounts;
 [Authorize(Roles = Role.Admin)]
 [Route("api/[controller]")]
 public class EmployeesController(
-    UserManager<EmployeeUser> employeeManager) : Controller
+    UserManager<EmployeeUser> employeeManager) : ControllerBase
 {
     [HttpGet]
     public IActionResult GetEmployees()
