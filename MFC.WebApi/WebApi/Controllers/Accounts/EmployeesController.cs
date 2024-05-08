@@ -17,9 +17,8 @@ public class EmployeesController(
     [HttpGet]
     public IActionResult GetEmployees()
     {
-        
         var employees = employeeManager.Users.Select(user => user.ToDTO());
-
+        
         return Ok(employees);
     }
 

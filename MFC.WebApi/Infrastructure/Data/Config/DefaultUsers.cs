@@ -8,15 +8,7 @@ public static class DefaultUsers
 {
     public static ModelBuilder InitAdminAccount(this ModelBuilder builder)
     {
-        var name = new NameDTO()
-        {
-            First = "Admin",
-            Middle = "Adminovich",
-            Second = "Adminov"
-        };
-
-        builder.HasUser("admin",  name, "Мужской" , UsersId.Admin, RolesId.Admin);
-        
+        builder.HasAdmin();
         return builder;
     }
 
@@ -30,7 +22,7 @@ public static class DefaultUsers
         };
 
         
-        builder.HasUser("Dmitry",  dmitry, "Мужской",UsersId.Dmitry, RolesId.Student);
+        builder.HasStudent("Dmitry",  dmitry, "Мужской",UsersId.Dmitry, RolesId.Student);
         
         var nastya = new NameDTO()
         {
@@ -39,7 +31,7 @@ public static class DefaultUsers
             Second = "Константинова"
         };
         
-        builder.HasUser("Nastya",  nastya, "Женский", UsersId.Shmebyulok, RolesId.Student);
+        builder.HasStudent("Nastya",  nastya, "Женский", UsersId.Shmebyulok, RolesId.Student);
         
         return builder;
     }
@@ -53,7 +45,7 @@ public static class DefaultUsers
 
 public static class UsersId
 {
-    public const string Admin = "b18be9c0-aa65-4af8-bd17-10bd9344e586";
+    public const string Admin = "c18be9c0-aa65-4af8-bd17-10bd9344e586";
     public const string Dmitry = "b18be9c0-aa65-4af8-bd17-10bd9344e587";
     public const string Shmebyulok = "b18be9c0-aa65-4af8-1d17-10bd9344e588";
     public const string Employee = "b18be9c0-aa65-4af8-bd17-10bd9344e588";

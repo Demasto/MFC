@@ -9,20 +9,52 @@ namespace Infrastructure.Data;
 
 public static class HasData
 {
-    public static ModelBuilder HasUser(this ModelBuilder builder, string userName, NameDTO name, string sex, string userId, string roleId)
+    public static ModelBuilder HasAdmin(this ModelBuilder builder)
+    {
+        var hasher = new PasswordHasher<AppUser>();
+
+        const string userName = "admin";
+        const string email = "admin@example.com";
+        
+        var name = new NameDTO()
+        {
+            First = "Admin",
+            Middle = "Adminovich",
+            Second = "Adminov"
+        };
+        
+        var admin = new AppUser()
+        {
+            Id = UsersId.Admin,
+            UserName = userName,
+            NormalizedUserName = userName.ToUpper(),
+            Email = email,
+            NormalizedEmail = email.ToUpper(),
+            EmailConfirmed = false,
+            PasswordHash = hasher.HashPassword(null, $"{userName}123"),
+            SecurityStamp = string.Empty,
+            Name = JsonSerializer.Serialize(name),
+            Passport = JsonSerializer.Serialize(PassportDTO.Default()),
+            Gender = "admin",
+            INN = "7777065424",
+            SNILS = "375232753"
+        };
+        
+        builder.Entity<AppUser>().HasData(admin);
+        
+        builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+        {
+            RoleId = RolesId.Admin,
+            UserId = UsersId.Admin
+        });
+        
+        return builder;
+    }
+    public static ModelBuilder HasStudent(this ModelBuilder builder, string userName, NameDTO name, string sex, string userId, string roleId)
     {
         var hasher = new PasswordHasher<StudentUser>();
         var email = $"{userName}@example.com";
-        var passport = new PassportDTO()
-        {
-            Series = "4517",
-            Number = "543254",
-            UnitCode = "432-632",
-            PlaceOfBrith = "Г. Москва",
-            DateOfBrith = new DateOnly(2002, 02, 14),
-            DateOfIssue = new DateOnly(2024, 12, 03),
-            Citizenship = "Российская Федерация"
-        };
+
         
         var student = new StudentUser()
         {
@@ -35,7 +67,7 @@ public static class HasData
             PasswordHash = hasher.HashPassword(null, $"{userName}123"),
             SecurityStamp = string.Empty,
             Name = JsonSerializer.Serialize(name),
-            Passport = JsonSerializer.Serialize(passport),
+            Passport = JsonSerializer.Serialize(PassportDTO.Default()),
             Group = "УВП-411",
             DirectionOfStudy = "09.03.01",
             ServiceNumber = "12345678",
@@ -61,17 +93,6 @@ public static class HasData
         const string email = $"{userName}@example.com";
         
         var hasher = new PasswordHasher<EmployeeUser>();
-
-        var passport = new PassportDTO()
-        {
-            Series = "4517",
-            Number = "543254",
-            UnitCode = "432-632",
-            PlaceOfBrith = "Г. Москва",
-            DateOfBrith = new DateOnly(2002, 02, 14),
-            DateOfIssue = new DateOnly(2024, 12, 03),
-            Citizenship = "Российская Федерация"
-        };
         
         var worker = new NameDTO()
         {
@@ -91,7 +112,7 @@ public static class HasData
             PasswordHash = hasher.HashPassword(null, $"{userName}123"),
             SecurityStamp = string.Empty,
             Name = JsonSerializer.Serialize(worker),
-            Passport = JsonSerializer.Serialize(passport),
+            Passport = JsonSerializer.Serialize(PassportDTO.Default()),
             Post = "Доцент",
             Gender = "Мужской",
             INN = "7777065424",

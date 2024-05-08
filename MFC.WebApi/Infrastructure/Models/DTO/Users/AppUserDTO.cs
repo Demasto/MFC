@@ -90,4 +90,18 @@ public class PassportDTO
     public DateOnly DateOfIssue { get; set; }
     public string Citizenship { get; set; } = "";
 
+    public static PassportDTO Default()
+    {
+        return new PassportDTO()
+        {
+            Series = "4517",
+            Number = "543254",
+            UnitCode = "432-632",
+            PlaceOfBrith = "Г. Москва",
+            DateOfBrith = new DateOnly(2002, 02, 14),
+            DateOfIssue = new DateOnly(2024, 12, 03),
+            Citizenship = "Российская Федерация"
+        };
+    }
+
 }

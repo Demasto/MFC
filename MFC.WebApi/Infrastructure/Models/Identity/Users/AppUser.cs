@@ -43,7 +43,9 @@ public class AppUser : IdentityUser
             SNILS = SNILS,
         };
     }
-    
+
+    public virtual string UserRole { get; } =  Role.Admin;
+
 }
 
 public static class Valid

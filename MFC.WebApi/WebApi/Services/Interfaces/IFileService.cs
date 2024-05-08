@@ -4,11 +4,13 @@ namespace WebApi.Services.Interfaces;
 
 public interface IFileService
 {
-    public IEnumerable<string> GetFilesList(ServiceType type);
-    public Task CreateFile(string fileName, Stream stream, ServiceType type);
-    public Task UpdateFile(string fileName, Stream stream, ServiceType type);
-    public FileStream ReadFileStream(string fileName, ServiceType type);
-    public void DeleteFile(string fileName, ServiceType type);
+    public IEnumerable<string> GetAllFromType(ServiceType type);
+
+    public Task Create(string fileName, Stream stream, ServiceType type);
+    public FileStream Read(string fileName, ServiceType type);
+    public Task Update(string fileName, Stream stream, ServiceType type);
+
+    public void Delete(string fileName, ServiceType type);
 
     // void SaveFile
 }

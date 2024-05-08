@@ -10,21 +10,27 @@ public class FileService : IFileService
         SaveDirectory.Restore();
     }
     
-    
-    public IEnumerable<string> GetFilesList(ServiceType type)
+    public IEnumerable<string> GetAllFromType(ServiceType type)
     {
         return SaveDirectory.Files(type);
     }
     
-    public async Task CreateFile(string fileName, Stream stream, ServiceType type)
+    public async Task Create(string fileName, Stream stream, ServiceType type)
     {
 
         var path = SaveDirectory.PathToFile(type, fileName);
         
         await CreateOrThrow(path, stream);
     }
-    
-    public async Task UpdateFile(string fileName, Stream stream, ServiceType type)
+    public FileStream Read(string fileName, ServiceType type)
+    {
+        var path = SaveDirectory.PathToFile(type, fileName);
+        
+        FindOrThrow(path);
+        
+        return File.OpenRead(path);
+    }
+    public async Task Update(string fileName, Stream stream, ServiceType type)
     {
         var pathToFile = SaveDirectory.PathToFile(type, fileName);
         
@@ -36,7 +42,7 @@ public class FileService : IFileService
         await stream.CopyToAsync(outStream);
     }
     
-    public void DeleteFile(string fileName, ServiceType type)
+    public void Delete(string fileName, ServiceType type)
     {
         var path = SaveDirectory.PathToFile(type, fileName);
         
@@ -44,16 +50,6 @@ public class FileService : IFileService
         
         File.Delete(path);
         
-    }
-    
-    
-    public FileStream ReadFileStream(string fileName, ServiceType type)
-    {
-        var path = SaveDirectory.PathToFile(type, fileName);
-        
-        FindOrThrow(path);
-        
-        return File.OpenRead(path);
     }
     
     

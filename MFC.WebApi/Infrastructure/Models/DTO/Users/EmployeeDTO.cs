@@ -9,7 +9,8 @@ public class EmployeeDTO : AppUserDTO
 {
     [Required]
     public string Post { get; set; } = "";
-    
+    [Required]
+    public string Institute { get; set; } = "";
     public EmployeeDTO() {}
     public EmployeeDTO(AppUserDTO user) : base(user) { }
 
@@ -17,7 +18,8 @@ public class EmployeeDTO : AppUserDTO
     {
          return new EmployeeUser(base.ToIdentityUser())
          {
-             Post = Post
+             Post = Post,
+             Institute = Institute
          };
     }
   

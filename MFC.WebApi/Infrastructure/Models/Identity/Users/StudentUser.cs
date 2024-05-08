@@ -20,5 +20,6 @@ public class StudentUser : AppUser
             ServiceNumber = ServiceNumber
         };
     }
-    
+
+    public override string UserRole { get; } = Role.Student;
 }

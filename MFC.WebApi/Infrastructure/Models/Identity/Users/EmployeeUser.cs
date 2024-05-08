@@ -5,6 +5,7 @@ namespace Infrastructure.Identity;
 public class EmployeeUser : AppUser
 {
     public string Post { get; set; } = "";
+    public string Institute { get; set; } = "";
     
     public EmployeeUser() {}
     public EmployeeUser(AppUser appUser) : base(appUser) { }
@@ -13,7 +14,10 @@ public class EmployeeUser : AppUser
     {
         return new EmployeeDTO(base.ToDTO())
         {
-            Post = Post
+            Post = Post,
+            Institute = Institute
         };
     }
+    
+    public override string UserRole { get; } = Role.Employee;
 }

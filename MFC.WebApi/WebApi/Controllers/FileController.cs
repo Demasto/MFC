@@ -1,35 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Entities;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = Role.Admin)]
 public class FileController(IFileService service) : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetFilesList(ServiceType type)
+    
+    [HttpGet("{type}")]
+    public IActionResult GetFromType(ServiceType type)
     {
         try
         {
-           var filesList = service.GetFilesList(type);
-           return Ok(filesList);
+            var filesList = service.GetAllFromType(type);
+            return Ok(filesList);
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
         }
-        
     }
     
-    [HttpGet("{fileName}")]
-    public IActionResult GetFile(string fileName, ServiceType type)
+    [HttpGet("{type}/{fileName}")]
+    public IActionResult GetFromName(string fileName, ServiceType type)
     {
         try
         {
-            var stream = service.ReadFileStream(fileName, type);
+            var stream = service.Read(fileName, type);
             return File(stream, "application/octet-stream", fileName);
         }
         catch (Exception e)
@@ -51,7 +54,7 @@ public class FileController(IFileService service) : ControllerBase
         
         try
         {
-            await service.CreateFile(file.FileName, file.OpenReadStream(), type);
+            await service.Create(file.FileName, file.OpenReadStream(), type);
             
             return Ok($"File {file.FileName} has been uploaded successfully.");
         }
@@ -72,7 +75,7 @@ public class FileController(IFileService service) : ControllerBase
         
         try
         {
-            await service.UpdateFile(file.FileName, file.OpenReadStream(), type);
+            await service.Update(file.FileName, file.OpenReadStream(), type);
             
             return Ok($"File {file.FileName} has been updated successfully.");
         }
@@ -88,7 +91,7 @@ public class FileController(IFileService service) : ControllerBase
         
         try
         {
-            service.DeleteFile(fileName, type);
+            service.Delete(fileName, type);
             
             return Ok($"File {fileName} has been deleted successfully.");
         }

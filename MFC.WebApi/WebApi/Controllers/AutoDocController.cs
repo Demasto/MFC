@@ -17,7 +17,7 @@ public class AutoDocController(
     UserManager<EmployeeUser> employeeManager) : ControllerBase
 {
     [Authorize]
-    [HttpGet("{file}")]
+    [HttpGet("{type}/{file}")]
     public async Task<IActionResult> Auto(string file = "test.docx", ServiceType type = ServiceType.StudentStatement)
     {
         var current = await studentManager.GetUserAsync(User);

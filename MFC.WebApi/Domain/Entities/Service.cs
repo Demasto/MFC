@@ -14,8 +14,7 @@ public enum ServiceType
     Certificate,
     StudentStatement,
     EmployeeStatement,
-    Transfer,
-    Reinstatement,
+    TransferAndReinstatement
 }
 
 public static class ServiceDir
@@ -25,13 +24,11 @@ public static class ServiceDir
         [ServiceType.Certificate] = Certificate,
         [ServiceType.StudentStatement] = StudentStatement,
         [ServiceType.EmployeeStatement] = EmployeeStatement,
-        [ServiceType.Transfer] = Transfer,
-        [ServiceType.Reinstatement] = Reinstatement,
+        [ServiceType.TransferAndReinstatement] = TransferAndReinstatement,
         
     };
     private const string Certificate = "certificates";
     private const string StudentStatement = "student_statements";
     private const string EmployeeStatement = "employee_statements";
-    private const string Transfer = "transfers";
-    private const string Reinstatement = "reinstatement";
+    private const string TransferAndReinstatement = "transfers_and_reinstatement";
 }

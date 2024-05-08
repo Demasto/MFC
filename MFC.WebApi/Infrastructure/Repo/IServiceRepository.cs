@@ -9,4 +9,5 @@ public interface IServiceRepository
 
     public void Add(ServiceDTO service);
     public void Remove(string serviceName);
+    public void RemoveAll();
 }

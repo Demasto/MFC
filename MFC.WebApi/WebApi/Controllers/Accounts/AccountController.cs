@@ -8,35 +8,33 @@ namespace WebApi.Controllers.Accounts;
 
 [Authorize]
 [Route("api/[controller]/[action]")]
-public class AccountController(
-    UserManager<AppUser> userManager, 
-    UserManager<StudentUser> studentManager, 
-    UserManager<EmployeeUser> employeeManager, 
-    SignInManager<AppUser> signInManager) : Controller
+public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : Controller
 {
-
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Login(string userName = "admin", string password = "admin123")
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            
+        
         var result = await signInManager.PasswordSignInAsync(userName, password, true, lockoutOnFailure: false);
         var response = new Dictionary<string, object>();
         
-        var current = await userManager.GetUserAsync(User);
-        
-        if (current == null || result.Succeeded == false)
+        if (result.Succeeded == false)
         {
-            response["Result"] = false;
+            response["succeeded"] = false;
             return Ok(response);
         }
         
-        var role = await userManager.GetRolesAsync(current);
-        response["Result"] = result.Succeeded;
-        response["Role"] = role.First();
+        var current = await userManager.GetUserAsync(User);
         
+        if (current == null)
+        {
+            throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+        }
+        
+        response["succeeded"] = result.Succeeded;
+        response["role"] = current.UserRole;
         
         return Ok(response);
     }
@@ -44,39 +42,18 @@ public class AccountController(
     [HttpGet]
     public async Task<IActionResult> CurrentUser()
     {
-        Dictionary<string, object?> response;
         
-        if (User.IsInRole(Role.Student))
-        {
-            response = await GetUser(studentManager);
-            response["role"] = Role.Student;
-        }
-        else if (User.IsInRole(Role.Employee))
-        {
-            response = await GetUser(employeeManager);
-            response["role"] = Role.Employee;
-        }
-        else
-        {
-            response = await GetUser(userManager);
-            response["role"] = Role.Admin;
-        }
-
-        return Ok(response);
-    }
-
-    private async Task<Dictionary<string, object?>> GetUser<T>(UserManager<T> manager) where T : AppUser
-    {
-        
-        var user = await manager.GetUserAsync(User);
+        var user = await userManager.GetUserAsync(User);
         
         if (user == null)
         {
             throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
         }
-        
-        return user.ToDTO().ToDictionary();
 
+        var response = user.ToDTO().ToDictionary();
+        response["role"] = user.UserRole;
+        
+        return Ok(response);
     }
         
 
@@ -85,7 +62,6 @@ public class AccountController(
     public async Task<IActionResult> Logout()
     {
         await signInManager.SignOutAsync();
-        Console.WriteLine("User logged out.");
         return Ok();
     }
     
