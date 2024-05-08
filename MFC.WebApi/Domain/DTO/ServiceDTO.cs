@@ -18,10 +18,10 @@ public class ServiceDTO
     {
         return new Service()
         {
-            Name = Name,
+            Name = Name.ToLower(),
             Description = Description,
             Type = Type,
-            FileName = FileName
+            FileName = FileName.ToLower()
         };
     }
 }

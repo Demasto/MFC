@@ -45,7 +45,9 @@ public class AppUserDTO
     {
         return new AppUser() {
             UserName = UserName,
+            NormalizedEmail = UserName.ToUpper(),
             Email = Email,
+            NormalizedUserName = Email.ToUpper(),
             PhoneNumber = PhoneNumber,
             Gender = Gender,
             INN = INN,

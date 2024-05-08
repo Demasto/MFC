@@ -14,7 +14,6 @@ public static class HasData
         var hasher = new PasswordHasher<AppUser>();
 
         const string userName = "admin";
-        const string email = "admin@example.com";
         
         var name = new NameDTO()
         {
@@ -23,22 +22,12 @@ public static class HasData
             Second = "Adminov"
         };
         
-        var admin = new AppUser()
-        {
-            Id = UsersId.Admin,
-            UserName = userName,
-            NormalizedUserName = userName.ToUpper(),
-            Email = email,
-            NormalizedEmail = email.ToUpper(),
-            EmailConfirmed = false,
-            PasswordHash = hasher.HashPassword(null, $"{userName}123"),
-            SecurityStamp = string.Empty,
-            Name = JsonSerializer.Serialize(name),
-            Passport = JsonSerializer.Serialize(PassportDTO.Default()),
-            Gender = "admin",
-            INN = "7777065424",
-            SNILS = "375232753"
-        };
+        var admin = AppUser.Default(userName);
+        
+        admin.Id = UsersId.Admin;
+        admin.PasswordHash = hasher.HashPassword(null, $"{userName}123");
+        admin.Name = JsonSerializer.Serialize(name);
+        
         
         builder.Entity<AppUser>().HasData(admin);
         
@@ -50,31 +39,20 @@ public static class HasData
         
         return builder;
     }
-    public static ModelBuilder HasStudent(this ModelBuilder builder, string userName, NameDTO name, string sex, string userId, string roleId)
+    public static ModelBuilder HasStudent(this ModelBuilder builder, string userName, NameDTO name, string userId, string roleId)
     {
-        var hasher = new PasswordHasher<StudentUser>();
-        var email = $"{userName}@example.com";
-
         
-        var student = new StudentUser()
+        var student = new StudentUser(AppUser.Default(userName))
         {
             Id = userId,
-            UserName = userName,
-            NormalizedUserName = userName.ToUpper(),
-            Email = email,
-            NormalizedEmail = email.ToUpper(),
-            EmailConfirmed = false,
-            PasswordHash = hasher.HashPassword(null, $"{userName}123"),
-            SecurityStamp = string.Empty,
+            PasswordHash = new PasswordHasher<StudentUser>().HashPassword(null, $"{userName}123"),
             Name = JsonSerializer.Serialize(name),
-            Passport = JsonSerializer.Serialize(PassportDTO.Default()),
+            ServiceNumber = "12345678",
             Group = "УВП-411",
             DirectionOfStudy = "09.03.01",
-            FormOfStudy = "очная",
-            ServiceNumber = "12345678",
-            Gender = sex,
-            INN = "7777065424",
-            SNILS = "375232753"
+            FormOfStudy = FormOfStudy.Bachelor,
+            GapYearsCount = 0,
+            DateOfEnrollment = new DateOnly(2020, 8, 12),
         };
         
         builder.Entity<StudentUser>().HasData(student);

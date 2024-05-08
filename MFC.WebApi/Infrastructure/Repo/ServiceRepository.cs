@@ -19,6 +19,12 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
         if (service == null) throw new Exception("service not founded");
         return service;
     }
+
+    public bool Contain(string serviceName)
+    {
+        var service = context.Services.FirstOrDefault(service => service.Name == serviceName);
+        return service != null;
+    }
     public void Add(ServiceDTO dto)
     {
         context.Services.Add(dto.ToEntity());
@@ -34,7 +40,8 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
 
     public void RemoveAll()
     {
-        context.Services.ForEachAsync(service => context.Services.Remove(service));
+        context.Services.RemoveRange(context.Services);
+        // context.Services.ForEachAsync(service => context.Services.Remove(service));
         context.SaveChanges();
     }
 }

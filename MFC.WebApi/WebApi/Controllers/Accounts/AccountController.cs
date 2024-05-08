@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Entities.Users;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Controllers.Accounts;
 
 [Authorize]
 [Route("api/[controller]/[action]")]
-public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
+public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, MfcContext context) : ControllerBase
 {
     [HttpPost]
     [AllowAnonymous]
@@ -43,6 +45,7 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
     public async Task<IActionResult> CurrentUser()
     {
         
+        // var user = userManager.Users.Include(user => user.Tasks).FirstOrDefault(user => user.UserName == User.Identity.Name);
         var user = await userManager.GetUserAsync(User);
         
         if (user == null)
@@ -50,7 +53,12 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
             throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
         }
 
+       
         var response = user.ToDTO().ToDictionary();
+        
+        var userTasks = context.Tasks.Where(task => task.UserId == user.Id);
+        response["tasks"] = userTasks;
+        
         response["role"] = user.UserRole;
         
         return Ok(response);

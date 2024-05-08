@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MfcContext))]
-    [Migration("20240508104003_tasks2")]
-    partial class tasks2
+    [Migration("20240508211656_studentProps")]
+    partial class studentProps
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,21 +24,6 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("AppUserTask", b =>
-                {
-                    b.Property<long>("TasksId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("text");
-
-                    b.HasKey("TasksId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("AppUserTask");
-                });
 
             modelBuilder.Entity("Domain.Entities.Service", b =>
                 {
@@ -82,6 +67,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -183,19 +172,19 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c18be9c0-aa65-4af8-bd17-10bd9344e586",
+                            Id = "d28be9c0-aa65-4af8-bd17-10bd9344e586",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1d04fa3e-e395-4a01-a49f-ede2608cebd0",
+                            ConcurrencyStamp = "2f4c014e-9ae5-4113-bb78-a5ce9d124739",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
-                            Gender = "admin",
+                            Gender = "Мужской",
                             INN = "7777065424",
                             LockoutEnabled = false,
                             Name = "{\"First\":\"Admin\",\"Second\":\"Adminov\",\"Middle\":\"Adminovich\"}",
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHR8SqhWsV/1Kf3waB5J8HErFZWH6/1H8PDMU81b7C/pHOldEWfOucazU4VT7tTFoQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMRbXK+02tgNGdPSHs3QoUPj2tzfOr0ZaME2HCcjK8CSyEBl9KMvnXSYt0zmU8Qo8g==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
                             SecurityStamp = "",
@@ -339,22 +328,22 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "c18be9c0-aa65-4af8-bd17-10bd9344e586",
+                            UserId = "d28be9c0-aa65-4af8-bd17-10bd9344e586",
                             RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f446"
                         },
                         new
                         {
-                            UserId = "c18be9c0-aa65-4af8-bd17-10bd9344e587",
+                            UserId = "d28be9c0-aa65-4af8-bd17-10bd9344e587",
                             RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f447"
                         },
                         new
                         {
-                            UserId = "c18be9c0-aa65-4af8-1d17-10bd9344e588",
+                            UserId = "d28be9c0-aa65-4af8-1d17-10bd9344e588",
                             RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f447"
                         },
                         new
                         {
-                            UserId = "b18be9c0-aa65-4af8-bd17-10bd9344e588",
+                            UserId = "d28be9c0-aa65-4af8-bd17-10bd9344e588",
                             RoleId = "bd376a8f-9eab-4bb9-9fca-40b01540f448"
                         });
                 });
@@ -395,9 +384,9 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b18be9c0-aa65-4af8-bd17-10bd9344e588",
+                            Id = "d28be9c0-aa65-4af8-bd17-10bd9344e588",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4766231-b873-4774-9155-5fb377f4494a",
+                            ConcurrencyStamp = "5e5e1469-7cf7-49b8-b39a-35037814c663",
                             Email = "employee@example.com",
                             EmailConfirmed = false,
                             Gender = "Мужской",
@@ -407,7 +396,7 @@ namespace Infrastructure.Migrations
                             NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
                             NormalizedUserName = "EMPLOYEE",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ0eXkm4ReRAAfQTbNWY5ORvIn81taarI69OXNNfbrNjYSNCTdTd7Yz40mRdWX2lhg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHRRy86bvLzXe9Zs6u9EfQGj8/EwWxCa0QZwXa+hA86AX66cYreO6Krqyz8VrWNA1A==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
                             SecurityStamp = "",
@@ -422,13 +411,18 @@ namespace Infrastructure.Migrations
                 {
                     b.HasBaseType("Domain.Entities.Users.AppUser");
 
+                    b.Property<DateOnly>("DateOfEnrollment")
+                        .HasColumnType("date");
+
                     b.Property<string>("DirectionOfStudy")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FormOfStudy")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("FormOfStudy")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GapYearsCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Group")
                         .IsRequired()
@@ -443,69 +437,54 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c18be9c0-aa65-4af8-bd17-10bd9344e587",
+                            Id = "d28be9c0-aa65-4af8-bd17-10bd9344e587",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "faa7c655-362a-4660-bc59-5d07e5a21978",
+                            ConcurrencyStamp = "240b035c-6e65-49f5-bd0b-28edbba27c19",
                             Email = "Dmitry@example.com",
                             EmailConfirmed = false,
                             Gender = "Мужской",
                             INN = "7777065424",
                             LockoutEnabled = false,
                             Name = "{\"First\":\"\\u0414\\u043C\\u0438\\u0442\\u0440\\u0438\\u0439\",\"Second\":\"\\u0411\\u043E\\u043B\\u0442\\u0430\\u0447\\u0435\\u0432\",\"Middle\":\"\\u041C\\u0438\\u0445\\u0430\\u0439\\u043B\\u043E\\u0432\\u0438\\u0447\"}",
-                            NormalizedEmail = "DMITRY@EXAMPLE.COM",
-                            NormalizedUserName = "DMITRY",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOHFOnWWnbujuBKlbOC1RgInu+A6BMsN5yjfuGVumPUTFa8rHWdBHhlQ58tBmOB5xQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKo8365lyTATq58VKmUtkfqoPS1SryIDYTdUBh3NN2uBMGhsdI5aGK3kJrQM3lkIaA==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
-                            SecurityStamp = "",
+                            SecurityStamp = "98426109-ea48-4d27-aa67-70b1b00481b4",
                             TwoFactorEnabled = false,
                             UserName = "Dmitry",
+                            DateOfEnrollment = new DateOnly(2020, 8, 12),
                             DirectionOfStudy = "09.03.01",
-                            FormOfStudy = "очная",
+                            FormOfStudy = 0,
+                            GapYearsCount = 0,
                             Group = "УВП-411",
                             ServiceNumber = "12345678"
                         },
                         new
                         {
-                            Id = "c18be9c0-aa65-4af8-1d17-10bd9344e588",
+                            Id = "d28be9c0-aa65-4af8-1d17-10bd9344e588",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0973f867-c908-4a7f-b0d1-688d5355c956",
+                            ConcurrencyStamp = "90106a01-b579-45c9-b35d-8d3331e26525",
                             Email = "Nastya@example.com",
                             EmailConfirmed = false,
-                            Gender = "Женский",
+                            Gender = "Мужской",
                             INN = "7777065424",
                             LockoutEnabled = false,
                             Name = "{\"First\":\"\\u0410\\u043D\\u0430\\u0441\\u0442\\u0430\\u0441\\u0438\\u044F\",\"Second\":\"\\u041A\\u043E\\u043D\\u0441\\u0442\\u0430\\u043D\\u0442\\u0438\\u043D\\u043E\\u0432\\u0430\",\"Middle\":\"\\u0412\\u0438\\u0442\\u0430\\u043B\\u044C\\u0435\\u0432\\u043D\\u0430\"}",
-                            NormalizedEmail = "NASTYA@EXAMPLE.COM",
-                            NormalizedUserName = "NASTYA",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI/SAbvIOlcunLbvd7yGQPhIPiBaP0rlAxXKzUU3yCkYufOcHiFtCbiFcpa/NNynog==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECrhfFQcVmtV+HN1IZNQLaC9puxCFfVWM0GuBP30vV//WSF2amilg3IzGI4xeZU2nQ==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
-                            SecurityStamp = "",
+                            SecurityStamp = "96e2e157-2f4a-449e-bfa5-b5e758d9af50",
                             TwoFactorEnabled = false,
                             UserName = "Nastya",
+                            DateOfEnrollment = new DateOnly(2020, 8, 12),
                             DirectionOfStudy = "09.03.01",
-                            FormOfStudy = "очная",
+                            FormOfStudy = 0,
+                            GapYearsCount = 0,
                             Group = "УВП-411",
                             ServiceNumber = "12345678"
                         });
-                });
-
-            modelBuilder.Entity("AppUserTask", b =>
-                {
-                    b.HasOne("Domain.Entities.Task", null)
-                        .WithMany()
-                        .HasForeignKey("TasksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Users.AppUser", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

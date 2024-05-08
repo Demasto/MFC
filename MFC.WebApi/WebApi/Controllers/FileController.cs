@@ -31,7 +31,7 @@ public class FileController(IFileService service) : ControllerBase
     {
         try
         {
-            var stream = service.Read(fileName, type);
+            var stream = service.Read(fileName.ToLower(), type);
             return File(stream, "application/octet-stream", fileName);
         }
         catch (Exception e)
@@ -53,7 +53,7 @@ public class FileController(IFileService service) : ControllerBase
         
         try
         {
-            await service.Create(file.FileName, file.OpenReadStream(), type);
+            await service.Create(file.FileName.ToLower(), file.OpenReadStream(), type);
             
             return Ok($"File {file.FileName} has been uploaded successfully.");
         }
@@ -74,7 +74,7 @@ public class FileController(IFileService service) : ControllerBase
         
         try
         {
-            await service.Update(file.FileName, file.OpenReadStream(), type);
+            await service.Update(file.FileName.ToLower(), file.OpenReadStream(), type);
             
             return Ok($"File {file.FileName} has been updated successfully.");
         }
@@ -90,7 +90,7 @@ public class FileController(IFileService service) : ControllerBase
         
         try
         {
-            service.Delete(fileName, type);
+            service.Delete(fileName.ToLower(), type);
             
             return Ok($"File {fileName} has been deleted successfully.");
         }

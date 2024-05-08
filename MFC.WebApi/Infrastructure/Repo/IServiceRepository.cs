@@ -8,6 +8,7 @@ public interface IServiceRepository
     public List<Service> GetAll();
     
     public Service Get(string serviceName);
+    public bool Contain(string serviceName);
 
     public void Add(ServiceDTO service);
     public void Remove(string serviceName);

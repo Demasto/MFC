@@ -10,7 +10,7 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = Role.Admin)]
+[Authorize]
 public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
 {
     [HttpGet]
@@ -25,6 +25,7 @@ public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
         return Ok(serviceRepo.Get(serviceName));
     }
     
+    [Authorize(Roles = Role.Admin)]
     [HttpPost]
     public IActionResult AddService([FromBody] ServiceDTO serviceDTO)
     {
@@ -33,6 +34,7 @@ public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
         return Ok();
     }
     
+    [Authorize(Roles = Role.Admin)]
     [HttpDelete]
     public IActionResult DeleteService(string fileName)
     {
@@ -40,6 +42,7 @@ public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
         return Ok();
     }
     
+    [Authorize(Roles = Role.Admin)]
     [HttpDelete("clear_dataBase")]
     public IActionResult RemoveAllService()
     {

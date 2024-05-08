@@ -14,7 +14,11 @@ public class StudentDTO : AppUserDTO
     [Required]
     public string DirectionOfStudy { get; set; } = "";
     [Required]
-    public string FormOfStudy { get; set; } = "";
+    public FormOfStudy FormOfStudy { get; set; } = FormOfStudy.Bachelor;
+    [Required]
+    public DateOnly DateOfEnrollment  { get; set; }
+    [Required]
+    public int GapYearsCount { get; set; }
     
     public StudentDTO() {}
     public StudentDTO(AppUserDTO user) : base(user) { }
@@ -26,8 +30,17 @@ public class StudentDTO : AppUserDTO
             ServiceNumber = ServiceNumber,
             Group = Group,
             DirectionOfStudy = DirectionOfStudy,
-            FormOfStudy = FormOfStudy
+            FormOfStudy = FormOfStudy,
+            DateOfEnrollment = DateOfEnrollment,
+            GapYearsCount = GapYearsCount
         };
     }
+}
+
+public enum FormOfStudy
+{
+    Bachelor,
+    Specialty,
+    Magistracy
 }
 

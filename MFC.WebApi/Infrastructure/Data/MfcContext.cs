@@ -20,6 +20,7 @@ public class MfcContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
         builder.Seed();
+        
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,7 +28,7 @@ public class MfcContext : IdentityDbContext<AppUser>
         base.OnConfiguring(optionsBuilder);
 
         var connectionsStr = Environment.GetEnvironmentVariable("DATABASE_CONNECT") ??
-                             "Server=localhost;Port=5432;Database=MFC_DB;User Id=postgres;Password=postgres";
+                             "Server=localhost;Port=5432;Database=MFC;User Id=postgres;Password=postgres";
 
         
         optionsBuilder.UseNpgsql(connectionsStr);

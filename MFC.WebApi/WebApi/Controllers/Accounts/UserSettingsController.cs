@@ -16,8 +16,8 @@ public class UserSettingsController(UserManager<AppUser> userManager) : Controll
     {
         var user = await userManager.GetUserAsync(User);
         if (user == null) return BadRequest("Пользователь не авторизован");
-        var token = await userManager.GenerateChangeEmailTokenAsync(user, newEmail);
-        var result = await userManager.ChangeEmailAsync(user, newEmail, token);
+        
+        var result = await userManager.SetEmailAsync(user, newEmail);
         return Ok(result);
     }
     
