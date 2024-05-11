@@ -14,7 +14,7 @@ elseif ($action -eq "add") {
 }
 elseif ($action -eq "dump") {
     Set-Location "D:\RUT\DB\pgsql\bin"
-    ./pg_dump.exe -d MFC_DB -U postgres -E UTF-8 -f "D:\RUT\DIPLOM\MFC\MFC.WebApi\MFC.sql"
+    ./pg_dump.exe -d MFC -U postgres -E UTF-8 -f "D:\RUT\DIPLOM\MFC\MFC.WebApi\MFC.sql"
     Write-Warning "Nice Dick"
     Set-Location "D:\RUT\DIPLOM\MFC\MFC.WebApi"
 }

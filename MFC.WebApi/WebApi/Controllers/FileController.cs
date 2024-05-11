@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using Domain.Entities;
+using WebApi.Services;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
@@ -93,6 +94,22 @@ public class FileController(IFileService service) : ControllerBase
             service.Delete(fileName.ToLower(), type);
             
             return Ok($"File {fileName} has been deleted successfully.");
+        }
+        catch (Exception e)
+        {
+            return ExtractActionResult(e);
+        }
+    }
+    
+    [HttpDelete("all")]
+    public IActionResult DeleteAll()
+    {
+        
+        try
+        {
+            SaveDirectory.DeleteAll();
+            
+            return Ok();
         }
         catch (Exception e)
         {

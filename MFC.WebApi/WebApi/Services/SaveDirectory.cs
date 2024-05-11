@@ -6,6 +6,11 @@ public static class SaveDirectory
 {
     private static readonly string RootSaveDir = Path.Combine(Directory.GetCurrentDirectory(), "files");
 
+    public static void DeleteAll()
+    {
+        Directory.Delete(RootSaveDir, true);
+    }
+
     private static string SaveDirPath(ServiceType serviceType)
     {
         return Path.Combine(RootSaveDir, ServiceDir.Dict[serviceType]);

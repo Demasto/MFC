@@ -25,6 +25,14 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
         var service = context.Services.FirstOrDefault(service => service.Name == serviceName);
         return service != null;
     }
+
+    public bool Switch(string serviceName)
+    {
+        var service = Get(serviceName);
+        service.OnPublic = !service.OnPublic;
+        context.SaveChanges();
+        return service.OnPublic;
+    }
     public void Add(ServiceDTO dto)
     {
         context.Services.Add(dto.ToEntity());

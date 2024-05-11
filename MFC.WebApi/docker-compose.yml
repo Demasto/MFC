@@ -37,7 +37,7 @@ services:
     networks:
       - app-network
     environment:
-      DATABASE_CONNECT: "Server=postgres;Port=5432;Database=MFC_DB;User Id=postgres;Password=postgres"
+      DATABASE_CONNECT: "Server=postgres;Port=5432;Database=MFC;User Id=postgres;Password=postgres"
       ASPNETCORE_HTTP_PORTS: "80"
       
       

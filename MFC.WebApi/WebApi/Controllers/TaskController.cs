@@ -24,6 +24,7 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     {
         return Ok(context.Tasks.ToList());
     }
+    
     [HttpGet("from_current_user")]
     [Authorize]
     public async Task<IActionResult> GetFromUser()
@@ -58,7 +59,7 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
 
         if (!serviceRepo.Contain(serviceName)) return BadRequest($"Услуги с названием '{serviceName}' не существует.");
         
-        await context.Tasks.AddAsync(new Domain.Entities.Task()
+        await context.Tasks.AddAsync(new Task()
         {
             UserId = userId,
             ServiceName = serviceName

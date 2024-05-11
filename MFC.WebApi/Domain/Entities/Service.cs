@@ -5,8 +5,9 @@ public class Service
     public int Id { get; set; }
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
-    public string FileName { get; set; } = null!;
+    public bool OnPublic { get; set; }
     public ServiceType Type { get; set; } = ServiceType.Certificate;
+
     
 }
 

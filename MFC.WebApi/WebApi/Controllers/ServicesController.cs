@@ -10,7 +10,6 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
 public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
 {
     [HttpGet]
@@ -35,10 +34,23 @@ public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
     }
     
     [Authorize(Roles = Role.Admin)]
-    [HttpDelete]
-    public IActionResult DeleteService(string fileName)
+    [HttpPut("switch_state/{serviceName}")]
+    public IActionResult SwitchState(string serviceName)
     {
-        serviceRepo.Remove(fileName);
+        var response = new Dictionary<string, bool>
+        {
+            ["succeeded"] = true,
+            ["current_state"] = serviceRepo.Switch(serviceName)
+        };
+
+        return Ok(response);
+    }
+    
+    [Authorize(Roles = Role.Admin)]
+    [HttpDelete("{serviceName}")]
+    public IActionResult DeleteService(string serviceName)
+    {
+        serviceRepo.Remove(serviceName);
         return Ok();
     }
     
