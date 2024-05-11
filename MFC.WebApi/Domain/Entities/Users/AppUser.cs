@@ -2,6 +2,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 
 using Domain.DTO.Users;
+
 namespace Domain.Entities.Users;
 
 public class AppUser : IdentityUser
@@ -17,11 +18,12 @@ public class AppUser : IdentityUser
     // public List<Task> Tasks { get; set; } = new();
     
     public AppUser() {}
+    
 
     protected AppUser(AppUser appUser)
     {
         UserName = appUser.UserName;
-        NormalizedUserName = appUser.NormalizedEmail;
+        NormalizedUserName = appUser.NormalizedUserName;
         Email = appUser.Email;
         NormalizedEmail = appUser.NormalizedEmail;
         PhoneNumber = appUser.PhoneNumber;
@@ -69,12 +71,4 @@ public class AppUser : IdentityUser
         };
     }
 
-}
-
-public static class Valid
-{
-    public static string StringProperty(string? prop)
-    {
-        return prop ?? string.Empty;
-    }
 }

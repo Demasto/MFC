@@ -1,7 +1,7 @@
 using Domain.DTO.Users;
 namespace Domain.Entities.Users;
 
-public class EmployeeUser : AppUser
+public sealed class EmployeeUser : AppUser
 {
     public string Post { get; set; } = "";
     public string Institute { get; set; } = "";

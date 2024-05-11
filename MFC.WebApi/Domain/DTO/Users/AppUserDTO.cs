@@ -41,7 +41,7 @@ public class AppUserDTO
         Passport = user.Passport;
     }
     
-    public AppUser ToIdentityUser()
+    protected AppUser ToIdentityUser()
     {
         return new AppUser() {
             UserName = UserName,

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Domain.Entities.Users;
 using Domain.DTO.Users;
-
+using WebApi.CustomActionResult;
 
 
 namespace WebApi.Controllers.Accounts;
@@ -39,22 +39,13 @@ public class StudentsController(UserManager<StudentUser> studentManager) : Contr
     public async Task<IActionResult> AddStudent([FromBody] StudentDTO studentDTO)
     {
         var user = studentDTO.ToIdentityUser();
-
-        try
-        {
-            var result = await studentManager.CreateAsync(user, studentDTO.Password);
-            if (!result.Succeeded) return BadRequest(result.Errors);
-            
-            var addRoleResult = await studentManager.AddToRoleAsync(user, Role.Student);
-            if (!addRoleResult.Succeeded) return BadRequest(addRoleResult.Errors);
-            
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return BadRequest(e.GetType().Name);
-        }
         
-        return Ok();
+        var result = await studentManager.CreateAsync(user, studentDTO.Password);
+        if (!result.Succeeded) return Ok(result);
+            
+        var addRoleResult = await studentManager.AddToRoleAsync(user, Role.Student);
+        if (!addRoleResult.Succeeded) return Ok(result);
+        
+        return Ok(ApiResults.Ok());
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
 using Domain.Entities.Users;
 using Domain.DTO.Users;
+using WebApi.CustomActionResult;
 
 
 namespace WebApi.Controllers.Accounts;
@@ -36,21 +37,14 @@ public class EmployeesController(
     {
         var user = employeeDTO.ToIdentityUser();
 
-        try
-        {
-            var result = await employeeManager.CreateAsync(user, employeeDTO.Password);
-            if (!result.Succeeded) return BadRequest(result.Errors);
+      
+        var result = await employeeManager.CreateAsync(user, employeeDTO.Password);
+        if (!result.Succeeded) return Ok(result);
             
-            var addRoleResult = await employeeManager.AddToRoleAsync(user, Role.Employee);
-            if (!addRoleResult.Succeeded) return BadRequest(addRoleResult.Errors);
-            
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return BadRequest(e.GetType().Name);
-        }
+        var addRoleResult = await employeeManager.AddToRoleAsync(user, Role.Employee);
+        if (!addRoleResult.Succeeded) return Ok(addRoleResult);
         
-        return Ok();
+        
+        return Ok(ApiResults.Ok());
     }
 }

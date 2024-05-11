@@ -18,7 +18,7 @@ services:
     networks:
       - app-network
     environment:
-      POSTGRES_DB: "MFC_DB"
+      POSTGRES_DB: "MFC"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"

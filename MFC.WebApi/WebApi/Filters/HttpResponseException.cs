@@ -1,11 +1,23 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+
 namespace WebApi.Filters;
 
-public class HttpResponseException : Exception
+public sealed class CustomExceptionFilterAttribute : Attribute, IExceptionFilter
 {
-    public HttpResponseException(int statusCode, object? value = null) =>
-        (StatusCode, Value) = (statusCode, value);
-
-    public int StatusCode { get; }
-
-    public object? Value { get; }
+    public void OnException(ExceptionContext context)
+    {
+        var actionName = context.ActionDescriptor.DisplayName;
+        var exceptionMessage = context.Exception.Message;
+        
+        var response = new Dictionary<string, object?>
+        {
+            ["succeeded"] = false,
+            ["error_message"] = exceptionMessage,
+            ["action_name"] = actionName,
+        };
+        
+        context.Result = new ObjectResult(response);
+        context.ExceptionHandled = true;
+    }
 }

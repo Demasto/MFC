@@ -2,8 +2,6 @@ using Domain.DTO;
 using Domain.Entities;
 using Infrastructure.Data;
 
-using Microsoft.EntityFrameworkCore;
-
 namespace Infrastructure.Repo;
 
 public class ServiceRepository(MfcContext context) : IServiceRepository
@@ -16,7 +14,7 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
     public Service Get(string serviceName)
     {
         var service = context.Services.FirstOrDefault(service => service.Name == serviceName);
-        if (service == null) throw new Exception("service not founded");
+        if (service == null) throw new Exception("Такой услуги не существует!");
         return service;
     }
 
@@ -35,13 +33,15 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
     }
     public void Add(ServiceDTO dto)
     {
+        if (Contain(dto.Name))
+            throw new Exception("Такая услуга уже существует!");
+        
         context.Services.Add(dto.ToEntity());
         context.SaveChanges();
     }
     public void Remove(string serviceName)
     {
-        var service = context.Services.FirstOrDefault(service => service.Name == serviceName);
-        if (service == null) throw new Exception("service not founded");
+        var service = Get(serviceName);
         context.Services.Remove(service);
         context.SaveChanges();
     }
@@ -49,7 +49,6 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
     public void RemoveAll()
     {
         context.Services.RemoveRange(context.Services);
-        // context.Services.ForEachAsync(service => context.Services.Remove(service));
         context.SaveChanges();
     }
 }

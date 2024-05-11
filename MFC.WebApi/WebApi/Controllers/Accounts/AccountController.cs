@@ -1,39 +1,34 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Entities.Users;
 using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using WebApi.CustomActionResult;
+using WebApi.Filters;
 
 namespace WebApi.Controllers.Accounts;
 
-[Authorize]
+[CustomExceptionFilter]
 [Route("api/[controller]/[action]")]
 public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, MfcContext context) : ControllerBase
 {
     [HttpPost]
-    [AllowAnonymous]
     public async Task<IActionResult> Login(string userName = "admin", string password = "admin123")
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        
         var result = await signInManager.PasswordSignInAsync(userName, password, true, lockoutOnFailure: false);
         var response = new Dictionary<string, object>();
         
         if (result.Succeeded == false)
         {
-            response["succeeded"] = false;
-            return Ok(response);
+            return Ok(ApiResults.Bad());
         }
         
         var current = await userManager.GetUserAsync(User);
         
         if (current == null)
-        {
-            throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-        }
+            throw new ApplicationException($"Пользователь не авторизован");
         
         response["succeeded"] = result.Succeeded;
         response["role"] = current.UserRole;
@@ -49,15 +44,12 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
         var user = await userManager.GetUserAsync(User);
         
         if (user == null)
-        {
-            throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
-        }
-
-       
+            throw new ApplicationException($"Пользователь не авторизован");
+        
         var response = user.ToDTO().ToDictionary();
         
-        var userTasks = context.Tasks.Where(task => task.UserId == user.Id);
-        response["tasks"] = userTasks;
+        // var userTasks = context.Tasks.Where(task => task.UserId == user.Id);
+        // response["tasks"] = userTasks;
         
         response["role"] = user.UserRole;
         
@@ -70,7 +62,7 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
     public async Task<IActionResult> Logout()
     {
         await signInManager.SignOutAsync();
-        return Ok();
+        return Ok(ApiResults.Ok());
     }
     
 }

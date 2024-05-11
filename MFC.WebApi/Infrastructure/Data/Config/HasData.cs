@@ -39,7 +39,7 @@ public static class HasData
         
         return builder;
     }
-    public static ModelBuilder HasStudent(this ModelBuilder builder, string userName, NameDTO name, string userId, string roleId)
+    public static void HasStudent(this ModelBuilder builder, string userName, NameDTO name, string userId, string roleId)
     {
         
         var student = new StudentUser(AppUser.Default(userName))
@@ -63,7 +63,6 @@ public static class HasData
             UserId = userId
         });
         
-        return builder;
     }
 
     public static ModelBuilder HasEmployee(this ModelBuilder builder)

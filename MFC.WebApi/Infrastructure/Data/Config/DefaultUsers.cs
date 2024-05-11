@@ -32,7 +32,7 @@ public static class DefaultUsers
         };
         
         builder.HasStudent("Nastya",  nastya, UsersId.Shmebyulok, RolesId.Student);
-        
+
         return builder;
     }
 

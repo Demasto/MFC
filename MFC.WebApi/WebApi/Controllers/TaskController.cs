@@ -8,13 +8,15 @@ using Domain.Entities.Users;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using WebApi.CustomActionResult;
+using WebApi.Filters;
 using Task = Domain.Entities.Task;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[CustomExceptionFilter]
 public class TaskController(UserManager<AppUser> userManager, IServiceRepository serviceRepo, MfcContext context) : ControllerBase
 {
     
@@ -33,10 +35,11 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
         
         if (user == null)
         {
-            throw new ApplicationException($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
+            throw new ApplicationException($"Пользователь не авторизован");
         }
         
-        return Ok(context.Tasks.Where(task => task.UserId == user.Id));
+        var userTasks = context.Tasks.Where(task => task.UserId == user.Id);
+        return Ok(ApiResults.Ok("tasks", userTasks));
     }
     
     [HttpPut("{taskId}")]
@@ -44,10 +47,13 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     public async Task<IActionResult> ChangeTaskState(long taskId, ProcessState newState)
     {
         var task = await context.Tasks.FindAsync(taskId);
-        if (task == null) return BadRequest("task not found");
+        if (task == null)
+            throw new Exception("task not found");
+            
         task.State = newState;
         await context.SaveChangesAsync();
-        return Ok(task);
+            
+        return Ok(ApiResults.Ok());
     }
     
     
@@ -55,19 +61,18 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     public async Task<IActionResult> Add(string serviceName)
     {
         var userId = userManager.GetUserId(User);
-        if (userId == null) throw new ApplicationException($"Unable to load user.");
+        if (userId == null) throw new ApplicationException($"Пользователь не авторизован");
 
-        if (!serviceRepo.Contain(serviceName)) return BadRequest($"Услуги с названием '{serviceName}' не существует.");
+   
+        if (!serviceRepo.Contain(serviceName)) 
+            throw new Exception($"Услуги с названием '{serviceName}' не существует.");
         
-        await context.Tasks.AddAsync(new Task()
-        {
-            UserId = userId,
-            ServiceName = serviceName
-        });
+        await context.Tasks.AddAsync(new Task(userId, serviceName));
         
         await context.SaveChangesAsync();
 
-        return Ok();
+        return Ok(ApiResults.Ok());
+        
     }
     
     [HttpDelete("{taskId}")]
@@ -75,24 +80,26 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     {
         
         var userId = userManager.GetUserId(User);
-        if (userId == null) throw new ApplicationException($"Unable to load user.");
-
-        var canceledTask = await context.Tasks.FindAsync(taskId);
-        if (canceledTask == null) return BadRequest("Task not found");
+        if (userId == null) 
+            throw new ApplicationException($"Пользователь не авторизован");
         
+        var canceledTask = await context.Tasks.FindAsync(taskId);
+        if (canceledTask == null) 
+            throw new Exception("Task not found");
+
         canceledTask.State = ProcessState.Cancelled;
         await context.SaveChangesAsync();
-
-        return Ok();
-        
+            
+        return Ok(ApiResults.Ok());
     }
     
     [Authorize(Roles = Role.Admin)]
     [HttpDelete("clear_all")]
     public IActionResult Clear()
     {
-        context.Tasks.RemoveRange(context.Tasks.ToList());
+  
+        context.Tasks.RemoveRange(context.Tasks);
         context.SaveChanges();
-        return Ok();
+        return Ok(ApiResults.Ok());
     }
 }
