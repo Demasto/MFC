@@ -39,6 +39,14 @@ public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
     }
     
     [Authorize(Roles = Role.Admin)]
+    [HttpPut]
+    public IActionResult UpdateService([FromBody] UpdateServiceDTO serviceDTO)
+    {
+        serviceRepo.Update(serviceDTO);
+        return Ok(ApiResults.Ok());
+    }
+    
+    [Authorize(Roles = Role.Admin)]
     [HttpPut("switch_state/{serviceName}")]
     public IActionResult SwitchState(string serviceName)
     {

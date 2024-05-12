@@ -1,3 +1,4 @@
+using Domain.DTO.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,21 +23,46 @@ public class AutoDocController(UserManager<AppUser> userManager) : ControllerBas
         var current = await userManager.GetUserAsync(User);
         if (current == null) throw new Exception("Пользователь не авторизован");
         
-        // TODO var student = current as StudentUser;
-        
-        var student = current.ToDTO();
-        
-    
         var path = SaveDirectory.PathToFile(type, file);;
             
         var tempFile = FileService.CopyFile(path);
             
         var service = new AutoFillDocService(tempFile);
+
+        var appUserDto = current.ToDTO();
+
+
         
-        service.ReplaceValue("<имя>", student.Name.First);
-        service.ReplaceValue("<фамилия>", student.Name.Second);
-        service.ReplaceValue("<отчество>", student.Name.Middle);
-        service.ReplaceValue("<инн>", student.INN);
+        service.ReplaceValue("<имя>", appUserDto.Name.First);
+        service.ReplaceValue("<фамилия>", appUserDto.Name.Second);
+        service.ReplaceValue("<отчество>", appUserDto.Name.Middle);
+        
+        var parentCaseName = appUserDto.Name.ToParent();
+        service.ReplaceValue("<имя-р>", parentCaseName.First);
+        service.ReplaceValue("<фамилия-р>", parentCaseName.Second);
+        service.ReplaceValue("<отчество-р>", parentCaseName.Middle);
+        
+        service.ReplaceValue("<инн>", appUserDto.INN);
+        service.ReplaceValue("<телефон>", appUserDto.PhoneNumber);
+        
+        switch (current.UserRole)
+        {
+            case Role.Student:
+            {
+                var studentDTO = appUserDto as StudentDTO;
+                service.ReplaceValue("<группа>", studentDTO.Group);
+                service.ReplaceValue("<направление>", studentDTO.DirectionOfStudy);
+                service.ReplaceValue("<номер>", studentDTO.ServiceNumber);
+                break;
+            }
+            case Role.Employee:
+            {
+                var employeeDTO = appUserDto as EmployeeDTO;
+                service.ReplaceValue("<должность>", employeeDTO.Post);
+                service.ReplaceValue("<институт>", employeeDTO.Institute);
+                break;
+            }
+        }
             
         service.CloseDocument();
             
@@ -46,3 +72,4 @@ public class AutoDocController(UserManager<AppUser> userManager) : ControllerBas
         
     }
 }
+

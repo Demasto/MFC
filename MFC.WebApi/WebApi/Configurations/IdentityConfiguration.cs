@@ -14,6 +14,7 @@ public static class IdentityConfiguration
         services.
             AddIdentity<AppUser, IdentityRole>(options =>
             {
+                options.Lockout.MaxFailedAccessAttempts = 10;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredUniqueChars = 0;
                 options.Password.RequireUppercase = false;

@@ -39,6 +39,19 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
         context.Services.Add(dto.ToEntity());
         context.SaveChanges();
     }
+    
+    public void Update(UpdateServiceDTO dto)
+    {
+        var service = Get(dto.Name);
+
+        service.Name = dto.NewName;
+        service.Description = dto.Description;
+        service.Type = dto.Type;
+        
+        context.Services.Update(service);
+        context.SaveChanges();
+    }
+    
     public void Remove(string serviceName)
     {
         var service = Get(serviceName);

@@ -12,6 +12,7 @@ public interface IServiceRepository
     public bool Switch(string serviceName);
 
     public void Add(ServiceDTO service);
+    public void Update(UpdateServiceDTO service);
     public void Remove(string serviceName);
     public void RemoveAll();
 }

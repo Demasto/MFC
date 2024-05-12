@@ -6,15 +6,15 @@ public static class CookieConfiguration
 {
     public static IServiceCollection AddCookie(this IServiceCollection services)
     {
-        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.Events.OnRedirectToLogin = (context) =>
-                {
-                    context.Response.StatusCode = 401;
-                    return Task.CompletedTask;
-                };
-            });
+        // services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        //     .AddCookie(options =>
+        //     {
+        //         options.Events.OnRedirectToLogin = (context) =>
+        //         {
+        //             context.Response.StatusCode = 401;
+        //             return Task.CompletedTask;
+        //         };
+        //     });
         
         
         services.ConfigureApplicationCookie(config =>
