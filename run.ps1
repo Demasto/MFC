@@ -1,5 +1,6 @@
-cd MFC.WebApi/WebApi
+docker compose up -d
 
+cd MFC.WebApi/WebApi
 
 $restoreJob = Start-Job -ScriptBlock{
     dotnet restore "WebApi.csproj"
