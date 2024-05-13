@@ -23,30 +23,21 @@ services:
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
 
-  api:
-    container_name: web_api_container
-    image: webapi
-    restart: always
-    build:
-      context: .
-      dockerfile: WebApi/Dockerfile
-    depends_on: [ "postgres" ]
-    ports:
-      - "8080:80"
-#      - "7132:443"
-    networks:
-      - app-network
-    environment:
-      DATABASE_CONNECT: "Server=postgres;Port=5432;Database=MFC;User Id=postgres;Password=postgres"
-      ASPNETCORE_HTTP_PORTS: "80"
-      
-      
-#    ASPNETCORE_HTTPS_PORTS: "443"
-#    ASPNETCORE_URLS: "https://+;http://+"
-#    ASPNETCORE_Kestrel__Certificates__Default__Password: "1234"
-#    ASPNETCORE_Kestrel__Certificates__Default__Path: "https/aspnetapp.pfx"
-#    ASPNETCORE_ENVIRONMENT: "Development"
-     
+#  api:
+#    container_name: web_api_container
+#    image: webapi
+#    restart: always
+#    build:
+#      context: .
+#      dockerfile: MFC.WebApi/WebApi/Dockerfile
+#    depends_on: [ "postgres" ]
+#    ports:
+#      - "8080:80"
+#    networks:
+#      - app-network
+#    environment:
+#      DATABASE_CONNECT: "Server=postgres;Port=5432;Database=MFC;User Id=postgres;Password=postgres"
+#      ASPNETCORE_HTTP_PORTS: "80"
       
   pgadmin:
     container_name: pgadmin_container
@@ -61,8 +52,7 @@ services:
       - "5050:80"
     networks:
       - app-network
-#    depends_on: ["postgres", "api"]
-#    
+
 networks:
   app-network:
     driver: bridge

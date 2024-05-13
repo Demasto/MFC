@@ -9,7 +9,12 @@ public static class CorsPolicyConfiguration
             options.AddPolicy(name: policyName,
                 policy  =>
                 {
-                    policy.WithOrigins("https://localhost:7149", "http://localhost:8080", "https://localhost:3000", "http://localhost:3000") 
+                    policy.WithOrigins(
+                            "https://localhost:7149",
+                            "http://localhost:5000", 
+                            "http://localhost:8080", 
+                            "https://localhost:3000", 
+                            "http://localhost:3000") 
                         .AllowAnyHeader()  
                         .AllowAnyMethod()
                         .AllowCredentials();
