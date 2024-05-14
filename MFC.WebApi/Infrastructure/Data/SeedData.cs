@@ -16,9 +16,5 @@ public static class SeedData
             .InitStudents()
             .InitEmployees();
     }
-
-
-    
-
 }
 

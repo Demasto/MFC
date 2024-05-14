@@ -51,9 +51,6 @@ public static class SaveDirectory
         {
             return path.Split('/').Last();
         }
-
         return path;
-
     }
-
 }

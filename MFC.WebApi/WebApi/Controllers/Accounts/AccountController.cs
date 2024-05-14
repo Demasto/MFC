@@ -1,8 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Entities.Users;
-using Infrastructure.Data;
 using WebApi.CustomActionResult;
 using WebApi.Filters;
 
@@ -10,7 +10,7 @@ namespace WebApi.Controllers.Accounts;
 
 [CustomExceptionFilter]
 [Route("api/[controller]/[action]")]
-public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, MfcContext context) : ControllerBase
+public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Login(string userName = "admin", string password = "admin123")
@@ -39,8 +39,6 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
     [HttpGet]
     public async Task<IActionResult> CurrentUser()
     {
-        
-        // var user = userManager.Users.Include(user => user.Tasks).FirstOrDefault(user => user.UserName == User.Identity.Name);
         var user = await userManager.GetUserAsync(User);
         
         if (user == null)
@@ -48,8 +46,20 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
         
         var response = user.ToDTO().ToDictionary();
         
-        // var userTasks = context.Tasks.Where(task => task.UserId == user.Id);
-        // response["tasks"] = userTasks;
+        response["role"] = user.UserRole;
+        
+        return Ok(response);
+    }
+    
+    [HttpGet]
+    public IActionResult FromId([Required] string userId)
+    {
+        var user = userManager.Users.FirstOrDefault(appUser => appUser.Id == userId);
+        
+        if (user == null)
+            throw new ApplicationException($"Такого пользователя не существует");
+        
+        var response = user.ToDTO().ToDictionary();
         
         response["role"] = user.UserRole;
         

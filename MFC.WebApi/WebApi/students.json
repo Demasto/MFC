@@ -1,0 +1,350 @@
+[
+  {
+    "serviceNumber": "87654321",
+    "group": "УВП-411",
+    "directionOfStudy": "09.03.01",
+    "formOfStudy": 0,
+    "dateOfEnrollment": "2020-08-12",
+    "gapYearsCount": 0,
+    "userName": "Nastya",
+    "password": "Nastya123",
+    "email": "Nastya@example.com",
+    "phoneNumber": null,
+    "gender": "Мужской",
+    "inn": "7777065424",
+    "snils": "375232753",
+    "name": {
+      "first": "Анастасия",
+      "second": "Константинова",
+      "middle": "Витальевна"
+    },
+    "passport": {
+      "series": "4517",
+      "number": "543254",
+      "unitCode": "432-632",
+      "placeOfBrith": "Г. Москва",
+      "dateOfBrith": "2002-02-14",
+      "dateOfIssue": "2024-12-03",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "12345678",
+    "group": "УВП-411",
+    "directionOfStudy": "09.03.01",
+    "formOfStudy": 0,
+    "dateOfEnrollment": "2020-08-12",
+    "gapYearsCount": 0,
+    "userName": "Dmitry",
+    "password": "Dmitry123",
+    "email": "Dmitry@example.com",
+    "phoneNumber": null,
+    "gender": "Мужской",
+    "inn": "7777065424",
+    "snils": "375232753",
+    "name": {
+      "first": "Дмитрий",
+      "second": "Болтачев",
+      "middle": "Михайлович"
+    },
+    "passport": {
+      "series": "4517",
+      "number": "543254",
+      "unitCode": "432-632",
+      "placeOfBrith": "Г. Москва",
+      "dateOfBrith": "2002-02-14",
+      "dateOfIssue": "2024-12-03",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "98765432",
+    "group": "УВП-412",
+    "directionOfStudy": "09.03.01",
+    "formOfStudy": 0,
+    "dateOfEnrollment": "2021-09-15",
+    "gapYearsCount": 1,
+    "userName": "Olga",
+    "password": "Olga123",
+    "email": "Olga@example.com",
+    "phoneNumber": null,
+    "gender": "Женский",
+    "inn": "7890123456",
+    "snils": "456789012",
+    "name": {
+      "first": "Ольга",
+      "second": "Иванова",
+      "middle": "Петровна"
+    },
+    "passport": {
+      "series": "6123",
+      "number": "987654",
+      "unitCode": "123-456",
+      "placeOfBrith": "Г. Санкт-Петербург",
+      "dateOfBrith": "2000-10-25",
+      "dateOfIssue": "2023-11-07",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "24681357",
+    "group": "УИП-301",
+    "directionOfStudy": "09.04.01",
+    "formOfStudy": 1,
+    "dateOfEnrollment": "2020-09-20",
+    "gapYearsCount": 0,
+    "userName": "Maria",
+    "password": "Maria123",
+    "email": "Maria@example.com",
+    "phoneNumber": null,
+    "gender": "Женский",
+    "inn": "8901234567",
+    "snils": "567890123",
+    "name": {
+      "first": "Мария",
+      "second": "Смирнова",
+      "middle": "Александровна"
+    },
+    "passport": {
+      "series": "7890",
+      "number": "123456",
+      "unitCode": "654-321",
+      "placeOfBrith": "Г. Екатеринбург",
+      "dateOfBrith": "2001-05-10",
+      "dateOfIssue": "2023-10-15",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "79461382",
+    "group": "УИП-302",
+    "directionOfStudy": "09.04.02",
+    "formOfStudy": 1,
+    "dateOfEnrollment": "2020-09-25",
+    "gapYearsCount": 0,
+    "userName": "Alexey",
+    "password": "Alexey123",
+    "email": "Alexey@example.com",
+    "phoneNumber": null,
+    "gender": "Мужской",
+    "inn": "9456789012",
+    "snils": "012345678",
+    "name": {
+      "first": "Алексей",
+      "second": "Kuznetsov",
+      "middle": "Сергеевич"
+    },
+    "passport": {
+      "series": "7654",
+      "number": "321098",
+      "unitCode": "987-654",
+      "placeOfBrith": "Г. Красноярск",
+      "dateOfBrith": "2001-01-20",
+      "dateOfIssue": "2023-11-10",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "92581673",
+    "group": "УМП-202",
+    "directionOfStudy": "38.03.02",
+    "formOfStudy": 0,
+    "dateOfEnrollment": "2021-10-10",
+    "gapYearsCount": 2,
+    "userName": "Ekaterina",
+    "password": "Ekaterina123",
+    "email": "Ekaterina@example.com",
+    "phoneNumber": null,
+    "gender": "Женский",
+    "inn": "9567890123",
+    "snils": "123456789",
+    "name": {
+      "first": "Екатерина",
+      "second": "Sokolova",
+      "middle": "Игоревна"
+    },
+    "passport": {
+      "series": "6543",
+      "number": "432109",
+      "unitCode": "987-654",
+      "placeOfBrith": "Г. Уфа",
+      "dateOfBrith": "1999-07-20",
+      "dateOfIssue": "2022-09-15",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "68724139",
+    "group": "УМП-202",
+    "directionOfStudy": "38.03.02",
+    "formOfStudy": 0,
+    "dateOfEnrollment": "2021-10-10",
+    "gapYearsCount": 2,
+    "userName": "Ivan",
+    "password": "Ivan123",
+    "email": "Ivan@example.com",
+    "phoneNumber": null,
+    "gender": "Мужской",
+    "inn": "9678901234",
+    "snils": "234567890",
+    "name": {
+      "first": "Иван",
+      "second": "Petrov",
+      "middle": "Александрович"
+    },
+    "passport": {
+      "series": "4321",
+      "number": "210987",
+      "unitCode": "654-321",
+      "placeOfBrith": "Г. Курск",
+      "dateOfBrith": "1999-03-15",
+      "dateOfIssue": "2022-12-20",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "36587419",
+    "group": "УИП-303",
+    "directionOfStudy": "09.04.03",
+    "formOfStudy": 1,
+    "dateOfEnrollment": "2020-09-30",
+    "gapYearsCount": 0,
+    "userName": "Natalia",
+    "password": "Natalia123",
+    "email": "Natalia@example.com",
+    "phoneNumber": null,
+    "gender": "Женский",
+    "inn": "9789012345",
+    "snils": "345678901",
+    "name": {
+      "first": "Наталья",
+      "second": "Kozlova",
+      "middle": "Алексеевна"
+    },
+    "passport": {
+      "series": "9876",
+      "number": "654321",
+      "unitCode": "321-654",
+      "placeOfBrith": "Г. Омск",
+      "dateOfBrith": "2001-08-30",
+      "dateOfIssue": "2023-08-25",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "13579246",
+    "group": "УИП-301",
+    "directionOfStudy": "09.04.01",
+    "formOfStudy": 1,
+    "dateOfEnrollment": "2020-09-20",
+    "gapYearsCount": 0,
+    "userName": "Sergey",
+    "password": "Sergey123",
+    "email": "Sergey@example.com",
+    "phoneNumber": null,
+    "gender": "Мужской",
+    "inn": "9012345678",
+    "snils": "678901234",
+    "name": {
+      "first": "Сергей",
+      "second": "Петров",
+      "middle": "Иванович"
+    },
+    "passport": {
+      "series": "5432",
+      "number": "987654",
+      "unitCode": "321-654",
+      "placeOfBrith": "Г. Казань",
+      "dateOfBrith": "2001-08-20",
+      "dateOfIssue": "2023-09-25",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "74185296",
+    "group": "УМП-201",
+    "directionOfStudy": "38.03.01",
+    "formOfStudy": 0,
+    "dateOfEnrollment": "2021-10-05",
+    "gapYearsCount": 1,
+    "userName": "Anna",
+    "password": "Anna123",
+    "email": "Anna@example.com",
+    "phoneNumber": null,
+    "gender": "Женский",
+    "inn": "9123456789",
+    "snils": "789012345",
+    "name": {
+      "first": "Анна",
+      "second": "Ковалева",
+      "middle": "Алексеевна"
+    },
+    "passport": {
+      "series": "9876",
+      "number": "543210",
+      "unitCode": "456-789",
+      "placeOfBrith": "Г. Новосибирск",
+      "dateOfBrith": "2000-12-15",
+      "dateOfIssue": "2023-08-30",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "36985214",
+    "group": "УМП-201",
+    "directionOfStudy": "38.03.01",
+    "formOfStudy": 0,
+    "dateOfEnrollment": "2021-10-05",
+    "gapYearsCount": 1,
+    "userName": "Gleb",
+    "password": "Gleb123",
+    "email": "Gleb@example.com",
+    "phoneNumber": null,
+    "gender": "Мужской",
+    "inn": "9234567890",
+    "snils": "890123456",
+    "name": {
+      "first": "Глеб",
+      "second": "Морозов",
+      "middle": "Дмитриевич"
+    },
+    "passport": {
+      "series": "6543",
+      "number": "210987",
+      "unitCode": "789-456",
+      "placeOfBrith": "Г. Ростов-на-Дону",
+      "dateOfBrith": "2000-07-30",
+      "dateOfIssue": "2023-07-20",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "serviceNumber": "58246139",
+    "group": "УИП-302",
+    "directionOfStudy": "09.04.02",
+    "formOfStudy": 1,
+    "dateOfEnrollment": "2020-09-25",
+    "gapYearsCount": 0,
+    "userName": "Masha",
+    "password": "Masha123",
+    "email": "Masha@example.com",
+    "phoneNumber": null,
+    "gender": "Женский",
+    "inn": "9345678901",
+    "snils": "901234567",
+    "name": {
+      "first": "Мария",
+      "second": "Игнатова",
+      "middle": "Владимировна"
+    },
+    "passport": {
+      "series": "8765",
+      "number": "543210",
+      "unitCode": "654-321",
+      "placeOfBrith": "Г. Тверь",
+      "dateOfBrith": "2001-05-20",
+      "dateOfIssue": "2023-11-15",
+      "citizenship": "Российская Федерация"
+    }
+  }
+]

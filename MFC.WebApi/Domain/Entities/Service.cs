@@ -4,11 +4,10 @@ public class Service
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
+    public string NormalizedName { get; set; } = null!;
     public string Description { get; set; } = null!;
     public bool OnPublic { get; set; }
     public ServiceType Type { get; set; } = ServiceType.Certificate;
-
-    
 }
 
 public enum ServiceType
@@ -23,14 +22,10 @@ public static class ServiceDir
 {
     public static readonly Dictionary<ServiceType, string> Dict = new()
     {
-        [ServiceType.Certificate] = Certificate,
-        [ServiceType.StudentStatement] = StudentStatement,
-        [ServiceType.EmployeeStatement] = EmployeeStatement,
-        [ServiceType.TransferAndReinstatement] = TransferAndReinstatement,
+        [ServiceType.Certificate] = "certificates",
+        [ServiceType.StudentStatement] = "student_statements",
+        [ServiceType.EmployeeStatement] = "employee_statements",
+        [ServiceType.TransferAndReinstatement] = "transfers_and_reinstatement",
         
     };
-    private const string Certificate = "certificates";
-    private const string StudentStatement = "student_statements";
-    private const string EmployeeStatement = "employee_statements";
-    private const string TransferAndReinstatement = "transfers_and_reinstatement";
 }

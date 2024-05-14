@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MfcContext))]
-    partial class MfcContextModelSnapshot : ModelSnapshot
+    [Migration("20240514115800_newProperty")]
+    partial class newProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,10 +41,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("NormalizedName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<bool>("OnPublic")
                         .HasColumnType("boolean");
 
@@ -61,16 +60,15 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Time")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("UserFullName")
                         .IsRequired()
@@ -182,7 +180,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = "d28be9c0-aa65-4af8-bd17-10bd9344e586",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e92fcbd0-e0ec-4f8d-923a-59362070db9f",
+                            ConcurrencyStamp = "e3e805b3-ec42-4d88-93d1-9bd5d653c402",
                             Email = "admin@example.com",
                             EmailConfirmed = false,
                             Gender = "Мужской",
@@ -192,7 +190,7 @@ namespace Infrastructure.Migrations
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPhQ6W9HD/YMNg3yvDK8RBgol9ien6rneB4uI97FV8oah4Apx+J/uM61CbzWAJPneg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBkKw7oGTfmviCyNnIoaFnTRMxy8IAakj51ie7WfXo23as4PLxVDIcwUAsiNa+Ld1Q==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
                             SecurityStamp = "",
@@ -394,7 +392,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = "d28be9c0-aa65-4af8-bd17-10bd9344e588",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b6b651c-6546-4814-9052-37054f7852fc",
+                            ConcurrencyStamp = "63338284-444c-4256-896d-06623b55cbf0",
                             Email = "employee@example.com",
                             EmailConfirmed = false,
                             Gender = "Мужской",
@@ -404,7 +402,7 @@ namespace Infrastructure.Migrations
                             NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
                             NormalizedUserName = "EMPLOYEE",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAEO/gmo7aeMEcgxIdUOs8zEztTjowFWMs7M/eSn3yxXZeWkcI5f6dySJrKb36rPvzgg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMtNyCmJ3c3DBvGgnDkz/8BtghSdmdTjrslKZyktgQ/7mUgoq9V0vCdfVG7ZG9rgGQ==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
                             SecurityStamp = "",
@@ -447,7 +445,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = "Т38be9c0-aa65-4af8-bd17-10bd9344e587",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7ce2f1a3-b5bc-43ea-9b9f-3372e8d849a9",
+                            ConcurrencyStamp = "f4e6557d-9bcf-4b00-ad87-98b2e9ae05c4",
                             Email = "Dmitry@example.com",
                             EmailConfirmed = false,
                             Gender = "Мужской",
@@ -457,10 +455,10 @@ namespace Infrastructure.Migrations
                             NormalizedEmail = "DMITRY@EXAMPLE.COM",
                             NormalizedUserName = "DMITRY",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAENAmDUM3mkTlKGqpxsGuNBnr/xf+Iy9hJ7tNetdZYPisML8LATgYwVpY92R2c8+ejA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPpfiT+zQ4er+sxwP876OssUq1Xi18RrCJSVgzV1XFaczSCeuTdmQ2W9uLJUJ2BAbA==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
-                            SecurityStamp = "0023b6b2-712d-4ac9-b10f-1ca83947e52e",
+                            SecurityStamp = "4086ca9e-ed53-4060-a533-148765a7623e",
                             TwoFactorEnabled = false,
                             UserName = "Dmitry",
                             DateOfEnrollment = new DateOnly(2020, 8, 12),
@@ -474,7 +472,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = "Т38be9c0-aa65-4af8-1d17-10bd9344e588",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7d66742f-2ee6-4673-a594-7196961582fb",
+                            ConcurrencyStamp = "a26dc49a-e5c6-408b-a32a-4b612ff99b28",
                             Email = "Nastya@example.com",
                             EmailConfirmed = false,
                             Gender = "Мужской",
@@ -484,10 +482,10 @@ namespace Infrastructure.Migrations
                             NormalizedEmail = "NASTYA@EXAMPLE.COM",
                             NormalizedUserName = "NASTYA",
                             Passport = "{\"Series\":\"4517\",\"Number\":\"543254\",\"UnitCode\":\"432-632\",\"PlaceOfBrith\":\"\\u0413. \\u041C\\u043E\\u0441\\u043A\\u0432\\u0430\",\"DateOfBrith\":\"2002-02-14\",\"DateOfIssue\":\"2024-12-03\",\"Citizenship\":\"\\u0420\\u043E\\u0441\\u0441\\u0438\\u0439\\u0441\\u043A\\u0430\\u044F \\u0424\\u0435\\u0434\\u0435\\u0440\\u0430\\u0446\\u0438\\u044F\"}",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPADSxmQIHiai/+Y6k38zoKdkmonKhTA+vfxJXe3I0qRzWEqNFsEhvuoDdg3j46wVA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEdxaFALOeRGP3FVPUK4v18tJKadyQIBMlhEy2Xki/tzF9cKaezd/gneUIhtZEWtLw==",
                             PhoneNumberConfirmed = false,
                             SNILS = "375232753",
-                            SecurityStamp = "63f6ec47-dbbd-410b-8fbd-a7b4c7ab903d",
+                            SecurityStamp = "54ac5a39-a463-4028-aa83-98c5d72484d6",
                             TwoFactorEnabled = false,
                             UserName = "Nastya",
                             DateOfEnrollment = new DateOnly(2020, 8, 12),

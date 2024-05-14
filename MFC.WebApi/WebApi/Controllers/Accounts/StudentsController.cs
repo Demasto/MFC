@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -48,4 +49,29 @@ public class StudentsController(UserManager<StudentUser> studentManager) : Contr
         
         return Ok(ApiResults.Ok());
     }
+    
+    [HttpPost("initialize")]
+    public async Task<IActionResult> InitStudents()
+    {
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "students.json");
+        
+        Console.WriteLine(path);
+        if (!System.IO.File.Exists(path))
+            throw new FileNotFoundException("Файл students.json не найден!");
+
+        using var reader = new StreamReader(path);
+        var jsonStudentsArray = await reader.ReadToEndAsync();
+
+        var students = JsonSerializer.Deserialize<List<StudentDTO>>(jsonStudentsArray, Options);
+        if (students == null) throw new Exception("Список пуст.");
+        
+        foreach (var studentDTO in students)
+        {
+            await AddStudent(studentDTO);
+        }
+        return Ok(students);
+    }
+
+    private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true, };
+
 }

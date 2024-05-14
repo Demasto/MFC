@@ -17,6 +17,7 @@ public class ServiceDTO
         return new Service()
         {
             Name = Name,
+            NormalizedName = Name.ToUpper(),
             Description = Description,
             Type = Type,
             OnPublic = false

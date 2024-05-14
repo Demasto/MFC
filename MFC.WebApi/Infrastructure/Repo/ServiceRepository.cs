@@ -13,14 +13,14 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
     
     public Service Get(string serviceName)
     {
-        var service = context.Services.FirstOrDefault(service => service.Name == serviceName);
+        var service = context.Services.FirstOrDefault(service => service.NormalizedName == serviceName.ToUpper());
         if (service == null) throw new Exception("Такой услуги не существует!");
         return service;
     }
 
     public bool Contain(string serviceName)
     {
-        var service = context.Services.FirstOrDefault(service => service.Name == serviceName);
+        var service = context.Services.FirstOrDefault(service => service.NormalizedName == serviceName.ToUpper());
         return service != null;
     }
 

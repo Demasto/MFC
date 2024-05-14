@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -24,7 +25,7 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     [Authorize(Roles = Role.Admin)]
     public IActionResult GetAll()
     {
-        return Ok(context.Tasks.ToList());
+        return Ok(context.Tasks.Select(task => task.ToDTO()));
     }
     
     [HttpGet("from_current_user")]
@@ -44,11 +45,11 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     
     [HttpPut("{taskId}")]
     [Authorize(Roles = Role.Admin)]
-    public async Task<IActionResult> ChangeTaskState(long taskId, ProcessState newState)
+    public async Task<IActionResult> ChangeTaskState(long taskId, [Required] ProcessState newState)
     {
         var task = await context.Tasks.FindAsync(taskId);
         if (task == null)
-            throw new Exception("task not found");
+            throw new Exception("task not found");  
             
         task.State = newState;
         await context.SaveChangesAsync();
@@ -60,14 +61,14 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     [HttpPost("{serviceName}")]
     public async Task<IActionResult> Add(string serviceName)
     {
-        var userId = userManager.GetUserId(User);
-        if (userId == null) throw new ApplicationException($"Пользователь не авторизован");
+        var user = await userManager.GetUserAsync(User);
+        if (user == null) throw new ApplicationException($"Пользователь не авторизован");
 
-   
+        Console.WriteLine(DateTime.UtcNow.ToLocalTime().ToString());
         if (!serviceRepo.Contain(serviceName)) 
             throw new Exception($"Услуги с названием '{serviceName}' не существует.");
         
-        await context.Tasks.AddAsync(new Task(userId, serviceName));
+        await context.Tasks.AddAsync(new Task(user, serviceName));
         
         await context.SaveChangesAsync();
 

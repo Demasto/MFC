@@ -39,7 +39,7 @@ public static class HasData
         
         return builder;
     }
-    public static void HasStudent(this ModelBuilder builder, string userName, NameDTO name, string userId, string roleId)
+    public static void HasStudent(this ModelBuilder builder, string userName, NameDTO name, string userId, string roleId, string sNumber)
     {
         
         var student = new StudentUser(AppUser.Default(userName))
@@ -47,7 +47,7 @@ public static class HasData
             Id = userId,
             PasswordHash = new PasswordHasher<StudentUser>().HashPassword(null, $"{userName}123"),
             Name = JsonSerializer.Serialize(name),
-            ServiceNumber = "12345678",
+            ServiceNumber = sNumber,
             Group = "УВП-411",
             DirectionOfStudy = "09.03.01",
             FormOfStudy = FormOfStudy.Bachelor,
