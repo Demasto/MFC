@@ -50,8 +50,8 @@ public class AppUser : IdentityUser
         };
     }
 
-    public virtual string UserRole { get; } =  Role.Admin;
-    
+    public virtual string UserRole => Role.Admin;
+
     public static AppUser Default(string userName)
     {
         var email = $"{userName}@example.com";

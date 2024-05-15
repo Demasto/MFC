@@ -52,6 +52,16 @@ public class FileService : IFileService
         File.Delete(path);
         
     }
+
+    public string FromServiceName(string serviceName, ServiceType type)
+    {
+        var files = GetAllFromType(type);
+        var fileNameWithExtension = files.FirstOrDefault(fileName => fileName.Contains(serviceName.ToLower()));
+        
+        if (fileNameWithExtension == null) throw new Exception("Файл не найден");
+
+        return fileNameWithExtension;
+    }
     
  
     private static void FindOrThrow(string path)

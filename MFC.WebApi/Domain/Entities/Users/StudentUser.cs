@@ -27,5 +27,5 @@ public class StudentUser : AppUser
         };
     }
 
-    public override string UserRole { get; } = Role.Student;
+    public override string UserRole => Role.Student;
 }

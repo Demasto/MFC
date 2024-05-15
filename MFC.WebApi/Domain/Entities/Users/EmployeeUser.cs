@@ -18,5 +18,5 @@ public sealed class EmployeeUser : AppUser
         };
     }
     
-    public override string UserRole { get; } = Role.Employee;
+    public override string UserRole => Role.Employee;
 }
