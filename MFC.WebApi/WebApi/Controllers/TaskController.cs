@@ -103,11 +103,11 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
         if (userId == null) 
             throw new ApplicationException($"Пользователь не авторизован");
         
-        var canceledTask = await context.Tasks.FindAsync(taskId);
-        if (canceledTask == null) 
+        var task = await context.Tasks.FindAsync(taskId);
+        if (task == null) 
             throw new Exception("Task not found");
-
-        canceledTask.State = ProcessState.Cancelled;
+        
+        context.Remove(task);
         await context.SaveChangesAsync();
             
         return Ok(ApiResults.Ok());
