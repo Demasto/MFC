@@ -63,11 +63,31 @@ public class TaskController(UserManager<AppUser> userManager, IServiceRepository
     {
         var user = await userManager.GetUserAsync(User);
         if (user == null) throw new ApplicationException($"Пользователь не авторизован");
-
-        Console.WriteLine(DateTime.UtcNow.ToLocalTime().ToString());
+        
         if (!serviceRepo.Contain(serviceName)) 
             throw new Exception($"Услуги с названием '{serviceName}' не существует.");
+
+        var oldTask = context.Tasks
+            .Where(task => task.UserId == user.Id)
+            .FirstOrDefault(task => task.ServiceName == serviceName && task.State != ProcessState.Received && task.State != ProcessState.Cancelled);
         
+        
+        if (oldTask != null)
+        {
+            switch (oldTask.State)
+            {
+                case ProcessState.Created:
+                    throw new Exception("Услуга уже заказана");
+                
+                case ProcessState.InProcess:
+                    throw new Exception("Услуга уже в процессе");
+                
+                case ProcessState.Ready:
+                    throw new Exception("Услуга уже готова");
+            }
+        }
+
+
         await context.Tasks.AddAsync(new Task(user, serviceName));
         
         await context.SaveChangesAsync();
