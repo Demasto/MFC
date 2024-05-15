@@ -60,12 +60,14 @@ public class AutoDocController(
 
         var task = await context.Tasks.FindAsync(taskId);
         if(task == null) throw new Exception("Такой задачи не существует");
-
+        var user = userManager.Users.FirstOrDefault(appUser => appUser.Id == task.UserId);
+        if (user == null) throw new Exception($"Задача некорректна. Пользователя с UserId={task.UserId} не существует");
+        
         var fileNameWithExtension = fileService.FromServiceName(task.ServiceName, ServiceType.Certificate);
             
         var tempFile = FileService.CopyFile(SaveDirectory.PathToFile(ServiceType.Certificate, fileNameWithExtension));
-            
-        new AutoFillDocService(tempFile).ReplaceALl(current);
+        
+        new AutoFillDocService(tempFile).ReplaceALl(user);
             
         var fileStream = System.IO.File.OpenRead(tempFile);
             
