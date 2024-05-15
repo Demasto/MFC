@@ -14,14 +14,17 @@ public class Task
     public string ServiceName { get; set; }
     public string Time { get; set; } = DateTime.UtcNow.ToLocalTime().ToString();
     public ProcessState State { get; set; } = ProcessState.Created;
+    
+    public ServiceType ServiceType { get; set; }
 
     public Task() { }
 
-    public Task(AppUser user, string serviceName)
+    public Task(AppUser user, Service service)
     {
         UserId = user.Id;
         UserFullName = user.Name;
-        ServiceName = serviceName;
+        ServiceName = service.Name;
+        ServiceType = service.Type;
     }
 
     public TaskDTO ToDTO()
@@ -32,6 +35,7 @@ public class Task
             UserId = UserId,
             Name = JsonSerializer.Deserialize<NameDTO>(UserFullName)!,
             ServiceName = ServiceName,
+            ServiceType = ServiceType,
             DateTime = Time,
             State = State
         };

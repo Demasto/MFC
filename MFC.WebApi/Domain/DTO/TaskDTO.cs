@@ -11,4 +11,5 @@ public class TaskDTO
     public string ServiceName { get; set; }
     public string DateTime { get; set; }
     public ProcessState State { get; set; }
+    public ServiceType ServiceType { get; set; }
 }

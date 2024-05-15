@@ -46,8 +46,8 @@ public static class DefaultUsers
 public static class UsersId
 {
     public const string Admin = "d28be9c0-aa65-4af8-bd17-10bd9344e586";
-    public const string Dmitry = "Т38be9c0-aa65-4af8-bd17-10bd9344e587";
-    public const string Shmebyulok = "Т38be9c0-aa65-4af8-1d17-10bd9344e588";
+    public const string Dmitry = "738be9c0-aa65-4af8-bd17-10bd9344e587";
+    public const string Shmebyulok = "738be9c0-aa65-4af8-1d17-10bd9344e588";
     public const string Employee = "d28be9c0-aa65-4af8-bd17-10bd9344e588";
 
 }

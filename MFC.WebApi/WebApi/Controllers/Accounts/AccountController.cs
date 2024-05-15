@@ -13,7 +13,7 @@ namespace WebApi.Controllers.Accounts;
 public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Login(string userName = "admin", string password = "admin123")
+    public async Task<IActionResult> Login([Required] string userName = "admin", [Required] string password = "admin123")
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
@@ -43,6 +43,21 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
         
         if (user == null)
             throw new ApplicationException($"Пользователь не авторизован");
+        
+        var response = user.ToDTO().ToDictionary();
+        
+        response["role"] = user.UserRole;
+        
+        return Ok(response);
+    }
+    
+    [HttpGet]
+    public IActionResult From_User_Name([Required] string userName)
+    {
+        var user = userManager.Users.FirstOrDefault(appUser => appUser.UserName == userName);
+        
+        if (user == null)
+            throw new ApplicationException($"Пользователь не найден");
         
         var response = user.ToDTO().ToDictionary();
         

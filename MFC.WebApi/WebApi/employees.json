@@ -1,0 +1,127 @@
+[
+  {
+    "post": "Профессор",
+    "institute": "ИПСС",
+    "userName": "professor",
+    "password": "professor123",
+    "email": "tprofessor@example.com",
+    "phoneNumber": "+7 (999) 999-9999",
+    "gender": "Женский",
+    "inn": "1234567890",
+    "snils": "0987654321",
+    "name": {
+      "first": "Ирина",
+      "second": "Иванова",
+      "middle": "Петровна"
+    },
+    "passport": {
+      "series": "1234",
+      "number": "567890",
+      "unitCode": "987-654",
+      "placeOfBrith": "Г. Санкт-Петербург",
+      "dateOfBrith": "1985-06-20",
+      "dateOfIssue": "2010-08-25",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "post": "Ассистент",
+    "institute": "ЮИ",
+    "userName": "assistant",
+    "password": "assistant123",
+    "email": "assistant@example.com",
+    "phoneNumber": "+7 (987) 654-3210",
+    "gender": "Мужской",
+    "inn": "0987654321",
+    "snils": "1234567890",
+    "name": {
+      "first": "Павел",
+      "second": "Сидоров",
+      "middle": "Александрович"
+    },
+    "passport": {
+      "series": "4321",
+      "number": "987654",
+      "unitCode": "765-321",
+      "placeOfBrith": "Г. Екатеринбург",
+      "dateOfBrith": "1990-10-15",
+      "dateOfIssue": "2015-05-17",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "post": "Старший преподаватель",
+    "institute": "ИУЦТ",
+    "userName": "highTeacher",
+    "password": "highTeacher123",
+    "email": "highTeacher@example.com",
+    "phoneNumber": "+7 (654) 321-0987",
+    "gender": "Женский",
+    "inn": "2468013579",
+    "snils": "6666666666",
+    "name": {
+      "first": "Мария",
+      "second": "Смирнова",
+      "middle": "Александровна"
+    },
+    "passport": {
+      "series": "6567",
+      "number": "642889",
+      "unitCode": "666-666",
+      "placeOfBrith": "Г. Новосибирск",
+      "dateOfBrith": "1975-03-06",
+      "dateOfIssue": "2000-11-10",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "post": "Доцент",
+    "institute": "ИУЦТ",
+    "userName": "professor2",
+    "password": "professor123",
+    "email": "professor2@example.com",
+    "phoneNumber": "+7 (111) 222-3333",
+    "gender": "Мужской",
+    "inn": "9876543210",
+    "snils": "1122334455",
+    "name": {
+      "first": "Александр",
+      "second": "Петров",
+      "middle": "Иванович"
+    },
+    "passport": {
+      "series": "1111",
+      "number": "222222",
+      "unitCode": "333-444",
+      "placeOfBrith": "Г. Москва",
+      "dateOfBrith": "1980-09-25",
+      "dateOfIssue": "2005-06-12",
+      "citizenship": "Российская Федерация"
+    }
+  },
+  {
+    "post": "К.т.н",
+    "institute": "ИПСС",
+    "userName": "associate",
+    "password": "associate123",
+    "email": "associate@example.com",
+    "phoneNumber": "+7 (777) 888-9999",
+    "gender": "Мужской",
+    "inn": "1357924680",
+    "snils": "0000000000",
+    "name": {
+      "first": "Дмитрий",
+      "second": "Козлов",
+      "middle": "Сергеевич"
+    },
+    "passport": {
+      "series": "7777",
+      "number": "888888",
+      "unitCode": "999-000",
+      "placeOfBrith": "Г. Красноярск",
+      "dateOfBrith": "1995-12-04",
+      "dateOfIssue": "2020-03-20",
+      "citizenship": "Российская Федерация"
+    }
+  }
+]

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,10 +24,10 @@ public class EmployeesController(
         
         return Ok(employees);
     }
-
+    
     
     [HttpGet("fromPost")]
-    public IActionResult FromPost(string post = "")
+    public IActionResult FromPost([Required] string post = "")
     {
         var response = employeeManager.Users.Where(user => user.Post == post).Select(user => user.ToDTO());
 
@@ -47,4 +49,27 @@ public class EmployeesController(
         
         return Ok(ApiResults.Ok());
     }
+    
+    [HttpPost("initialize")]
+    public async Task<IActionResult> InitEmployees()
+    {
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "employees.json");
+        
+        Console.WriteLine(path);
+        if (!System.IO.File.Exists(path))
+            throw new FileNotFoundException("Файл students.json не найден!");
+
+        using var reader = new StreamReader(path);
+        var jsonStudentsArray = await reader.ReadToEndAsync();
+
+        var employees = JsonSerializer.Deserialize<List<EmployeeDTO>>(jsonStudentsArray, Options);
+        if (employees == null) throw new Exception("Список пуст.");
+        
+        foreach (var employeeDTO in employees)
+        {
+            await AddEmployee(employeeDTO);
+        }
+        return Ok(employees);
+    }
+    private static readonly JsonSerializerOptions Options = new() { PropertyNameCaseInsensitive = true, };
 }
