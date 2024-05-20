@@ -33,13 +33,9 @@ public class FileService : IFileService
     }
     public async Task Update(string fileName, Stream stream, ServiceType type)
     {
-        var pathToFile = SaveDirectory.PathToFile(type, fileName);
+        Delete(fileName, type);
         
-        FindOrThrow(pathToFile);
-        
-        File.Delete(pathToFile);
-        
-        await using Stream outStream = File.OpenWrite(pathToFile);
+        await using Stream outStream = File.OpenWrite(SaveDirectory.PathToFile(type, fileName));
         await stream.CopyToAsync(outStream);
     }
     
@@ -56,11 +52,17 @@ public class FileService : IFileService
     public string FromServiceName(string serviceName, ServiceType type)
     {
         var files = GetAllFromType(type);
-        var fileNameWithExtension = files.FirstOrDefault(fileName => fileName.Contains(serviceName.ToLower()));
+        var fileNameWithExtension = files.FirstOrDefault(fileName =>
+            fileName.Contains(serviceName, StringComparison.CurrentCultureIgnoreCase));
         
         if (fileNameWithExtension == null) throw new Exception("Файл не найден");
 
         return fileNameWithExtension;
+    }
+
+    public string FromService(Service service)
+    {
+        return FromServiceName(service.Name, service.Type);
     }
     
  
@@ -78,7 +80,9 @@ public class FileService : IFileService
         await stream.CopyToAsync(outStream);
     }
     
-    public static string CopyFile(string path)
+
+    
+    public static string CreateTempFile(string path)
     {
         if (!File.Exists(path)) throw new FileNotFoundException();
 

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using Domain.DTO.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,7 @@ using Domain.Entities;
 using Domain.Entities.Users;
 using Infrastructure.Data;
 using Infrastructure.Repo;
+using Microsoft.AspNetCore.Mvc.Routing;
 using WebApi.CustomActionResult;
 using WebApi.Filters;
 using WebApi.Services;
@@ -15,6 +17,7 @@ using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
 
+[CustomExceptionFilter]
 [Route("api/[controller]")]
 [ApiController]
 public class AutoDocController(
@@ -25,53 +28,62 @@ public class AutoDocController(
 {
     [Authorize]
     [HttpGet("{type}/{serviceName}")]
-    [CustomExceptionFilter]
     public async Task<IActionResult> Auto([Required] string serviceName = "test",[Required] ServiceType type = ServiceType.StudentStatement)
     {
         var current = await userManager.GetUserAsync(User);
         if (current == null) throw new Exception("Пользователь не авторизован");
 
-        var service = serviceRepository.Get(serviceName);
+        serviceRepository.Get(serviceName);
         
-        var files = fileService.GetAllFromType(type);
-        var fileNameWithExtension = files.FirstOrDefault(fileName => fileName.Contains(serviceName.ToLower()));
-        
-        if (fileNameWithExtension == null) throw new Exception("Файл не найден");
-
-        var path = SaveDirectory.PathToFile(type, fileNameWithExtension);;
-            
-        var tempFile = FileService.CopyFile(path);
-            
-        new AutoFillDocService(tempFile).ReplaceALl(current);
-        
-            
-        var fileStream = System.IO.File.OpenRead(tempFile);
-            
-        return TempFileStreamResult.File(fileStream, "application/octet-stream", fileNameWithExtension, tempFile);
+        return AutoDocResult(current, serviceName, type);
     }
-    [Authorize]
+
+
+    
+    [Authorize(Roles = Role.Admin)]
     [HttpGet("{taskId}")]
-    [CustomExceptionFilter]
     public async Task<IActionResult> AutoCertificate([Required] long taskId)
     {
         var current = await userManager.GetUserAsync(User);
         if (current == null) throw new Exception("Пользователь не авторизован");
-        if (current.UserRole is not Role.Admin) throw new Exception("Метод не доступен");
 
         var task = await context.Tasks.FindAsync(taskId);
         if(task == null) throw new Exception("Такой задачи не существует");
+        
         var user = userManager.Users.FirstOrDefault(appUser => appUser.Id == task.UserId);
-        if (user == null) throw new Exception($"Задача некорректна. Пользователя с UserId={task.UserId} не существует");
-        
-        var fileNameWithExtension = fileService.FromServiceName(task.ServiceName, ServiceType.Certificate);
-            
-        var tempFile = FileService.CopyFile(SaveDirectory.PathToFile(ServiceType.Certificate, fileNameWithExtension));
-        
-        new AutoFillDocService(tempFile).ReplaceALl(user);
-            
-        var fileStream = System.IO.File.OpenRead(tempFile);
-            
-        return TempFileStreamResult.File(fileStream, "application/octet-stream", fileNameWithExtension, tempFile);
+        if (user == null) throw new Exception($"Задача {task.Id}({task.ServiceName}) некорректна. Пользователя с UserId={task.UserId} не существует");
+
+        return AutoDocResult(user, task.ServiceName);
+
     }
+    
+    private OkObjectResult AutoDocResult(AppUser current, string serviceName, ServiceType type = ServiceType.Certificate)
+    {
+        var fileNameWithExtension = fileService.FromServiceName(serviceName, type);
+        
+        var autoName = CreateAutoName(current, fileNameWithExtension);
+        
+        var result = Ok(ApiResults.Ok("url", CreateLink(autoName)));
+        
+        if (!StaticDirectory.IsExist(autoName))
+        {
+            AutoFillDocService.Generate(current, fileNameWithExtension, autoName);
+        }
+        // TODO если файл существует, узнать как давно он был создан
+       
+        return result;
+    }
+    
+    private static string CreateAutoName(AppUser user, string file)
+    {
+        var name = JsonSerializer.Deserialize<NameDTO>(user.Name);
+        return $"{name?.Second}-{file}";
+    }
+    private string CreateLink(string name)
+    {
+        var s = Request.IsHttps ? "s" : "";
+        return $"http{s}://{Request.Host}/{name}";
+    }
+    
 }
 

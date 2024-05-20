@@ -1,6 +1,8 @@
+using System.Text.Json;
 using Domain.DTO.Users;
 using Domain.Entities;
 using Domain.Entities.Users;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
 
 namespace WebApi.Services;
@@ -19,6 +21,19 @@ public class AutoFillDocService
         
         _application.Documents.Open(ref filePath);
     }
+
+    public static void Generate(AppUser current, string fileNameWithExtension, string autoName)
+    {
+        
+        var pathToCertificate = SaveDirectory.PathToFile(ServiceType.Certificate, fileNameWithExtension);
+
+        // Копирование файла в wwwroot
+        var tempFilePath = StaticDirectory.CopyFile(pathToCertificate, autoName);
+        
+        new AutoFillDocService(tempFilePath).ReplaceALl(current);
+
+    }
+    
 
     public void ReplaceALl(AppUser current)
     {

@@ -45,6 +45,7 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
         var service = Get(dto.Name);
 
         service.Name = dto.NewName;
+        service.NormalizedName = dto.NewName.ToUpper();
         service.Description = dto.Description;
         service.Type = dto.Type;
         
@@ -52,11 +53,12 @@ public class ServiceRepository(MfcContext context) : IServiceRepository
         context.SaveChanges();
     }
     
-    public void Remove(string serviceName)
+    public Service Remove(string serviceName)
     {
         var service = Get(serviceName);
         context.Services.Remove(service);
         context.SaveChanges();
+        return service;
     }
 
     public void RemoveAll()

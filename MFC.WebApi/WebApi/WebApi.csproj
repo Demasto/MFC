@@ -26,10 +26,12 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.2" />
         <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.2" />
 
         <PackageReference Include="Npgsql" Version="8.0.2" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004" />
     </ItemGroup>
@@ -38,6 +40,10 @@
         <Reference Include="office">
             <HintPath>..\.office\OFFICE.DLL</HintPath>
         </Reference>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Include="wwwroot\hello.txt" />
     </ItemGroup>
     
 

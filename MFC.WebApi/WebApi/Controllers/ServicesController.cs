@@ -1,28 +1,42 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Repo;
-
 using Domain.Entities;
 using Domain.DTO;
+
+using Infrastructure.Repo;
+
 using WebApi.CustomActionResult;
 using WebApi.Filters;
+using WebApi.Services;
+using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 [CustomExceptionFilter]
-public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
+[Authorize(Roles = Role.Admin)]
+public class ServicesController(IServiceRepository serviceRepo, IFileService fileService) : ControllerBase
 {
 
     [HttpGet]
-    public IActionResult GetServices()
+    [AllowAnonymous]
+    public IActionResult GetAll()
     {
         var response = ApiResults.Ok("services", serviceRepo.GetAll()) ;
         return Ok(response);
     }
     
+    [AllowAnonymous]
+    [HttpGet("type/{type}")]
+    public IActionResult GetFromType(ServiceType type)
+    {
+        var filesList = fileService.GetAllFromType(type);
+        return Ok(filesList);
+    }
+    
+    [AllowAnonymous]
     [HttpGet("{serviceName}")]
     public IActionResult Get(string serviceName)
     {
@@ -30,43 +44,69 @@ public class ServicesController(IServiceRepository serviceRepo) : ControllerBase
         return Ok(response);
     }
     
-    [Authorize(Roles = Role.Admin)]
-    [HttpPost]
-    public IActionResult AddService([FromBody] ServiceDTO serviceDTO)
+    [AllowAnonymous]
+    [HttpGet("file/{serviceFileName}")]
+    public FileStreamResult GetFile(string serviceName)
     {
-        serviceRepo.Add(serviceDTO);
+        var service = serviceRepo.Get(serviceName);
+        var fileName = fileService.FromServiceName(service.Name, service.Type);
+        
+        var stream = fileService.Read(fileName.ToLower(), service.Type);
+        return File(stream, "application/octet-stream", fileName);
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> AddService([FromForm] ServiceWithFileDTO service)
+    {
+        await fileService.Create(service.File.FileName, service.File.OpenReadStream(), service.Type);
+        
+        serviceRepo.Add(service);
+        
         return Ok(ApiResults.Ok());
     }
+  
     
-    [Authorize(Roles = Role.Admin)]
     [HttpPut]
-    public IActionResult UpdateService([FromBody] UpdateServiceDTO serviceDTO)
+    public IActionResult UpdateService([FromForm] UpdateServiceDTO serviceDTO)
     {
         serviceRepo.Update(serviceDTO);
         return Ok(ApiResults.Ok());
     }
     
-    [Authorize(Roles = Role.Admin)]
-    [HttpPut("switch_state/{serviceName}")]
-    public IActionResult SwitchState(string serviceName)
-    {
-        var response = ApiResults.Ok("current_state", serviceRepo.Switch(serviceName));
-        return Ok(response);
-    }
     
-    [Authorize(Roles = Role.Admin)]
-    [HttpDelete("{serviceName}")]
-    public IActionResult DeleteService(string serviceName)
+    [HttpPut("file")]
+    public async Task<IActionResult> UpdateServiceFile([FromForm] ServiceWithFileDTO service)
     {
-        serviceRepo.Remove(serviceName);
+        await fileService.Update(service.File.FileName, service.File.OpenReadStream(), service.Type);
         return Ok(ApiResults.Ok());
     }
     
-    [Authorize(Roles = Role.Admin)]
-    [HttpDelete("clear_dataBase")]
-    public IActionResult RemoveAllService()
+    [HttpPut("switch_state/{serviceName}")]
+    public IActionResult SwitchState(string serviceName)
     {
+        return Ok(ApiResults.Ok("current_state", serviceRepo.Switch(serviceName)));
+    }
+    
+    [HttpDelete("{serviceName}")]
+    public IActionResult DeleteService(string serviceName)
+    {
+        var removed = serviceRepo.Remove(serviceName);
+        
+        var fileName = fileService.FromService(removed);
+        fileService.Delete(fileName, removed.Type);
+        
+        return Ok(ApiResults.Ok());
+    }
+    
+    [HttpDelete("clear_all")]
+    public IActionResult RemoveAllService(string? password)
+    {
+        if (password != "0123")
+            return Ok(ApiResults.Bad("Для безвозвратного удаления услуг со ВСЕМИ файлами необходимо ввести пароль. (0123)"));
+        
         serviceRepo.RemoveAll();
+        SaveDirectory.DeleteAll();
         return Ok(ApiResults.Ok());
     }
 }

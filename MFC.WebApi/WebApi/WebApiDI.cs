@@ -12,7 +12,7 @@ public static class WebApiDI
         services.AddTransient<IFileService, FileService>();
         
         services.AddIdentity();
-        
+
         return services;
     }
     

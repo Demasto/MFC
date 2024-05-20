@@ -10,7 +10,7 @@ public class ServiceDTO
     [Required]
     public string Description { get; set; } = null!;
     [Required]
-    public ServiceType Type { get; set; } = ServiceType.Certificate;
+    public ServiceType Type { get; set; }
 
     public Service ToEntity()
     {
