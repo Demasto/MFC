@@ -65,7 +65,7 @@ public class AutoDocController(
         
         var result = Ok(ApiResults.Ok("url", CreateLink(autoName)));
         
-        if (!StaticDirectory.IsExist(autoName))
+        if (!StaticDirectory.IsExist(autoName, Dir.Auto))
         {
             AutoFillDocService.Generate(current, fileNameWithExtension, autoName);
         }
@@ -82,7 +82,7 @@ public class AutoDocController(
     private string CreateLink(string name)
     {
         var s = Request.IsHttps ? "s" : "";
-        return $"http{s}://{Request.Host}/{name}";
+        return $"http{s}://{Request.Host}/auto/{name}";
     }
     
 }

@@ -10,14 +10,14 @@ public static class SaveDirectory
     {
         Directory.Delete(RootSaveDir, true);
     }
-
-    private static string SaveDirPath(ServiceType serviceType)
+    private static string SaveDirPath(this ServiceType type)
     {
-        return Path.Combine(RootSaveDir, ServiceDir.Dict[serviceType]);
+        return Path.Combine(RootSaveDir, ServiceDir.Dict[type]);
     }
+    
     public static string PathToFile(ServiceType serviceType, string fileName)
     {
-        return Path.Combine(SaveDirPath(serviceType), fileName);
+        return Path.Combine(serviceType.SaveDirPath(), fileName);
     }
     
     public static void Restore()

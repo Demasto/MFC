@@ -28,59 +28,98 @@ public class AutoFillDocService
         var pathToCertificate = SaveDirectory.PathToFile(ServiceType.Certificate, fileNameWithExtension);
 
         // Копирование файла в wwwroot
-        var tempFilePath = StaticDirectory.CopyFile(pathToCertificate, autoName);
+        var tempFilePath = StaticDirectory.CopyFile(pathToCertificate, autoName, Dir.Auto);
         
         new AutoFillDocService(tempFilePath).ReplaceALl(current);
-
+    }
+    public static void GenerateTemplate(string fileName, string path)
+    {
+        // Копирование файла в wwwroot
+        var tempFilePath = StaticDirectory.CopyFile(path, fileName, Dir.Template);
+        
+        new AutoFillDocService(tempFilePath).ExtractTemplate();
     }
     
 
-    public void ReplaceALl(AppUser current)
+    private void ReplaceALl(AppUser current)
     {
         var appUserDto = current.ToDTO();
 
-
         
-        ReplaceValue("<имя>", appUserDto.Name.First);
-        ReplaceValue("<фамилия>", appUserDto.Name.Second);
-        ReplaceValue("<отчество>", appUserDto.Name.Middle);
+        ReplaceValue(UserTags.FirstName, appUserDto.Name.First);
+        ReplaceValue(UserTags.SecondName, appUserDto.Name.Second);
+        ReplaceValue(UserTags.MiddleName, appUserDto.Name.Middle);
         
         var parentCaseName = appUserDto.Name.ToParent();
         
-        ReplaceValue("<имя-р>", parentCaseName.First);
-        ReplaceValue("<фамилия-р>", parentCaseName.Second);
-        ReplaceValue("<отчество-р>", parentCaseName.Middle);
+        ReplaceValue(UserTags.FirstNameParent, parentCaseName.First);
+        ReplaceValue(UserTags.SecondNameParent, parentCaseName.Second);
+        ReplaceValue(UserTags.MiddleNameParent, parentCaseName.Middle);
         
-        ReplaceValue("<инн>", appUserDto.INN);
-        ReplaceValue("<телефон>", appUserDto.PhoneNumber);
+        ReplaceValue(UserTags.INN, appUserDto.INN);
+        ReplaceValue(UserTags.PhoneNumber, appUserDto.PhoneNumber);
         
         switch (current.UserRole)
         {
             case Role.Student:
             {
                 var studentDTO = appUserDto as StudentDTO;
-                ReplaceValue("<группа>", studentDTO.Group);
-                ReplaceValue("<направление>", studentDTO.DirectionOfStudy);
-                ReplaceValue("<номер>", studentDTO.ServiceNumber);
+                ReplaceValue(UserTags.Group, studentDTO!.Group);
+                ReplaceValue(UserTags.DirectionOfStudy, studentDTO.DirectionOfStudy);
+                ReplaceValue(UserTags.ServiceNumber, studentDTO.ServiceNumber);
                 break;
             }
             case Role.Employee:
             {
                 var employeeDTO = appUserDto as EmployeeDTO;
-                ReplaceValue("<должность>", employeeDTO.Post);
-                ReplaceValue("<институт>", employeeDTO.Institute);
+                ReplaceValue(UserTags.Post, employeeDTO!.Post);
+                ReplaceValue(UserTags.Institute, employeeDTO.Institute);
                 break;
             }
         }
             
         CloseDocument();
     }
-    
 
-    private void ReplaceValue(string tag, string value)
+    private void ExtractTemplate()
+    {
+
+        ReplaceValue(UserTags.FirstName);
+        ReplaceValue(UserTags.SecondName);
+        ReplaceValue(UserTags.MiddleName);
+        
+        ReplaceValue(UserTags.FirstNameParent);
+        ReplaceValue(UserTags.SecondNameParent);
+        ReplaceValue(UserTags.MiddleNameParent);
+        
+        ReplaceValue(UserTags.INN);
+        ReplaceValue(UserTags.PhoneNumber);
+        
+        ReplaceValue(UserTags.Group);
+        ReplaceValue(UserTags.DirectionOfStudy);
+        ReplaceValue(UserTags.ServiceNumber);
+        
+        ReplaceValue(UserTags.Post);
+        ReplaceValue(UserTags.Institute);
+        CloseDocument();
+    }
+
+
+    private void ReplaceValue(string tag, string? value = null)
     {
         var find = _application.Selection.Find;
+        
+        if (value == null)
+        {
+            var emptySpaceValue = string.Empty;
+            
+            // for (var i = 0; i < tag.Length; i++)
+            // {
+            //     emptySpaceValue += " ";
+            // }
 
+            value = emptySpaceValue;
+        }
         
         find.Text = tag;
         find.Replacement.Text = value;
@@ -100,10 +139,31 @@ public class AutoFillDocService
             Replace: WdReplace.wdReplaceOne);
     }
     
-    public void CloseDocument()
+    private void CloseDocument()
     {
         _application.ActiveDocument.Save();
         _application.ActiveDocument.Close();
         _application.Quit(); 
     }
+}
+
+public static class UserTags
+{
+    public const string FirstName = "<имя>";
+    public const string SecondName = "<фамилия>";
+    public const string MiddleName = "<отчество>";
+    
+    public const string FirstNameParent = "<имя-р>";
+    public const string SecondNameParent = "<фамилия-р>";
+    public const string MiddleNameParent = "<отчество-р>";
+    
+    public const string INN = "<инн>";
+    public const string PhoneNumber = "<телефон>";
+    
+    public const string Group = "<инн>";
+    public const string DirectionOfStudy = "<телефон>";
+    public const string ServiceNumber = "<номер>";
+    
+    public const string Post = "<должность>";
+    public const string Institute = "<институт>";
 }

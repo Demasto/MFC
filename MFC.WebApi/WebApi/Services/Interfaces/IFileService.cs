@@ -9,6 +9,7 @@ public interface IFileService
 
     public Task Create(string fileName, Stream stream, ServiceType type);
     public FileStream Read(string fileName, ServiceType type);
+    public string ReadTemplate(string fileName);
     public Task Update(string fileName, Stream stream, ServiceType type);
     public string FromServiceName(string serviceName, ServiceType type);
     public string FromService(Service service);

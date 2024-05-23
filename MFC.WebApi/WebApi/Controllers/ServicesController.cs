@@ -45,7 +45,7 @@ public class ServicesController(IServiceRepository serviceRepo, IFileService fil
     }
     
     [AllowAnonymous]
-    [HttpGet("file/{serviceFileName}")]
+    [HttpGet("file/{serviceName}")]
     public FileStreamResult GetFile(string serviceName)
     {
         var service = serviceRepo.Get(serviceName);
@@ -54,7 +54,21 @@ public class ServicesController(IServiceRepository serviceRepo, IFileService fil
         var stream = fileService.Read(fileName.ToLower(), service.Type);
         return File(stream, "application/octet-stream", fileName);
     }
-
+    
+    [AllowAnonymous]
+    [HttpGet("template/{serviceName}")]
+    public IActionResult GetTemplate(string serviceName)
+    {
+        var service = serviceRepo.Get(serviceName);
+        var fileName = fileService.FromServiceName(service.Name, service.Type);
+        
+        return Ok(ApiResults.Ok("link", CreateLink(fileName)));
+    }
+    private string CreateLink(string name)
+    {
+        var s = Request.IsHttps ? "s" : "";
+        return $"http{s}://{Request.Host}/template/template-{name}";
+    }
 
     [HttpPost]
     public async Task<IActionResult> AddService([FromForm] ServiceWithFileDTO service)

@@ -1,4 +1,5 @@
 using Infrastructure;
+using Microsoft.Extensions.FileProviders;
 using WebApi;
 using WebApi.Configurations;
 
@@ -31,7 +32,12 @@ app.AddSwagger();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
+// app.UseStaticFiles(new StaticFileOptions()
+// {
+//     FileProvider = new PhysicalFileProvider(
+//         Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
+//     RequestPath = "/static"
+// });
 app.UseCors(WebApiDI.PolicyName);
 
 app.UseAuthorization();

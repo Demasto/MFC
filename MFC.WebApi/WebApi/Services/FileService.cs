@@ -9,6 +9,7 @@ public class FileService : IFileService
     public FileService()
     {
         SaveDirectory.Restore();
+        StaticDirectory.Restore();
     }
     
     public IEnumerable<string> GetAllFromType(ServiceType type)
@@ -22,6 +23,7 @@ public class FileService : IFileService
         var path = SaveDirectory.PathToFile(type, fileName);
         
         await CreateOrThrow(path, stream);
+        AutoFillDocService.GenerateTemplate(fileName, path);
     }
     public FileStream Read(string fileName, ServiceType type)
     {
@@ -30,6 +32,15 @@ public class FileService : IFileService
         FindOrThrow(path);
         
         return File.OpenRead(path);
+    }
+    
+    public string ReadTemplate(string fileName)
+    {
+        var path = StaticDirectory.PathToFile(fileName, Dir.Template);
+        
+        FindOrThrow(path);
+        
+        return path;
     }
     public async Task Update(string fileName, Stream stream, ServiceType type)
     {

@@ -46,5 +46,9 @@
       <None Include="wwwroot\hello.txt" />
     </ItemGroup>
     
+    <ItemGroup>
+      <Folder Include="wwwroot\template\" />
+    </ItemGroup>
+    
 
 </Project>

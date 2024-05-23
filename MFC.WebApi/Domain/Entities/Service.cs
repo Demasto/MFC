@@ -18,6 +18,14 @@ public enum ServiceType
     TransferAndReinstatement
 }
 
+// public static class ServiceTypeExtension
+// {
+//    public static string Dir(this ServiceType type, string root)
+//    {
+//        return Path.Combine(root, ServiceDir.Dict[type]);
+//    }
+// }
+
 public static class ServiceDir
 {
     public static readonly Dictionary<ServiceType, string> Dict = new()
