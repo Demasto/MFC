@@ -10,6 +10,8 @@ public static class WebApiDI
     public static IServiceCollection AddWebServices(this IServiceCollection services)
     {
         services.AddTransient<IFileService, FileService>();
+        services.AddTransient<ITaskService, TaskService>();
+        services.AddTransient<IEmailService, EmailService>();
         
         services.AddIdentity();
 

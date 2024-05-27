@@ -109,17 +109,7 @@ public class AutoFillDocService
     {
         var find = _application.Selection.Find;
         
-        if (value == null)
-        {
-            var emptySpaceValue = string.Empty;
-            
-            // for (var i = 0; i < tag.Length; i++)
-            // {
-            //     emptySpaceValue += " ";
-            // }
-
-            value = emptySpaceValue;
-        }
+        value ??= string.Empty;
         
         find.Text = tag;
         find.Replacement.Text = value;

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entities.Users;
 using WebApi.CustomActionResult;
 using WebApi.Filters;
+using WebApi.Services;
 
 namespace WebApi.Controllers.Accounts;
 
@@ -13,7 +14,7 @@ namespace WebApi.Controllers.Accounts;
 public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> Login([Required] string userName = "admin", [Required] string password = "admin123")
+    public async Task<IActionResult> Login([Required] string userName, [Required] string password)
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true

@@ -22,22 +22,6 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
-
-#  api:
-#    container_name: web_api_container
-#    image: webapi
-#    restart: always
-#    build:
-#      context: .
-#      dockerfile: MFC.WebApi/WebApi/Dockerfile
-#    depends_on: [ "postgres" ]
-#    ports:
-#      - "8080:80"
-#    networks:
-#      - app-network
-#    environment:
-#      DATABASE_CONNECT: "Server=postgres;Port=5432;Database=MFC;User Id=postgres;Password=postgres"
-#      ASPNETCORE_HTTP_PORTS: "80"
       
   pgadmin:
     container_name: pgadmin_container
@@ -56,3 +40,29 @@ services:
 networks:
   app-network:
     driver: bridge
+#  cache:
+#    container_name: cache_container
+#    image: redis:6.2
+#    restart: always
+#    ports:
+#      - '6379:6379'
+#    command: redis-server --loglevel warning
+#    volumes:
+#      - cache:/data
+
+#  api:
+#    container_name: web_api_container
+#    image: webapi
+#    restart: always
+#    build:
+#      context: .
+#      dockerfile: MFC.WebApi/WebApi/Dockerfile
+#    depends_on: [ "postgres" ]
+#    ports:
+#      - "8080:80"
+#    networks:
+#      - app-network
+#    environment:
+#      DATABASE_CONNECT: "Server=postgres;Port=5432;Database=MFC;User Id=postgres;Password=postgres"
+#      ASPNETCORE_HTTP_PORTS: "80"
+      

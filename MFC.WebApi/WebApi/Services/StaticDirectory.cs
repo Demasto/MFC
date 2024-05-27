@@ -31,7 +31,7 @@ public static class StaticDirectory
         return dir switch
         {
             Dir.Auto => Path.Combine(AutoDir, name),
-            Dir.Template => Path.Combine(TemplateDir, $"template-{name}"),
+            Dir.Template => Path.Combine(TemplateDir, name),
             _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
         };
     }

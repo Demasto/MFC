@@ -51,9 +51,12 @@ public class AutoDocController(
         if(task == null) throw new Exception("Такой задачи не существует");
         
         var user = userManager.Users.FirstOrDefault(appUser => appUser.Id == task.UserId);
-        if (user == null) throw new Exception($"Задача {task.Id}({task.ServiceName}) некорректна. Пользователя с UserId={task.UserId} не существует");
+        
+        var service = JsonSerializer.Deserialize<Service>(task.Service);
+        
+        if (user == null) throw new Exception($"Задача {task.Id}({service.Name}) некорректна. Пользователя с UserId={task.UserId} не существует");
 
-        return AutoDocResult(user, task.ServiceName);
+        return AutoDocResult(user, service.Name);
 
     }
     

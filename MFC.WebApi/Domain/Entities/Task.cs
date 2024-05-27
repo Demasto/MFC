@@ -1,4 +1,5 @@
 
+using System.Globalization;
 using System.Text.Json;
 using Domain.DTO;
 using Domain.DTO.Users;
@@ -11,20 +12,21 @@ public class Task
     public long Id { get; set; }
     public string UserId { get; set; }
     public string UserFullName { get; set; }
-    public string ServiceName { get; set; }
-    public string Time { get; set; } = DateTime.UtcNow.ToLocalTime().ToString();
+    public string? UserEmail { get; set; }
+    public string Service { get; set; }
+    public string Time { get; set; } = DateTime.UtcNow.ToLocalTime().ToString(CultureInfo.CurrentCulture);
     public ProcessState State { get; set; } = ProcessState.Created;
-    
-    public ServiceType ServiceType { get; set; }
 
     public Task() { }
 
     public Task(AppUser user, Service service)
     {
+        var name = JsonSerializer.Deserialize<NameDTO>(user.Name);
+        
         UserId = user.Id;
-        UserFullName = user.Name;
-        ServiceName = service.Name;
-        ServiceType = service.Type;
+        UserFullName = $"{name?.Second} {name?.First}";
+        UserEmail = user.Email;
+        Service = JsonSerializer.Serialize(service);
     }
 
     public TaskDTO ToDTO()
@@ -33,9 +35,9 @@ public class Task
         {
             Id = Id,
             UserId = UserId,
-            Name = JsonSerializer.Deserialize<NameDTO>(UserFullName)!,
-            ServiceName = ServiceName,
-            ServiceType = ServiceType,
+            UserFullName = UserFullName,
+            UserEmail = UserEmail,
+            Service = JsonSerializer.Deserialize<Service>(Service)!,
             DateTime = Time,
             State = State
         };

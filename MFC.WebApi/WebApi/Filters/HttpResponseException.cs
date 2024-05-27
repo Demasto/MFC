@@ -15,6 +15,7 @@ public sealed class CustomExceptionFilterAttribute : Attribute, IExceptionFilter
             ["succeeded"] = false,
             ["error_message"] = exceptionMessage,
             ["action_name"] = actionName,
+            ["StackTrace"] = context.Exception.StackTrace,
         };
         
         context.Result = new ObjectResult(response);
