@@ -20,7 +20,6 @@ public class MfcContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
         builder.Seed();
-        
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

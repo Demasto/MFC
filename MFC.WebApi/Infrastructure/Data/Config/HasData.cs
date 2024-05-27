@@ -15,12 +15,7 @@ public static class HasData
 
         const string userName = "admin";
         
-        var name = new NameDTO()
-        {
-            First = "Admin",
-            Middle = "Adminovich",
-            Second = "Adminov"
-        };
+        var name = new NameDTO() { First = "Admin", Middle = "Adminovich", Second = "Adminov" };
         
         var admin = AppUser.Default(userName);
         

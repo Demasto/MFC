@@ -26,9 +26,8 @@ public class TaskService(MfcContext context, IServiceRepository serviceRepositor
 
         var oldTask = context.Tasks
             .Where(task => task.UserId == user.Id)
-            .Select(task => task.ToDTO())
-            .ToList()
-            .Where(task => task.Service.NormalizedName == serviceName.ToUpper())
+            .Select(task => task.ToDTO()).ToList()
+            .Where(task => task.Service.NormalizedName.Equals(serviceName, StringComparison.CurrentCultureIgnoreCase))
             .MaxBy(task => task.DateTime);
         
        
@@ -47,9 +46,9 @@ public class TaskService(MfcContext context, IServiceRepository serviceRepositor
                     throw new Exception("Услуга уже готова");
             }
         }
-
-
-        await context.Tasks.AddAsync(new Domain.Entities.Task(user, service));
+        
+        var task = new Domain.Entities.Task(user, service);
+        await context.Tasks.AddAsync(task);
         
         await context.SaveChangesAsync();
 
@@ -57,7 +56,7 @@ public class TaskService(MfcContext context, IServiceRepository serviceRepositor
         {
             if (user.Email != null)
             {
-                await emailService.SendEmailAsync(user.Email, "Услуга заказана успешно!", $"<h1>Здравствуйте {user.UserName}</h1></br>Услуга \"{serviceName}\" ожидает выпонения.");
+                await emailService.SendEmailAsync(user.Email, "Услуга заказана успешно!", $"<h1>Здравствуйте {task.UserFullName}!</h1></br>Услуга \"{serviceName}\" ожидает выпонения.");
             }
         }
         catch (Exception e)
@@ -82,11 +81,21 @@ public class TaskService(MfcContext context, IServiceRepository serviceRepositor
         if (task.State == newState) return;
         task.State = newState;
         await context.SaveChangesAsync();
+        var taskDTO = task.ToDTO();
         
         var email = userManager.Users.FirstOrDefault(user => user.Id == task.UserId)?.Email;
         if (email != null)
         {
-            await emailService.SendEmailAsync(email, $"Обновлен статус услуги '{task.ToDTO().Service.Name}'", $"<h1>Здравствуйте</h1></br>Услуга \"{task.ToDTO().Service.Name}\" переведена в статус {task.State}.");
+            var message = taskDTO.State switch
+            {
+                ProcessState.Ready =>
+                    $"Результат услуги \"{taskDTO.Service.Name}\" готов к выдаче! Подходите в аудиторию 1215, не забудьте свой паспорт!",
+                ProcessState.Created =>
+                    $"<h1>Здравствуйте {taskDTO.UserFullName}!</h1></br>Услуга \"{taskDTO.Service.Name}\" создана и ожидает выпонения.",
+                _ =>
+                    $"<h1>Здравствуйте {taskDTO.UserFullName}!</h1></br>Изменен статус услуги \"{taskDTO.Service.Name}\" на {taskDTO.State}."
+            };
+            await emailService.SendEmailAsync(email, taskDTO.Service.Name, message);
         }
     }
     

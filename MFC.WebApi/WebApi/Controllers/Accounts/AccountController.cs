@@ -1,23 +1,23 @@
 using System.ComponentModel.DataAnnotations;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Domain.Entities.Users;
 using WebApi.CustomActionResult;
 using WebApi.Filters;
-using WebApi.Services;
 
 namespace WebApi.Controllers.Accounts;
 
 [CustomExceptionFilter]
 [Route("api/[controller]/[action]")]
-public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : ControllerBase
+public class AccountController(
+    UserManager<AppUser> userManager,
+    SignInManager<AppUser> signInManager) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Login([Required] string userName, [Required] string password)
     {
-        // This doesn't count login failures towards account lockout
-        // To enable password failures to trigger account lockout, set lockoutOnFailure: true
         var result = await signInManager.PasswordSignInAsync(userName, password, true, lockoutOnFailure: false);
         var response = new Dictionary<string, object>();
         
@@ -25,14 +25,17 @@ public class AccountController(UserManager<AppUser> userManager, SignInManager<A
         {
             return Ok(ApiResults.Bad());
         }
-        
-        var current = await userManager.GetUserAsync(User);
-        
-        if (current == null)
-            throw new ApplicationException($"Пользователь не авторизован");
+
+        var isInRole = false;
+        foreach (var role in Role.Array)
+        {
+            if (!User.IsInRole(role)) continue;
+            isInRole = true;
+            response["role"] = role;
+        }
+        if (!isInRole) response["role"] = "unknown";
         
         response["succeeded"] = result.Succeeded;
-        response["role"] = current.UserRole;
         
         return Ok(response);
     }

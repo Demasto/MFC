@@ -18,13 +18,6 @@ public enum ServiceType
     TransferAndReinstatement
 }
 
-// public static class ServiceTypeExtension
-// {
-//    public static string Dir(this ServiceType type, string root)
-//    {
-//        return Path.Combine(root, ServiceDir.Dict[type]);
-//    }
-// }
 
 public static class ServiceDir
 {
@@ -34,6 +27,5 @@ public static class ServiceDir
         [ServiceType.StudentStatement] = "student_statements",
         [ServiceType.EmployeeStatement] = "employee_statements",
         [ServiceType.TransferAndReinstatement] = "transfers_and_reinstatement",
-        
     };
 }

@@ -1,18 +1,15 @@
 using System.ComponentModel.DataAnnotations;
-using Domain.Entities;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using Infrastructure.Repo;
+using Domain.Entities;
 using Domain.Entities.Users;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+
 using WebApi.CustomActionResult;
 using WebApi.Filters;
 using WebApi.Services.Interfaces;
-using Task = Domain.Entities.Task;
 
 namespace WebApi.Controllers;
 
