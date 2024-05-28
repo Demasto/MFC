@@ -70,13 +70,23 @@ public class ServicesController(IServiceRepository serviceRepo, IFileService fil
         return $"http{s}://{Request.Host}/template/template-{name}";
     }
 
-    [HttpPost]
+    [HttpPost("with_file")]
     public async Task<IActionResult> AddService([FromForm] ServiceWithFileDTO service)
     {
-        await fileService.Create(service.File.FileName, service.File.OpenReadStream(), service.Type);
-        
         serviceRepo.Add(service);
         
+        await fileService.Create(service.File.FileName, service.File.OpenReadStream(), service.Type);
+        
+        return Ok(ApiResults.Ok());
+    }
+    
+    [HttpPost]
+    public IActionResult AddService([FromForm] ServiceDTO service)
+    {
+        if(service.Type is not ServiceType.TransferAndReinstatement)
+            return Ok(ApiResults.Bad($"Услуга с типом {service.Type} должна загружаться с файлом"));
+        
+        serviceRepo.Add(service);
         return Ok(ApiResults.Ok());
     }
   

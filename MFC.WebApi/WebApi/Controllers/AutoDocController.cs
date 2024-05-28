@@ -27,15 +27,15 @@ public class AutoDocController(
     MfcContext context) : ControllerBase
 {
     [Authorize]
-    [HttpGet("{type}/{serviceName}")]
-    public async Task<IActionResult> Auto([Required] string serviceName = "test",[Required] ServiceType type = ServiceType.StudentStatement)
+    [HttpGet("service/{serviceName}")]
+    public async Task<IActionResult> Auto([Required] string serviceName)
     {
         var current = await userManager.GetUserAsync(User);
         if (current == null) throw new Exception("Пользователь не авторизован");
 
-        serviceRepository.Get(serviceName);
+        var service = serviceRepository.Get(serviceName);
         
-        return AutoDocResult(current, serviceName, type);
+        return AutoDocResult(current, service);
     }
 
 
@@ -53,16 +53,17 @@ public class AutoDocController(
         var user = userManager.Users.FirstOrDefault(appUser => appUser.Id == task.UserId);
         
         var service = JsonSerializer.Deserialize<Service>(task.Service);
+        if (service == null) throw new Exception("Услуга не распознана");
         
         if (user == null) throw new Exception($"Задача {task.Id}({service.Name}) некорректна. Пользователя с UserId={task.UserId} не существует");
 
-        return AutoDocResult(user, service.Name);
+        return AutoDocResult(user, service);
 
     }
     
-    private OkObjectResult AutoDocResult(AppUser current, string serviceName, ServiceType type = ServiceType.Certificate)
+    private OkObjectResult AutoDocResult(AppUser current, Service service)
     {
-        var fileNameWithExtension = fileService.FromServiceName(serviceName, type);
+        var fileNameWithExtension = fileService.FromServiceName(service.Name, service.Type);
         
         var autoName = CreateAutoName(current, fileNameWithExtension);
         
@@ -70,7 +71,7 @@ public class AutoDocController(
         
         if (!StaticDirectory.IsExist(autoName, Dir.Auto))
         {
-            AutoFillDocService.Generate(current, fileNameWithExtension, autoName);
+            AutoFillDocService.Generate(current, fileNameWithExtension, autoName, service.Type);
         }
         // TODO если файл существует, узнать как давно он был создан
        

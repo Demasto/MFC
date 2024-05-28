@@ -22,10 +22,10 @@ public class AutoFillDocService
         _application.Documents.Open(ref filePath);
     }
 
-    public static void Generate(AppUser current, string fileNameWithExtension, string autoName)
+    public static void Generate(AppUser current, string fileNameWithExtension, string autoName, ServiceType type)
     {
         
-        var pathToCertificate = SaveDirectory.PathToFile(ServiceType.Certificate, fileNameWithExtension);
+        var pathToCertificate = SaveDirectory.PathToFile(type, fileNameWithExtension);
 
         // Копирование файла в wwwroot
         var tempFilePath = StaticDirectory.CopyFile(pathToCertificate, autoName, Dir.Auto);
