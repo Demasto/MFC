@@ -67,7 +67,7 @@ public class ServicesController(IServiceRepository serviceRepo, IFileService fil
     private string CreateLink(string name)
     {
         var s = Request.IsHttps ? "s" : "";
-        return $"http{s}://{Request.Host}/template/template-{name}";
+        return $"http{s}://{Request.Host}/template/{name}";
     }
 
     [HttpPost("with_file")]

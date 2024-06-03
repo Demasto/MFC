@@ -30,7 +30,6 @@ public class TaskService(MfcContext context, IServiceRepository serviceRepositor
             .Where(task => task.Service.NormalizedName.Equals(serviceName, StringComparison.CurrentCultureIgnoreCase))
             .MaxBy(task => task.DateTime);
         
-       
         if (oldTask != null)
         {
             Console.WriteLine(oldTask.DateTime);
@@ -102,9 +101,7 @@ public class TaskService(MfcContext context, IServiceRepository serviceRepositor
 
     public async Task RemoveAsync(long taskId)
     {
-
         var task = GetTaskById(taskId);
-        
         context.Remove(task);
         await context.SaveChangesAsync();
     }

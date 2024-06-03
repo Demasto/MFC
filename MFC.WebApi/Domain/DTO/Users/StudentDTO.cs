@@ -20,6 +20,10 @@ public class StudentDTO : AppUserDTO
     [Required]
     public int GapYearsCount { get; set; }
     
+    public int Course()
+    {
+        return DateTime.Now.Year - DateOfEnrollment.Year - GapYearsCount;
+    }
     public StudentDTO() {}
     public StudentDTO(AppUserDTO user) : base(user) { }
 

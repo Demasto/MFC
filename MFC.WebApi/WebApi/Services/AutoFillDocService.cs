@@ -1,8 +1,7 @@
-using System.Text.Json;
 using Domain.DTO.Users;
 using Domain.Entities;
 using Domain.Entities.Users;
-using Microsoft.AspNetCore.Mvc;
+
 using WebApi.Filters;
 
 namespace WebApi.Services;
@@ -13,7 +12,7 @@ public class AutoFillDocService
 {
     private readonly Application _application;
     
-    public AutoFillDocService(string path)
+    private AutoFillDocService(string path)
     {
         _application = new Application();
 
@@ -50,11 +49,17 @@ public class AutoFillDocService
         ReplaceValue(UserTags.SecondName, appUserDto.Name.Second);
         ReplaceValue(UserTags.MiddleName, appUserDto.Name.Middle);
         
+        ReplaceValue(UserTags.FullName, $"{appUserDto.Name.Second} {appUserDto.Name.First} {appUserDto.Name.Middle}");
+        
         var parentCaseName = appUserDto.Name.ToParent();
         
         ReplaceValue(UserTags.FirstNameParent, parentCaseName.First);
         ReplaceValue(UserTags.SecondNameParent, parentCaseName.Second);
         ReplaceValue(UserTags.MiddleNameParent, parentCaseName.Middle);
+        
+        ReplaceValue(UserTags.FullNameParent, $"{parentCaseName.Second} {parentCaseName.First} {parentCaseName.Middle}");
+        
+        ReplaceValue(UserTags.DateOfBrith, appUserDto.Passport.DateOfBrith.ToString());
         
         ReplaceValue(UserTags.INN, appUserDto.INN);
         ReplaceValue(UserTags.PhoneNumber, appUserDto.PhoneNumber);
@@ -64,16 +69,19 @@ public class AutoFillDocService
             case Role.Student:
             {
                 var studentDTO = appUserDto as StudentDTO;
-                ReplaceValue(UserTags.Group, studentDTO!.Group);
-                ReplaceValue(UserTags.DirectionOfStudy, studentDTO.DirectionOfStudy);
-                ReplaceValue(UserTags.ServiceNumber, studentDTO.ServiceNumber);
+                ReplaceValue(StudentTags.Group, studentDTO?.Group);
+                ReplaceValue(StudentTags.Course, studentDTO?.Course().ToString());
+                ReplaceValue(StudentTags.DirectionOfStudy, studentDTO?.DirectionOfStudy);
+                ReplaceValue(StudentTags.ServiceNumber, studentDTO?.ServiceNumber);
+                // TODO дата окончания института
+                // TODO КОД И НАИМЕНОВАНИЕ СПЕЦИАЛЬНОСТИ / НАПРАВЛЕНИЯ ПОДГОТОВКИ
                 break;
             }
             case Role.Employee:
             {
                 var employeeDTO = appUserDto as EmployeeDTO;
-                ReplaceValue(UserTags.Post, employeeDTO!.Post);
-                ReplaceValue(UserTags.Institute, employeeDTO.Institute);
+                ReplaceValue(EmployeeTags.Post, employeeDTO?.Post);
+                ReplaceValue(EmployeeTags.Institute, employeeDTO?.Institute);
                 break;
             }
         }
@@ -83,7 +91,9 @@ public class AutoFillDocService
 
     private void ExtractTemplate()
     {
-
+        ReplaceValue(UserTags.FullName);
+        ReplaceValue(UserTags.FullNameParent);
+        
         ReplaceValue(UserTags.FirstName);
         ReplaceValue(UserTags.SecondName);
         ReplaceValue(UserTags.MiddleName);
@@ -94,13 +104,17 @@ public class AutoFillDocService
         
         ReplaceValue(UserTags.INN);
         ReplaceValue(UserTags.PhoneNumber);
+        ReplaceValue(UserTags.DateOfBrith);
         
-        ReplaceValue(UserTags.Group);
-        ReplaceValue(UserTags.DirectionOfStudy);
-        ReplaceValue(UserTags.ServiceNumber);
+        ReplaceValue(StudentTags.Course);
+        ReplaceValue(StudentTags.Group);
+        ReplaceValue(StudentTags.DirectionOfStudy);
+        ReplaceValue(StudentTags.ServiceNumber);
+        ReplaceValue(StudentTags.DateOfEnd);
         
-        ReplaceValue(UserTags.Post);
-        ReplaceValue(UserTags.Institute);
+        ReplaceValue(EmployeeTags.Post);
+        ReplaceValue(EmployeeTags.Institute);
+        
         CloseDocument();
     }
 
@@ -109,10 +123,9 @@ public class AutoFillDocService
     {
         var find = _application.Selection.Find;
         
-        value ??= string.Empty;
-        
-        find.Text = tag;
-        find.Replacement.Text = value;
+        find.Text = $"«{tag}»";
+
+        find.Replacement.Text = value ?? string.Empty;
         
 
         find.Execute(
@@ -139,21 +152,35 @@ public class AutoFillDocService
 
 public static class UserTags
 {
-    public const string FirstName = "<имя>";
-    public const string SecondName = "<фамилия>";
-    public const string MiddleName = "<отчество>";
+    public const string FullName = "ФИО";
+    public const string FullNameParent = "ФИО-Р";
     
-    public const string FirstNameParent = "<имя-р>";
-    public const string SecondNameParent = "<фамилия-р>";
-    public const string MiddleNameParent = "<отчество-р>";
+    public const string FirstName = "ИМЯ";
+    public const string SecondName = "ФАМИЛИЯ";
+    public const string MiddleName = "ОТЧЕСТВО";
     
-    public const string INN = "<инн>";
-    public const string PhoneNumber = "<телефон>";
+    public const string FirstNameParent = "ИМЯ-Р";
+    public const string SecondNameParent = "ФАМИЛИЯ-Р";
+    public const string MiddleNameParent = "ОТЧЕСТВО-Р";
     
-    public const string Group = "<инн>";
-    public const string DirectionOfStudy = "<телефон>";
-    public const string ServiceNumber = "<номер>";
+    public const string DateOfBrith = "ДАТА РОЖДЕНИЯ";
+
     
-    public const string Post = "<должность>";
-    public const string Institute = "<институт>";
+    public const string INN = "ИНН";
+    public const string PhoneNumber = "ТЕЛЕФОН";
+}
+
+public static class StudentTags
+{
+    public const string Course = "КУРС";
+    public const string Group = "ГРУППА";
+    public const string DirectionOfStudy = "КОД И НАИМЕНОВАНИЕ СПЕЦИАЛЬНОСТИ/НАПРАВЛЕНИЯ ПОДГОТОВКИ";
+    public const string ServiceNumber = "НОМЕР";
+    public const string DateOfEnd = "ДАТА ОКОНЧАНИЯ ИНСТИТУТА";
+}
+
+public static class EmployeeTags
+{
+    public const string Post = "ДОЛЖНОСТЬ";
+    public const string Institute = "ИНСТИТУТ";
 }

@@ -28,6 +28,7 @@ public class AppUserDTO
     public NameDTO Name { get; set; } = new NameDTO();
     public PassportDTO Passport { get; set; } = new PassportDTO();
     
+    
     public AppUserDTO() {}
     protected AppUserDTO(AppUserDTO user)
     {

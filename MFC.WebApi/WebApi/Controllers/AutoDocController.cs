@@ -9,7 +9,7 @@ using Domain.Entities;
 using Domain.Entities.Users;
 using Infrastructure.Data;
 using Infrastructure.Repo;
-using Microsoft.AspNetCore.Mvc.Routing;
+
 using WebApi.CustomActionResult;
 using WebApi.Filters;
 using WebApi.Services;
@@ -73,7 +73,6 @@ public class AutoDocController(
         {
             AutoFillDocService.Generate(current, fileNameWithExtension, autoName, service.Type);
         }
-        // TODO если файл существует, узнать как давно он был создан
        
         return result;
     }
